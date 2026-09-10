@@ -1,0 +1,11 @@
+{
+    "title": "Audio Transcrito Exitosamente",
+    "subtitle": "Revisa y confirma la transcripción",
+    "duration": "Duración",
+    "format": "Formato",
+    "transcribed": "Transcrito",
+    "transcription": "Transcripción",
+    "editTranscription": "Editar transcripción...",
+    "transcriptionHint": "Esta transcripción será usada para el análisis. Puedes editarla para corregir errores.",
+    "analyzeNow": "Analizar Ahora"
+}

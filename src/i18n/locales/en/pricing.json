@@ -1,0 +1,7 @@
+{
+    "title": "Plans for Visionaries",
+    "subtitle": "",
+    "starter": { "name": "Starter", "desc": "For early validation", "price": "$29", "features": ["1 Role (Strategy Analyst)", "5 Validations/mo", "PDF Export"] },
+    "pro": { "name": "Pro", "desc": "For serious builders", "price": "$99", "features": ["3 Roles (PM, Strategy, UX)", "Unlimited", "Code Export"] },
+    "enterprise": { "name": "Enterprise", "desc": "For corporations", "price": "Custom", "features": ["All Roles", "API Access", "Dedicated 24/7 Support"] }
+}

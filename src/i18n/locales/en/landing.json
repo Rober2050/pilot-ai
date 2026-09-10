@@ -1,0 +1,113 @@
+{
+    "nav": { "features": "AI Roles", "pricing": "Pricing", "contact": "Contact", "login": "Login" },
+    "hero": {
+        "badge": "THE FUTURE OF WORK IS HERE",
+        "titleStart": "Your Business Idea,",
+        "titleEnd": "Built by AI.",
+        "subtitle": "Imagine having the world's best Managers working for you. An autonomous squad of experts (PM, Strategy, Marketing) dedicated to your success 24/7.",
+        "ctaPrimary": "Validate my Idea",
+        "ctaSecondary": "Watch Demo",
+        "carousel": {
+            "strategy": { "label": "Strategy Validation", "status": "Scanning Viability..." },
+            "marketing": { "label": "Growth Engine", "status": "Generating Audiences..." },
+            "qa": { "label": "Quality Shield", "status": "Running Test Suites..." }
+        }
+    },
+    "plg": {
+        "title": "Transform your idea into",
+        "titleGradient": "Real Strategy.",
+        "subtitle": "Describe your project and a team of AI will generate a complete plan: strategy, architecture, costs and risks.",
+        "inputPlaceholder": "Describe your project idea...",
+        "validation": {
+            "tooShort": "Your idea is too brief — add the sector, target audience, and the problem it solves.",
+            "notMeaningful": "Add more context: specify the product type, industry, or target audience.",
+            "selectRoles": "Select 2 roles to continue with the analysis",
+            "tryThis": "Try one of these"
+        },
+        "methodology": {
+            "label": "How will you manage this project?",
+            "pmo": "PMO",
+            "agile": "Agile",
+            "hybrid": "Hybrid"
+        },
+        "analyze": {
+            "button": "Analyze",
+            "step1": "Consulting Strategy Analyst...",
+            "step2": "Validating market viability...",
+            "step3": "Preliminary analysis ready ✓"
+        },
+        "roles": {
+            "sectionTitle": "Build your AI Team",
+            "selectInstruction": "Select 2 roles and get expert analysis",
+            "freeTag": "FREE",
+            "proTag": "PRO",
+            "lockTooltip": "Unlock with Pro plan",
+            "deliverable": "Deliverable",
+            "names": {
+                "strategy-analyst": "Strategy Analyst",
+                "product-manager": "Product Manager",
+                "business-analyst": "Business Analyst",
+                "project-manager": "Project Manager",
+                "marketing-manager": "Marketing Manager",
+                "architect": "Software Architect",
+                "ux-designer": "UX/UI Designer",
+                "qa-engineer": "QA Engineer"
+            },
+            "subtitles": {
+                "strategy-analyst": "STRATEGY LEAD",
+                "product-manager": "PRODUCT MANAGER",
+                "business-analyst": "BUSINESS ANALYST",
+                "project-manager": "PROJECT LEAD",
+                "marketing-manager": "CMO",
+                "architect": "CTO",
+                "ux-designer": "UX DESIGNER",
+                "qa-engineer": "QA LEAD"
+            }
+        },
+        "modal": {
+            "badge": "Preliminary Analysis Ready!",
+            "title": "Your idea has been validated by the AI",
+            "message": "Register for free to see the full Strategy Analyst report and unlock your AI team.",
+            "register": "Create free account",
+            "login": "I already have an account",
+            "disclaimer": "No credit card required · Cancel anytime"
+        },
+        "suggestion": {
+            "label": "Suggestion:",
+            "use": "✨ Use suggestion",
+            "edit": "✎ Write my own"
+        },
+        "maxRolesReached": "Maximum 2 roles selected",
+        "quickExamples": {
+            "label": "Quick examples",
+            "use": "Try this",
+            "items": [
+                "A SaaS B2B platform for dental clinics to automate appointments and billing",
+                "An e-commerce marketplace for artisans to sell handmade products with integrated payments",
+                "A mobile app for restaurant inventory management with real-time stock alerts and supplier orders"
+            ]
+        }
+    },
+    "tour": {
+        "title": "PLATFORM TOUR",
+        "subtitle": "Interactive Walkthrough",
+        "pause": "Pause",
+        "resume": "Resume",
+        "steps": {
+            "inception": { "label": "Inception", "desc": "From idea to project in seconds", "inputPlaceholder": "Describe your revolutionary idea...", "exampleIdea": "Autonomous Drone Logistics Network powered by Solar Energy and AI." },
+            "strategy": { "label": "Strategic Analysis", "desc": "AI analyzes market viability" },
+            "roles": { "label": "The Role Factory", "desc": "11 specialists working in parallel", "title": "Specialists in Action", "subtitle": "11 AI roles working simultaneously on your project", "cards": { "prd": "PRD Document", "flow": "Flow Diagrams", "cases": "Test Cases" } },
+            "consult": { "label": "Specialized AI Consult", "desc": "Refine with smart chat per role", "message": "Can we optimize the delivery route to minimize noise in residential zones?" },
+            "prototype": { "label": "Prototype Generation", "desc": "From wireframes to interactive UI" }
+        }
+    },
+    "footer": {
+        "about": "AI-powered platform for product teams and strategists. Generate complete analysis, prototypes, and strategic plans in minutes.",
+        "contact": "abadiarober@gmail.com",
+        "privacy": "Privacy Policy",
+        "privacyLink": "/privacy-policy",
+        "terms": "Terms of Service",
+        "termsLink": "/terms-of-service",
+        "rights": "All rights reserved."
+    }
+}

@@ -1,0 +1,30 @@
+node_modules
+
+# Environment files
+.env
+.env.local
+.env.*.local
+*.log
+dist/
+coverage/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# AI agent tooling — local configs
+.agent/
+.agents/
+.claude/
+skills/
+skills-lock.json
+
+# Local utility scripts (do NOT commit)
+documentation_generator/
+test_*.py
+*.pptx
+
+# Supabase local state
+supabase/.temp/
+supabase/.branches/
+

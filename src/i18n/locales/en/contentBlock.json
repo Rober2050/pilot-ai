@@ -1,0 +1,15 @@
+{
+    "manualText": "Manual Text",
+    "audioTranscription": "Audio Transcription",
+    "pdfSummary": "PDF Summary",
+    "imageDescription": "Image Description",
+    "content": "Content",
+    "pages": "pages",
+    "addedAt": "Added at",
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "placeholder": "Describe your project or idea...",
+    "characters": "characters",
+    "additionalSources": "Additional Sources",
+    "multiSourceInfo": "All content sources will be combined and analyzed together. You can edit or remove individual blocks using the buttons above."
+}

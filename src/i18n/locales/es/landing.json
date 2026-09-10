@@ -1,0 +1,133 @@
+{
+    "nav": {
+        "features": "Roles AI",
+        "pricing": "Precios",
+        "contact": "Contacto",
+        "login": "Ingresar"
+    },
+    "hero": {
+        "badge": "EL FUTURO DEL TRABAJO ESTÁ AQUÍ",
+        "titleStart": "Tu Idea de Negocio,",
+        "titleEnd": "Construida por IA.",
+        "subtitle": "Imagina tener a los mejores Gerentes del mundo trabajando para ti. Un equipo autónomo de expertos (PM, Estrategia, Marketing) dedicados a tu éxito 24/7.",
+        "ctaPrimary": "Validar mi Idea",
+        "ctaSecondary": "Ver Demo",
+        "carousel": {
+            "strategy": { "label": "Validación de Estrategia", "status": "Escaneando Viabilidad..." },
+            "marketing": { "label": "Motor de Crecimiento", "status": "Generando Audiencias..." },
+            "qa": { "label": "Escudo de Calidad", "status": "Ejecutando Pruebas..." }
+        }
+    },
+    "plg": {
+        "title": "Transforma tu idea en",
+        "titleGradient": "Estrategia Real.",
+        "subtitle": "Describe tu proyecto y un equipo de IA generará un plan completo: estrategia, arquitectura, costos y riesgos.",
+        "inputPlaceholder": "Describe tu idea de proyecto...",
+        "validation": {
+            "tooShort": "Tu idea es muy breve — agrega el sector, la audiencia y el problema que resuelve.",
+            "notMeaningful": "Añade más contexto: especifica el tipo de producto, industria o audiencia objetivo.",
+            "selectRoles": "Selecciona 2 roles para continuar con el análisis",
+            "tryThis": "Prueba con uno de estos"
+        },
+        "methodology": {
+            "label": "¿Cómo gestionarás este proyecto?",
+            "pmo": "PMO",
+            "agile": "Agile",
+            "hybrid": "Hybrid"
+        },
+        "analyze": {
+            "button": "Analizar",
+            "step1": "Consultando Analista de Estrategia...",
+            "step2": "Validando viabilidad del mercado...",
+            "step3": "Análisis preliminar listo ✓"
+        },
+        "roles": {
+            "sectionTitle": "Arma tu Equipo de IA",
+            "selectInstruction": "Selecciona 2 roles y recibí análisis de expertos",
+            "freeTag": "GRATIS",
+            "proTag": "PRO",
+            "lockTooltip": "Desbloquear con plan Pro",
+            "deliverable": "Entregable",
+            "names": {
+                "strategy-analyst": "Analista de Estrategia",
+                "product-manager": "Gerente de Producto",
+                "business-analyst": "Analista de Negocios",
+                "project-manager": "Gerente de Proyecto",
+                "marketing-manager": "Marketing Manager",
+                "architect": "Arquitecto de Software",
+                "ux-designer": "Diseñador UX/UI",
+                "qa-engineer": "Ingeniero QA"
+            },
+            "subtitles": {
+                "strategy-analyst": "STRATEGY LEAD",
+                "product-manager": "PRODUCT MANAGER",
+                "business-analyst": "BUSINESS ANALYST",
+                "project-manager": "PROJECT LEAD",
+                "marketing-manager": "CMO",
+                "architect": "CTO",
+                "ux-designer": "UX DESIGNER",
+                "qa-engineer": "QA LEAD"
+            }
+        },
+        "modal": {
+            "badge": "¡Análisis Preliminar Listo!",
+            "title": "Tu idea fue validada por la IA",
+            "message": "Regístrate gratis para ver el reporte completo del Analista de Estrategia y desbloquear tu equipo de IA.",
+            "register": "Crear cuenta gratis",
+            "login": "Ya tengo una cuenta",
+            "disclaimer": "Sin tarjeta de crédito · Cancela cuando quieras"
+        },
+        "suggestion": {
+            "label": "Sugerencia:",
+            "use": "✨ Usar sugerencia",
+            "edit": "✎ Escribir la mía"
+        },
+        "maxRolesReached": "Máximo 2 roles seleccionados",
+        "quickExamples": {
+            "label": "Ejemplos rápidos",
+            "use": "Usar este",
+            "items": [
+                "Una plataforma SaaS B2B para clínicas dentales que automatice sus citas y facturación",
+                "Un marketplace de e-commerce para artesanos con pagos integrados y gestión de envíos",
+                "App móvil para gestión de inventario en restaurantes con alertas de stock y pedidos a proveedores"
+            ]
+        }
+    },
+    "tour": {
+        "title": "TOUR DE LA PLATAFORMA",
+        "subtitle": "Walkthrough Interactivo",
+        "pause": "Pausa",
+        "resume": "Reanudar",
+        "steps": {
+            "inception": {
+                "label": "Inception",
+                "desc": "De idea a proyecto en segundos",
+                "inputPlaceholder": "Describe tu idea revolucionaria...",
+                "exampleIdea": "Red de Logística Urbana con Drones Autónomos impulsada por Energía Solar y IA."
+            },
+            "strategy": { "label": "Análisis Estratégico", "desc": "IA analiza viabilidad de mercado" },
+            "roles": {
+                "label": "La Fábrica de Roles",
+                "desc": "11 especialistas trabajando en paralelo",
+                "title": "Especialistas en Acción",
+                "subtitle": "11 roles de IA trabajando simultáneamente en tu proyecto",
+                "cards": { "prd": "Documento PRD", "flow": "Diagramas de Flujo", "cases": "Casos de Prueba" }
+            },
+            "consult": {
+                "label": "Consulta IA Especializada",
+                "desc": "Refina con chat inteligente por rol",
+                "message": "¿Podemos optimizar la ruta de entrega para minimizar el ruido en zonas residenciales?"
+            },
+            "prototype": { "label": "Generación de Prototipo", "desc": "De wireframes a UI interactiva" }
+        }
+    },
+    "footer": {
+        "about": "Plataforma impulsada por IA para equipos de producto y estrategia. Genera análisis completos, prototipos y planes estratégicos en minutos.",
+        "contact": "abadiarober@gmail.com",
+        "privacy": "Política de Privacidad",
+        "privacyLink": "/privacy-policy",
+        "terms": "Términos de Servicio",
+        "termsLink": "/terms-of-service",
+        "rights": "Todos los derechos reservados."
+    }
+}

@@ -1,0 +1,70 @@
+{
+    "title": "Strategic Command Center",
+    "executiveSummary": "Executive Summary",
+    "ideo": {
+        "title": "IDEO Innovation Triangle",
+        "desirability": "Desirability (Human)",
+        "feasibility": "Feasibility (Technical)",
+        "viability": "Viability (Business)",
+        "sweetSpot": "Sweet Spot",
+        "frameworkTitle": "IDEO Validation Framework"
+    },
+    "score": {
+        "label": "Confidence Score",
+        "verdict": "Verdict",
+        "reason": "AI Analysis",
+        "analysisComplete": "ANALYSIS COMPLETE"
+    },
+    "tabs": {
+        "overview": "Verdict & IDEO",
+        "market": "Market Intelligence",
+        "strategy": "SWOT / TOWS Matrix",
+        "financials": "Unit Economics",
+        "sources": "Sources"
+    },
+    "market": {
+        "title": "Market Size (TAM/SAM/SOM)",
+        "cagr": "CAGR (Annual Growth)",
+        "trends": "Key Trends",
+        "trendsTitle": "Market Trends & Growth"
+    },
+    "matrix": {
+        "title": "Strategic Matrix",
+        "swot": "SWOT (Factors)",
+        "tows": "TOWS (Strategies)",
+        "internal": "INTERNAL",
+        "external": "EXTERNAL",
+        "strategies": "STRATEGIES",
+        "strengths": "Strengths",
+        "weaknesses": "Weaknesses",
+        "opportunities": "Opportunities",
+        "threats": "Threats",
+        "swotStrengths": "INTERNAL (Strengths)",
+        "swotWeaknesses": "INTERNAL (Weaknesses)",
+        "swotOpportunities": "EXTERNAL (Opportunities)",
+        "swotThreats": "EXTERNAL (Threats)",
+        "towsSO": "STRATEGIES (Strengths + Opps)",
+        "towsWO": "STRATEGIES (Weaknesses + Opps)",
+        "towsST": "STRATEGIES (Strengths + Threats)",
+        "towsWT": "STRATEGIES (Weaknesses + Threats)"
+    },
+    "financials": {
+        "title": "Unit Economics (LTV:CAC)",
+        "ratio": "Ratio",
+        "breakeven": "Break-even Point",
+        "breakevenTitle": "Profitability Timeline",
+        "months": "months",
+        "toBreakeven": "To Break-even",
+        "basedOn": "Based on CAC ${cac} and LTV ${ltv}",
+        "healthyRatio": "✅ Healthy ratio (industry benchmark: ≥3x)",
+        "belowThreshold": "⚠️ Below healthy threshold (benchmark: ≥3x)"
+    },
+    "sources": {
+        "title": "Sources",
+        "sourceLabel": "Source",
+        "tier": "Tier",
+        "verified": "Verified",
+        "estimated": "AI Estimated",
+        "noData": "No source data available."
+    }
+}

@@ -1,0 +1,61 @@
+{
+    "dashboardTitle": "QA Engineer",
+    "dashboardSubtitle": "Aseguramiento de Calidad y Estrategia de Testing",
+    "summaryTitle": "Resumen de Estrategia QA",
+    "kpi": {
+        "readiness": "Preparación para Lanzamiento",
+        "readinessHint": "Puntuación general de preparación para entrega a desarrollo/producción, calculada a partir de cobertura y riesgos.",
+        "bugs": "Riesgos Críticos",
+        "bugsHint": "Número de riesgos críticos o de alto impacto sin mitigación identificados en este análisis.",
+        "coverage": "Cobertura Lógica",
+        "coverageHint": "Porcentaje de flujos de lógica de negocio cubiertos por los casos de prueba generados.",
+        "automation": "Automatizable",
+        "automationHint": "Porcentaje de casos de prueba marcados como automatizables con Playwright o Cypress."
+    },
+    "tabs": {
+        "overview": "Escenarios Críticos",
+        "testSuites": "Suites de Prueba (BDD)",
+        "risks": "Reporte de Riesgos",
+        "pyramid": "Pirámide de Testing",
+        "cicd": "CI/CD y Herramientas"
+    },
+    "scenarios": {
+        "title": "Escenarios Críticos de Negocio",
+        "tooltip": "Estos son los flujos imprescindibles de ESTE producto. Si fallan, el producto falla. Generados a partir de la idea de negocio — no de PILOTAI.",
+        "noData": "No hay escenarios críticos definidos aún. Vuelve a ejecutar el análisis.",
+        "coverage": "Cobertura"
+    },
+    "suites": {
+        "bannerTitle": "Casos de Prueba BDD — Given / When / Then",
+        "bannerDesc": "Cada caso sigue el formato Gherkin BDD. Cópialos directamente en Cypress, Playwright o cualquier herramienta de gestión de pruebas.",
+        "cases": "Casos",
+        "automatable": "Auto",
+        "noData": "No hay suites de prueba generadas. Vuelve a ejecutar el análisis."
+    },
+    "risks": {
+        "matrixTitle": "Matriz de Impacto de Riesgos",
+        "mitigation": "Mitigación",
+        "impact": "Impacto",
+        "probability": "Probabilidad",
+        "noData": "No se identificaron riesgos."
+    },
+    "pyramid": {
+        "title": "Pirámide de Testing",
+        "unit": "Pruebas Unitarias",
+        "unitDesc": "Rápidas, aisladas, sin dependencias",
+        "integration": "Pruebas de Integración",
+        "intDesc": "Contratos entre servicios",
+        "e2e": "Pruebas E2E",
+        "e2eDesc": "Solo flujos críticos de usuario"
+    },
+    "criticalPaths": {
+        "title": "Journeys Críticos de Usuario",
+        "tooltip": "Los flujos de usuario que DEBEN pasar antes de cualquier release. Ordenados por impacto de negocio.",
+        "mustPass": "OBLIGATORIO",
+        "noData": "No hay journeys críticos definidos."
+    },
+    "cicd": {
+        "stackTitle": "Stack de Calidad Recomendado",
+        "noData": "No se generó recomendación de CI/CD aún."
+    }
+}

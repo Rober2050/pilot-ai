@@ -1,0 +1,12 @@
+{
+    "title": "Diagnostic Center",
+    "subtitle": "Monitor system health and run automated tests",
+    "consoleOutput": "Console Output",
+    "ready": "Ready to run diagnostics...",
+    "starting": "Starting system diagnostics...",
+    "checkingFirebase": "Checking Firebase connection... OK",
+    "checkingAuth": "Checking Authentication Service... OK",
+    "checkingGemini": "Checking Gemini API configuration... OK",
+    "verifyingRoles": "Verifying Role Definitions... 5 Roles Loaded",
+    "completed": "Diagnostics completed successfully."
+}

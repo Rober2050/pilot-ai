@@ -1,0 +1,11 @@
+{
+    "title": "Audio Transcribed Successfully",
+    "subtitle": "Review and confirm the transcription",
+    "duration": "Duration",
+    "format": "Format",
+    "transcribed": "Transcribed",
+    "transcription": "Transcription",
+    "editTranscription": "Edit transcription...",
+    "transcriptionHint": "This transcription will be used for analysis. You can edit it to correct errors.",
+    "analyzeNow": "Analyze Now"
+}

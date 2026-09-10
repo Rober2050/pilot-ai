@@ -1,0 +1,43 @@
+@media print {
+    /* Force background graphics to show */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* React Flow Specifics */
+    .react-flow__edge-path {
+        stroke: #000 !important;
+        stroke-width: 2px !important;
+        opacity: 1 !important;
+    }
+
+    .react-flow__connection-path {
+        stroke: #000 !important;
+        stroke-width: 2px !important;
+    }
+
+    /* Nodes */
+    .react-flow__node {
+        border: 1px solid #000 !important;
+        box-shadow: none !important;
+    }
+
+    /* Ensure specific colors in nodes are kept */
+    .dndnode, .custom-node {
+        background-color: white !important; /* Base */
+    }
+
+    /* Start/End nodes */
+    .react-flow__node-start, .react-flow__node-end {
+        background-color: #f0fdf4 !important; /* emerald-50 */
+    }
+
+    /* Hide UI controls during print */
+    .react-flow__controls, 
+    .react-flow__minimap, 
+    .react-flow__panel, 
+    .react-flow__attribution {
+        display: none !important;
+    }
+}

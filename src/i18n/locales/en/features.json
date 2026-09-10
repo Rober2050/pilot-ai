@@ -1,0 +1,13 @@
+{
+    "title": "An Elite Team at Your Service",
+    "subtitle": "Orchestrate your enterprise with specialized autonomous agents.",
+    "deployAgent": "Deploy Agent",
+    "roles": {
+        "strategy": { "title": "Strategy Analyst", "desc": "Validates ideas using IDEO's framework. SWOT, TOWS, and Confidence Scores in seconds." },
+        "ia": { "title": "Information Architect", "desc": "Turns chaos into structure. Automated Site Maps and User Flows." },
+        "pm": { "title": "Product Manager", "desc": "Defines MVPs, Roadmaps, and User Stories with AI precision." },
+        "arch": { "title": "Software Architect", "desc": "Robust tech stack recommendations and scalable C4 models." },
+        "marketing": { "title": "Marketing Manager", "desc": "GTM strategies, Buyer Personas, and ROAS calculations before spending a dollar." },
+        "qa": { "title": "QA Engineer", "desc": "Test plans, risk analysis, and proactive bug hunting." }
+    }
+}

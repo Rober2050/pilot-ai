@@ -1,0 +1,16 @@
+{
+    "pending": "Pendiente",
+    "processing": "Procesando",
+    "completed": "Completado",
+    "error": "Error",
+    "strategy-analyst": "Analista de Estrategia",
+    "product-manager": "Gerente de Producto",
+    "project-manager": "Gerente de Proyecto",
+    "business-analyst": "Analista de Negocios",
+    "ux-designer": "Diseñador UX/UI",
+    "architect": "Arquitecto de Software",
+    "frontend-dev": "Desarrollador Frontend",
+    "backend-dev": "Desarrollador Backend",
+    "qa-engineer": "Ingeniero QA",
+    "devops": "Ingeniero DevOps"
+}

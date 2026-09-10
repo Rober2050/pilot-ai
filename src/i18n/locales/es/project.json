@@ -1,0 +1,150 @@
+{
+    "rolePanel": {
+        "notProcessed": "Este rol aún no ha procesado la idea.",
+        "runAnalysis": "Ejecutar Análisis",
+        "roleDisabled": "Rol Deshabilitado",
+        "roleDisabledMessage": "Habilita este rol en la Consola de Admin para ejecutar el análisis.",
+        "upgradePlan": "Actualizar Plan",
+        "upgradeToAccess": "Actualiza tu plan para acceder a este rol.",
+        "selected": "Seleccionado",
+        "locked": "Bloqueado",
+        "pending": "Pendiente",
+        "newAnalysisGuide": "Para un nuevo análisis, vuelve al inicio y escribe tu idea.",
+        "goToHome": "Ir al Inicio",
+        "teamExecuted": "Equipo Ejecutado",
+        "remainingAnalyses": "Te quedan {{count}} análisis este mes",
+        "noRemainingAnalyses": "Límite de análisis alcanzado",
+        "analyzing": "está analizando tu proyecto...",
+        "analysisStep1": "Inicializando motor de análisis...",
+        "analysisStep2": "Procesando contexto del proyecto...",
+        "analysisStep3": "Estructurando marcos de trabajo...",
+        "analysisStep4": "Ejecutando análisis profundo...",
+        "analysisStep5": "Sintetizando entregables...",
+        "analysisTimeNote": "Los análisis profundos toman 1–2 min",
+        "strategy-analyst": {
+            "step1": "Evaluando viabilidad e idoneidad de mercado...",
+            "step2": "Investigando inteligencia de mercado en tiempo real...",
+            "step3": "Ejecutando marcos FODA, TOWS e IDEO...",
+            "step4": "Calculando TAM/SAM/SOM y unit economics...",
+            "step5": "Sintetizando veredicto estratégico y fuentes..."
+        },
+        "strategy-manager": {
+            "step1": "Escaneando el panorama competitivo...",
+            "step2": "Analizando posicionamiento estratégico y palancas de crecimiento...",
+            "step3": "Evaluando viabilidad go-to-market...",
+            "step4": "Formulando escenarios estratégicos de entrada...",
+            "step5": "Sintetizando análisis ejecutivo de estrategia..."
+        },
+        "product-manager": {
+            "step1": "Analizando Jobs-to-be-Done y necesidades de usuario...",
+            "step2": "Priorizando funcionalidades con scoring RICE...",
+            "step3": "Definiendo alcance del MVP y OKRs...",
+            "step4": "Calculando métricas de éxito y KPIs...",
+            "step5": "Sintetizando PM Command Center..."
+        },
+        "ba": {
+            "step1": "Analizando requisitos y especificaciones...",
+            "step2": "Mapeando journeys de usuario y criterios de aceptación...",
+            "step3": "Estructurando marco de reglas de negocio...",
+            "step4": "Construyendo flujos de proceso y trazabilidad...",
+            "step5": "Sintetizando historias de usuario y matriz de requisitos..."
+        },
+        "project-manager": {
+            "step1": "Analizando alcance y fases del proyecto...",
+            "step2": "Estimando recursos, tiempos y costos...",
+            "step3": "Construyendo EDT y mapa de dependencias...",
+            "step4": "Identificando riesgos y ruta crítica...",
+            "step5": "Generando cronograma Gantt y plan de proyecto..."
+        },
+        "marketing-manager": {
+            "step1": "Analizando buyer personas y segmentos de mercado...",
+            "step2": "Estructurando estrategia de canales y mensajes clave...",
+            "step3": "Calculando unit economics y escenarios de ROAS...",
+            "step4": "Diseñando funnel táctico y calendario GTM...",
+            "step5": "Sintetizando plan go-to-market completo..."
+        },
+        "architect": {
+            "step1": "Diseñando arquitectura del sistema y límites de componentes...",
+            "step2": "Evaluando atributos de calidad y trade-offs técnicos...",
+            "step3": "Documentando Architecture Decision Records (ADRs)...",
+            "step4": "Construyendo diagramas C4 y radar tecnológico...",
+            "step5": "Sintetizando informe de arquitectura completo..."
+        },
+        "ux-designer": {
+            "step1": "Analizando experiencia de usuario y flujos clave...",
+            "step2": "Definiendo arquitectura de información y wireframes...",
+            "step3": "Diseñando prototipo interactivo de alta fidelidad...",
+            "step4": "Aplicando principios de accesibilidad y usabilidad...",
+            "step5": "Generando landing page del producto..."
+        },
+        "qa-engineer": {
+            "step1": "Analizando estrategia de pruebas y cobertura...",
+            "step2": "Definiendo casos de prueba y criterios de aceptación...",
+            "step3": "Estructurando plan de testing automatizado...",
+            "step4": "Evaluando riesgos de calidad y métricas de defectos...",
+            "step5": "Sintetizando plan de aseguramiento de calidad..."
+        },
+        "analysisFailed": "Análisis Fallido",
+        "retryAnalysis": "Reintentar Análisis",
+        "lastUpdated": "Última actualización:",
+        "hideChat": "Ocultar Chat",
+        "refineWithAI": "Refinar con IA",
+        "collapse": "Contraer y subir",
+        "export": {
+            "word": "Descargar Informe Word",
+            "excel": "Descargar Datos Excel",
+            "ppt": "Descargar Presentación",
+            "pdf": "Descargar PDF",
+            "json": "Descargar Datos JSON",
+            "markdown": "Descargar Markdown",
+            "wordLabel": "DOCX",
+            "excelLabel": "Excel",
+            "pptLabel": "PPT",
+            "pdfLabel": "PDF",
+            "jsonLabel": "JSON",
+            "markdownLabel": "MD"
+        }
+    },
+    "synthesis": {
+        "cardTitle": "Síntesis del Equipo",
+        "generating": "Sintetizando...",
+        "ready": "Informe listo",
+        "error": "Error en síntesis",
+        "loading": "Cargando...",
+        "panelTitle": "Informe Ejecutivo Unificado",
+        "panelSubtitle": "Síntesis de {{count}} análisis completados",
+        "teamVerdict": "Veredicto del Equipo",
+        "confidence": "confianza",
+        "executiveSummary": "Resumen Ejecutivo",
+        "consensus": "Consenso del Equipo",
+        "tensions": "Puntos de Tensión",
+        "topRisks": "Top 3 Riesgos Unificados",
+        "recommendation": "Recomendación",
+        "generatingFull": "Sintetizando todos los análisis del equipo...",
+        "errorMessage": "Error al generar la síntesis. Intenta de nuevo.",
+        "stateNeedsMoreRoles": "Ejecuta 2+ roles para activar",
+        "stateReady": "Listo para sintetizar",
+        "stateStale": "Desactualizada — hay roles nuevos",
+        "lockedTitle": "Síntesis Bloqueada",
+        "lockedDescription": "Completa al menos 2 análisis de roles para generar el informe ejecutivo unificado.",
+        "rolesMinimum": "roles completados",
+        "readyTitle": "Listo para Sintetizar",
+        "readyDescription": "{{count}} análisis de roles completados. Genera el informe ejecutivo unificado.",
+        "runButton": "Ejecutar Síntesis",
+        "staleMessage": "{{count}} rol(es) nuevo(s) completado(s) desde la última síntesis. Actualiza para incluirlos.",
+        "updateButton": "Actualizar",
+        "retryButton": "Reintentar",
+        "projectHealth": "Salud del Proyecto",
+        "rolesAnalyzedLabel": "Roles Analizados — Estado de Coherencia",
+        "generatedOn": "Generado"
+    },
+    "pipeline": {
+        "originalConcept": "Concepto Original",
+        "exportReport": "Exportar Informe",
+        "exportExcel": "Exportar a Excel",
+        "exportJson": "Exportar JSON",
+        "autoFlow": "Flujo Automático",
+        "notFound": "Proyecto no encontrado",
+        "selectRole": "Selecciona un rol para ver los detalles"
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "title": "Un Equipo de Élite a tu Servicio",
+    "subtitle": "Orquesta tu empresa con agentes autónomos especializados.",
+    "deployAgent": "Activar Agente",
+    "roles": {
+        "strategy": { "title": "Analista de Estrategia", "desc": "Valida ideas con el framework de IDEO. Matrices FODA y Scores de Confianza al instante." },
+        "ia": { "title": "Arquitecto de Información", "desc": "Convierte el caos en estructura. Mapas de sitio y flujos de usuario automatizados." },
+        "pm": { "title": "Gerente de Producto", "desc": "Define MVPs, Roadmaps e Historias de Usuario con precisión de IA." },
+        "arch": { "title": "Arquitecto de Software", "desc": "Recomendaciones de stack robusto y modelos C4 escalables." },
+        "marketing": { "title": "Marketing Manager", "desc": "Estrategias GTM, Buyer Personas y cálculo de ROAS antes de gastar un dólar." },
+        "qa": { "title": "Ingeniero QA", "desc": "Planes de prueba, análisis de riesgos y detección de bugs proactiva." }
+    }
+}

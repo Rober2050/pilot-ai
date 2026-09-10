@@ -1,0 +1,15 @@
+{
+    "title": "Admin Console",
+    "subtitle": "Manage AI roles and system configuration",
+    "createRole": "Create New Role",
+    "roleManagement": "Role Management",
+    "userManagement": "User Management",
+    "subscriptionPlans": "Subscription Plans",
+    "docSettings": "Documentation Settings",
+    "workflowRoles": "Workflow Roles",
+    "editRole": "Edit Role",
+    "displayName": "Display Name",
+    "systemPrompt": "System Prompt",
+    "model": "Model",
+    "temperature": "Temperature"
+}

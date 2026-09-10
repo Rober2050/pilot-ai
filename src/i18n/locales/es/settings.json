@@ -1,0 +1,25 @@
+{
+    "title": "Configuración",
+    "profile": {
+        "title": "Perfil",
+        "editProfile": "Editar Perfil",
+        "changePassword": "Cambiar Contraseña",
+        "changePasswordDesc": "Actualiza tu contraseña"
+    },
+    "appearance": {
+        "title": "Apariencia",
+        "light": "Claro",
+        "dark": "Oscuro",
+        "system": "Sistema"
+    },
+    "language": {
+        "title": "Idioma",
+        "interfaceLanguage": "Idioma de Interfaz",
+        "selectLanguage": "Selecciona tu idioma preferido"
+    },
+    "notifications": {
+        "title": "Notificaciones",
+        "emailNotifications": "Notificaciones por Email",
+        "receiveUpdates": "Recibir actualizaciones sobre tus proyectos"
+    }
+}

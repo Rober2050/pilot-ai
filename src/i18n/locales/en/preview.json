@@ -1,0 +1,18 @@
+{
+    "title": "PDF Processed Successfully",
+    "subtitle": "Review and confirm the extracted content",
+    "pages": "Pages",
+    "words": "Words",
+    "size": "Size",
+    "fileName": "File Name",
+    "nativeExtraction": "Native Extraction",
+    "ocrExtraction": "OCR Extraction",
+    "scannedPDF": "Scanned PDF",
+    "smartSummary": "Smart Summary",
+    "viewMode": "View",
+    "editMode": "Edit",
+    "editSummaryPlaceholder": "Edit the summary...",
+    "summaryHint": "This summary will be used for analysis. You can edit it to focus on specific aspects.",
+    "fullContent": "View Full Extracted Content",
+    "analyzeNow": "Analyze Now"
+}

@@ -1,0 +1,58 @@
+{
+    "executiveSummary": "Executive Summary",
+    "northStar": "North Star",
+    "tabs": {
+        "dna": "Product DNA",
+        "scope": "MVP Scope",
+        "roadmap": "Roadmap & OKRs",
+        "discovery": "Discovery"
+    },
+    "save": "Save",
+    "saving": "Saving...",
+    "noData": "No data available",
+    "sections": {
+        "productVision": "Product Vision",
+        "positioningStatement": "Positioning Statement",
+        "jtbd": "Jobs-to-be-Done",
+        "jtbdSubtitle": "What customers hire this product to do",
+        "icp": "Ideal Customer Profile",
+        "hypotheses": "Hypotheses to Validate",
+        "hypothesesSubtitle": "Key assumptions with risk assessment",
+        "riceTable": "Feature Prioritization (RICE)",
+        "riceTableSubtitle": "Reach × Impact × Confidence / Effort",
+        "mvpScope": "MVP Scope",
+        "mvpScopeSubtitle": "Core features for initial launch",
+        "competitive": "Competitive Landscape",
+        "competitiveSubtitle": "How we differ from existing solutions",
+        "inScope": "✅ In Scope (MVP1)",
+        "outScope": "❌ Out of Scope (Future)",
+        "roadmap": "Product Roadmap",
+        "roadmapSubtitle": "Evolution timeline and key milestones",
+        "okrs": "OKRs — Objectives & Key Results",
+        "okrsSubtitle": "Measurable goals for post-launch",
+        "prioritization": "Prioritization Matrix",
+        "prioritizationSubtitle": "Impact vs. Effort analysis",
+        "stakeholderDiscovery": "Stakeholder Discovery",
+        "stakeholderDiscoverySubtitle": "Critical questions to validate assumptions before development"
+    },
+    "empty": {
+        "vision": "No Product Vision found.",
+        "audience": "No Target Audience defined.",
+        "features": "No Features defined.",
+        "roadmap": "No Roadmap data available.",
+        "discovery": "No discovery questions generated."
+    },
+    "rice": {
+        "feature": "Feature",
+        "score": "Score",
+        "mvp": "MVP",
+        "inMvp": "✓ IN",
+        "outMvp": "— OUT"
+    },
+    "okr": {
+        "objective": "Objective"
+    },
+    "discovery": {
+        "placeholder": "Write your answer here to enrich the project context..."
+    }
+}

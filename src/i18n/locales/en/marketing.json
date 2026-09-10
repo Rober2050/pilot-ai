@@ -1,0 +1,136 @@
+{
+    "dashboardTitle": "Marketing Manager",
+    "dashboardSubtitle": "Go-to-Market Engine",
+    "processMap": "Customer Acquisition Flow",
+    "funnelDiagram": "Marketing & Sales Funnel",
+    "project": "Project",
+    "exportGTM": "Export GTM Plan",
+    "exporting": "Generating...",
+    "tabs": {
+        "simulation": "Simulation & ROAS",
+        "strategy": "Strategy & Persona",
+        "execution": "GTM Calendar",
+        "channels": "Channels (ICE)",
+        "messaging": "Messaging",
+        "economics": "Unit Economics",
+        "competitive": "Competitive Map"
+    },
+    "simulation": {
+        "variables": "Control Variables",
+        "monthlyBudget": "Monthly Investment",
+        "avgTicket": "Average Ticket",
+        "ticketHint": "Estimated sales price of the product.",
+        "cpcTooltip": "(CPC) Estimated average cost you will pay Meta/Google for each click.",
+        "convRate": "Conv. Rate",
+        "scenarioToggle": "AI Scenarios",
+        "customMode": "Custom",
+        "scenarioConservative": "Conservative",
+        "scenarioBase": "Base",
+        "scenarioAggressive": "Aggressive"
+    },
+    "tips": {
+        "title": "How to move the needle?",
+        "subtitle": "Understand which variable affects which result:",
+        "roasHint": "To increase **Profitability (ROAS)**: Increase the **Ticket**. Selling more expensive improves your direct margin.",
+        "volumeHint": "To increase **Volume (Sales)**: Increase **Investment**. More money = More reach and total leads."
+    },
+    "roasTitle": "Return Simulator (ROAS)",
+    "projectedRoas": "Projected ROAS",
+    "grossSales": "Est. Gross Sales",
+    "grossProfit": "Gross Profit",
+    "loss": "Loss",
+    "breakeven": "Breakeven",
+    "profitable": "Profitable",
+    "roasAdvice": {
+        "low": "Increase average ticket to improve margin.",
+        "high": "Excellent configuration to scale."
+    },
+    "growthProjection": "Growth Projection (6 Months)",
+    "scenario": "Composite Scenario",
+    "accumulatedRevenue": "Accumulated Revenue",
+    "monthlySales": "Monthly Sales",
+    "buyerPersona": "Buyer Persona",
+    "demographics": "Demographics",
+    "age": "Age",
+    "gender": "Gender",
+    "location": "Location",
+    "income": "Income",
+    "interests": "Interests (Ads)",
+    "behavior": "Behavior",
+    "goals": "Goals",
+    "objections": "Objections",
+    "empathyMap": "Empathy Map",
+    "tacticalFunnel": "Tactical Funnel",
+    "funnel": {
+        "reach": "Reach",
+        "visits": "Visits",
+        "sales": "Sales"
+    },
+    "gtmCalendar": "Go-to-Market Calendar (12 Weeks)",
+    "gtmPhases": {
+        "preLaunch": "Pre-Launch",
+        "launch": "Launch",
+        "growth": "Growth"
+    },
+    "iceMatrix": "Channel Prioritization (ICE Matrix)",
+    "col": {
+        "channel": "Channel",
+        "impact": "Impact (1-10)",
+        "cost": "Inv. Cost (1-10)",
+        "effort": "Effort (1-10)",
+        "score": "ICE Score",
+        "budget": "Budget %",
+        "rationale": "Rationale"
+    },
+    "recommended": "RECOMMENDED",
+    "channelMix": "Budget Mix by Channel",
+    "competitive": {
+        "title": "Competitive Positioning Map",
+        "noData": "No competitive map data available yet.",
+        "hint": "Re-run the analysis to integrate competitor positioning.",
+        "highValue": "High Value",
+        "lowValue": "Low Value",
+        "highPrice": "High Price",
+        "lowPrice": "Low Price"
+    },
+    "messaging": {
+        "title": "Messaging Framework",
+        "valueProp": "Value Proposition",
+        "pitch": "Elevator Pitch (30s)",
+        "tagline": "Tagline",
+        "keyMessages": "Key Messages by Audience",
+        "audience": "Audience",
+        "message": "Message",
+        "tone": "Tone"
+    },
+    "economics": {
+        "title": "Unit Economics",
+        "cac": "Customer Acquisition Cost",
+        "ltv": "Lifetime Value",
+        "ltvCacRatio": "LTV / CAC Ratio",
+        "payback": "Payback Period",
+        "churn": "Monthly Churn",
+        "arpu": "Avg. Revenue Per User",
+        "months": "months",
+        "healthy": "Healthy",
+        "warning": "Warning",
+        "critical": "Critical"
+    },
+    "benchmarks": {
+        "title": "Industry Benchmarks",
+        "vertical": "Vertical",
+        "avgCPC": "Avg. CPC",
+        "avgConversion": "Avg. Conversion",
+        "source": "Source"
+    },
+    "summaryTitle": "Marketing Strategy Overview",
+    "dashboardError": "Failed to load marketing data. Please verify role configuration.",
+    "months": {
+        "m1": "Month 1",
+        "m2": "Month 2",
+        "m3": "Month 3",
+        "m4": "Month 4",
+        "m5": "Month 5",
+        "m6": "Month 6"
+    }
+}

@@ -1,0 +1,150 @@
+{
+    "rolePanel": {
+        "notProcessed": "This role has not processed the idea yet.",
+        "runAnalysis": "Run Analysis",
+        "roleDisabled": "Role Disabled",
+        "roleDisabledMessage": "Enable this role in Admin Console to run analysis.",
+        "upgradePlan": "Upgrade Plan",
+        "upgradeToAccess": "Upgrade your plan to access this role.",
+        "selected": "Selected",
+        "locked": "Locked",
+        "pending": "Pending",
+        "newAnalysisGuide": "To start a new analysis, go back to the home page and write your idea.",
+        "goToHome": "Go to Home",
+        "teamExecuted": "Team Executed",
+        "remainingAnalyses": "{{count}} analyses left this month",
+        "noRemainingAnalyses": "Analysis limit reached",
+        "analyzing": "is analyzing your project...",
+        "analysisStep1": "Initializing analysis engine...",
+        "analysisStep2": "Processing project context...",
+        "analysisStep3": "Structuring frameworks...",
+        "analysisStep4": "Running deep analysis...",
+        "analysisStep5": "Synthesizing deliverables...",
+        "analysisTimeNote": "Deep analyses take 1–2 min",
+        "strategy-analyst": {
+            "step1": "Evaluating idea viability and market fit...",
+            "step2": "Researching real-time market intelligence...",
+            "step3": "Running SWOT, TOWS and IDEO frameworks...",
+            "step4": "Computing TAM/SAM/SOM and unit economics...",
+            "step5": "Synthesizing strategic verdict and sources..."
+        },
+        "strategy-manager": {
+            "step1": "Scanning competitive landscape...",
+            "step2": "Analyzing strategic positioning and growth levers...",
+            "step3": "Evaluating go-to-market viability...",
+            "step4": "Formulating strategic entry scenarios...",
+            "step5": "Synthesizing executive strategy analysis..."
+        },
+        "product-manager": {
+            "step1": "Analyzing Jobs-to-be-Done and user needs...",
+            "step2": "Prioritizing features with RICE scoring...",
+            "step3": "Defining MVP scope and OKRs...",
+            "step4": "Computing success metrics and KPIs...",
+            "step5": "Synthesizing PM Command Center..."
+        },
+        "ba": {
+            "step1": "Parsing requirements and specifications...",
+            "step2": "Mapping user journeys and acceptance criteria...",
+            "step3": "Structuring business rules framework...",
+            "step4": "Building process flows and traceability...",
+            "step5": "Synthesizing user stories and requirements matrix..."
+        },
+        "project-manager": {
+            "step1": "Analyzing project scope and phases...",
+            "step2": "Estimating resources, timelines and costs...",
+            "step3": "Building WBS and dependency map...",
+            "step4": "Identifying risks and critical path...",
+            "step5": "Generating Gantt chart and project plan..."
+        },
+        "marketing-manager": {
+            "step1": "Analyzing buyer personas and market segments...",
+            "step2": "Structuring channel strategy and key messages...",
+            "step3": "Computing unit economics and ROAS scenarios...",
+            "step4": "Designing tactical funnel and GTM calendar...",
+            "step5": "Synthesizing full go-to-market plan..."
+        },
+        "architect": {
+            "step1": "Designing system architecture and component boundaries...",
+            "step2": "Evaluating quality attributes and architectural trade-offs...",
+            "step3": "Documenting Architecture Decision Records (ADRs)...",
+            "step4": "Building C4 diagrams and technology radar...",
+            "step5": "Synthesizing architecture report..."
+        },
+        "ux-designer": {
+            "step1": "Analyzing user experience and key flows...",
+            "step2": "Defining information architecture and wireframes...",
+            "step3": "Designing high-fidelity interactive prototype...",
+            "step4": "Applying accessibility and usability principles...",
+            "step5": "Generating product landing page..."
+        },
+        "qa-engineer": {
+            "step1": "Analyzing test strategy and coverage scope...",
+            "step2": "Defining test cases and acceptance criteria...",
+            "step3": "Structuring automated testing plan...",
+            "step4": "Evaluating quality risks and defect metrics...",
+            "step5": "Synthesizing quality assurance plan..."
+        },
+        "analysisFailed": "Analysis Failed",
+        "retryAnalysis": "Retry Analysis",
+        "lastUpdated": "Last updated:",
+        "hideChat": "Hide Chat",
+        "refineWithAI": "Refine with AI",
+        "collapse": "Collapse and scroll up",
+        "export": {
+            "word": "Download Word Report",
+            "excel": "Download Excel Data",
+            "ppt": "Download Presentation",
+            "pdf": "Download PDF",
+            "json": "Download JSON Data",
+            "markdown": "Download Markdown",
+            "wordLabel": "DOCX",
+            "excelLabel": "Excel",
+            "pptLabel": "PPT",
+            "pdfLabel": "PDF",
+            "jsonLabel": "JSON",
+            "markdownLabel": "MD"
+        }
+    },
+    "synthesis": {
+        "cardTitle": "Team Synthesis",
+        "generating": "Synthesizing...",
+        "ready": "Report ready",
+        "error": "Synthesis error",
+        "loading": "Loading...",
+        "panelTitle": "Unified Executive Report",
+        "panelSubtitle": "Synthesis of {{count}} completed analyses",
+        "teamVerdict": "Team Verdict",
+        "confidence": "confidence",
+        "executiveSummary": "Executive Summary",
+        "consensus": "Team Consensus",
+        "tensions": "Tension Points",
+        "topRisks": "Top 3 Unified Risks",
+        "recommendation": "Recommendation",
+        "generatingFull": "Synthesizing all team analyses...",
+        "errorMessage": "Error generating synthesis. Please try again.",
+        "stateNeedsMoreRoles": "Run 2+ roles to unlock",
+        "stateReady": "Ready to synthesize",
+        "stateStale": "Outdated — new roles added",
+        "lockedTitle": "Synthesis Locked",
+        "lockedDescription": "Complete at least 2 role analyses to generate the unified executive report.",
+        "rolesMinimum": "roles completed",
+        "readyTitle": "Ready to Synthesize",
+        "readyDescription": "{{count}} role analyses completed. Generate the unified executive report.",
+        "runButton": "Run Synthesis",
+        "staleMessage": "{{count}} new role(s) completed since last synthesis. Update to include them.",
+        "updateButton": "Update",
+        "retryButton": "Retry",
+        "projectHealth": "Project Health",
+        "rolesAnalyzedLabel": "Roles Analyzed — Coherence Status",
+        "generatedOn": "Generated"
+    },
+    "pipeline": {
+        "originalConcept": "Original Concept",
+        "exportReport": "Export Report",
+        "exportExcel": "Export to Excel",
+        "exportJson": "Export JSON",
+        "autoFlow": "Auto Flow",
+        "notFound": "Project not found",
+        "selectRole": "Select a role to view details"
+    }
+}

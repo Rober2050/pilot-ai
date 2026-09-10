@@ -1,0 +1,15 @@
+{
+    "title": "Settings",
+    "profile": { "title": "Profile", "editProfile": "Edit Profile", "changePassword": "Change Password", "changePasswordDesc": "Update your password" },
+    "appearance": { "title": "Appearance", "light": "Light", "dark": "Dark", "system": "System" },
+    "language": {
+        "title": "Language",
+        "interfaceLanguage": "Interface Language",
+        "selectLanguage": "Select your preferred language"
+    },
+    "notifications": {
+        "title": "Notifications",
+        "emailNotifications": "Email Notifications",
+        "receiveUpdates": "Receive updates about your projects"
+    }
+}

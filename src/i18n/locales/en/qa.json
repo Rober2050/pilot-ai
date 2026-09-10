@@ -1,0 +1,61 @@
+{
+    "dashboardTitle": "QA Engineer",
+    "dashboardSubtitle": "Quality Assurance & Test Strategy",
+    "summaryTitle": "QA Strategy Overview",
+    "kpi": {
+        "readiness": "Release Readiness",
+        "readinessHint": "Overall readiness score for dev/prod hand-off, calculated from test coverage and risk factors.",
+        "bugs": "Critical Risks",
+        "bugsHint": "Number of unmitigated critical or high-impact risks identified in this analysis.",
+        "coverage": "Logic Coverage",
+        "coverageHint": "Percentage of business logic flows covered by generated test cases.",
+        "automation": "Auto-Testable",
+        "automationHint": "Percentage of test cases flagged as automatable with Playwright or Cypress."
+    },
+    "tabs": {
+        "overview": "Critical Scenarios",
+        "testSuites": "Test Suites (BDD)",
+        "risks": "Risk Report",
+        "pyramid": "Testing Pyramid",
+        "cicd": "CI/CD & Tools"
+    },
+    "scenarios": {
+        "title": "Critical Business Scenarios",
+        "tooltip": "These are the Must-Have flows for THIS product. If they fail, the product fails. Generated from the business idea — not from PILOTAI.",
+        "noData": "No critical scenarios defined yet. Re-run the analysis.",
+        "coverage": "Coverage"
+    },
+    "suites": {
+        "bannerTitle": "BDD Test Cases — Given / When / Then",
+        "bannerDesc": "Each test case follows the Gherkin BDD format. Paste directly into Cypress, Playwright, or any test management tool.",
+        "cases": "Cases",
+        "automatable": "Auto",
+        "noData": "No test suites generated yet. Re-run the analysis."
+    },
+    "risks": {
+        "matrixTitle": "Risk Impact Matrix",
+        "mitigation": "Mitigation",
+        "impact": "Impact",
+        "probability": "Probability",
+        "noData": "No risks identified."
+    },
+    "pyramid": {
+        "title": "Testing Pyramid",
+        "unit": "Unit Tests",
+        "unitDesc": "Fast, isolated, no dependencies",
+        "integration": "Integration Tests",
+        "intDesc": "Contracts between services",
+        "e2e": "E2E Tests",
+        "e2eDesc": "Critical user journeys only"
+    },
+    "criticalPaths": {
+        "title": "Critical User Journeys",
+        "tooltip": "Top user flows that MUST pass before any release. Ordered by business impact.",
+        "mustPass": "MUST PASS",
+        "noData": "No critical journeys defined."
+    },
+    "cicd": {
+        "stackTitle": "Recommended Quality Stack",
+        "noData": "No CI/CD stack recommendation generated yet."
+    }
+}

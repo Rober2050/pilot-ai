@@ -1,0 +1,25 @@
+# Supabase CLI project config. `project_id` is just a local label — the real
+# project is chosen with `supabase link --project-ref <ref>`.
+project_id = "pilot-ai"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public"]
+
+[db]
+port = 54322
+major_version = 15
+
+[studio]
+enabled = true
+port = 54323
+
+[auth]
+enabled = true
+
+[functions.anthropic-proxy]
+enabled = true
+# The function validates the user's JWT itself (see index.ts), so keep the
+# platform-level check on as well: defense in depth.
+verify_jwt = true

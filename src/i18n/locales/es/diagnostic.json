@@ -1,0 +1,12 @@
+{
+    "title": "Centro de Diagnóstico",
+    "subtitle": "Monitorea la salud del sistema y ejecuta pruebas automáticas",
+    "consoleOutput": "Salida de Consola",
+    "ready": "Listo para ejecutar diagnósticos...",
+    "starting": "Iniciando diagnósticos del sistema...",
+    "checkingFirebase": "Verificando conexión a Firebase... OK",
+    "checkingAuth": "Verificando Servicio de Autenticación... OK",
+    "checkingGemini": "Verificando configuración de API Gemini... OK",
+    "verifyingRoles": "Verificando Definiciones de Roles... 5 Roles Cargados",
+    "completed": "Diagnósticos completados exitosamente."
+}

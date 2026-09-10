@@ -1,0 +1,16 @@
+{
+    "pdfProcessingFailed": "Failed to process PDF.",
+    "fileSizeExceeded": "File size exceeds 5MB limit.",
+    "fileSizeDetails": "Please use a smaller PDF file (maximum 5MB).",
+    "audioSizeDetails": "Please use a smaller file (maximum 50MB for Audio/Images).",
+    "invalidFileType": "Only PDF files are supported.",
+    "invalidTypeDetails": "Please select a valid PDF document.",
+    "corruptedFile": "Unable to read PDF. File may be corrupted.",
+    "corruptedDetails": "Try opening the file in a PDF reader to verify it works.",
+    "extractionFailed": "Could not extract text from PDF.",
+    "extractionDetails": "Technical error",
+    "summaryFailed": "Could not generate summary.",
+    "summaryDetails": "The PDF was read but AI summary failed. Try again.",
+    "technicalDetails": "Technical details",
+    "checkConsole": "Check browser console (F12) for more details."
+}

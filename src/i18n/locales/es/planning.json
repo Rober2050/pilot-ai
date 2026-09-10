@@ -1,0 +1,397 @@
+{
+    "gantt": {
+        "visualizationMode": "Modo Visualización:",
+        "showCriticalPath": "Ver Ruta Crítica",
+        "hideCriticalPath": "Ocultar Ruta Crítica",
+        "phasesHeader": "Fases e Iniciativas",
+        "weekPrefix": "Sem",
+        "technicalTasks": "tareas técnicas",
+        "blockedBy": "Bloqueado por:",
+        "backend": "Backend",
+        "frontend": "Frontend",
+        "critical": "Crítico",
+        "criticalPath": {
+            "title": "Ruta Crítica — Critical Path Method (CPM)",
+            "description": "Secuencia de tareas que determina la duración mínima del proyecto. Cualquier retraso en estas tareas impacta directamente en la fecha de entrega final. Las tareas críticas se resaltan en rojo.",
+            "reference": "Método CPM — PMI PMBOK 7ª Ed., Sección 6.5"
+        }
+    },
+    "financial": {
+        "editResources": "Editar Recursos",
+        "editingMode": "Modo edición:",
+        "editingDesc": "Modifica roles, tarifas o cantidades. Los totales se recalculan automáticamente al guardar.",
+        "duration": "Duración:",
+        "weeks": "semanas",
+        "months": "meses",
+        "capacity": "Capacidad:",
+        "hoursPerMonth": "h/mes",
+        "perFTE": "por FTE",
+        "role": "Rol / Perfil",
+        "seniority": "Seniority",
+        "fte": "FTE",
+        "fteTooltip": "Full-Time Equivalent — 1.0 = una persona a tiempo completo (160 h/mes). 0.5 = medio tiempo.",
+        "rate": "Tarifa ($/h)",
+        "monthly": "Mensual Est.",
+        "total": "Total Proyecto",
+        "addResource": "Agregar Recurso",
+        "totalMonthly": "Total Mensual Equipo",
+        "baseCost": "Costo Base",
+        "contingency": "Reserva de Contingencia (10%)",
+        "contingencyNote": "Riesgos conocidos identificados (PMBOK)",
+        "management": "Reserva de Gestión (5%)",
+        "managementNote": "Incertidumbre desconocida — discreción PMO",
+        "recommendedBudget": "Presupuesto Total Recomendado",
+        "budgetFormula": "Base + Contingencia (10%) + Gestión (5%) — Estándar PMI/PMBOK",
+        "usdTotal": "USD total del proyecto",
+        "seniorityOptions": {
+            "junior": "Junior",
+            "midLevel": "Mid-Level",
+            "senior": "Senior",
+            "lead": "Lead"
+        }
+    },
+    "pmo": {
+        "charter": {
+            "title": "Acta de Constitución del Proyecto",
+            "reference": "PMI PMBOK 7ª Ed. § 4.1",
+            "draft": "BORRADOR",
+            "viewCharter": "Ver Charter",
+            "collapse": "Contraer",
+            "documentTitle": "Project Charter — Documento Oficial PMO",
+            "version": "Versión 1.0",
+            "status": "Estado: BORRADOR",
+            "purpose": "Propósito / Justificación de Negocio",
+            "aiGenerated": "generado por IA ✓",
+            "noSummary": "Sin resumen disponible.",
+            "smartObjectives": "Objetivos del Proyecto (SMART)",
+            "wbsScope": "Alcance de Alto Nivel — WBS",
+            "budget": "Presupuesto Autorizado Estimado",
+            "baseCost": "Costo Base",
+            "reserves": "Reservas (15%)",
+            "authorizedTotal": "Total Autorizado",
+            "stakeholders": "Stakeholders Clave",
+            "risks": "Riesgos Iniciales Identificados (Top",
+            "noRisks": "No se identificaron riesgos en el plan inicial.",
+            "assumptions": "Supuestos y Restricciones",
+            "warning": "Aviso:",
+            "warningText": "Este Acta de Constitución fue generada automáticamente por PilotAI como punto de partida.",
+            "signatureRequired": "Los campos requieren validación y firma del sponsor antes de la ejecución.",
+            "pmibokRef": "Conforme a PMI PMBOK 7ª Ed., Sección 4.1 — Develop Project Charter.",
+            "sponsorSignature": "Firma del Sponsor",
+            "projectManager": "Project Manager",
+            "weeks": "semanas",
+            "months": "meses",
+            "tasks": "tareas",
+            "completeIn": "Completar el desarrollo en",
+            "accordingToWbs": "según el WBS aprobado",
+            "executeWithinBudget": "Ejecutar dentro del presupuesto autorizado de",
+            "budgetNote": "USD (base + reservas PMBOK)",
+            "deliver": "Entregar",
+            "in": "en"
+        },
+        "rag": {
+            "title": "Project Health Dashboard (RAG)",
+            "schedule": "Cronograma",
+            "scheduleHint": "Basado en semanas totales del plan",
+            "budget": "Presupuesto",
+            "budgetHint": "Basado en costo base estimado",
+            "scope": "Alcance",
+            "scopeHint": "Basado en cantidad de fases",
+            "risks": "Riesgos",
+            "riskHint": "Basado en score de riesgos críticos",
+            "onTrack": "En Curso",
+            "attention": "Atención",
+            "atRisk": "En Riesgo",
+            "explanation": "RAG calculado automáticamente desde los datos del plan. Verde = dentro de parámetros normales. Amarillo = requiere atención. Rojo = acción inmediata requerida."
+        },
+        "raci": {
+            "title": "Matriz RACI",
+            "showAll": "Ver todas",
+            "activity": "Actividad / Entregable",
+            "responsible": "Responsable",
+            "accountable": "Aprueba",
+            "consulted": "Consulta",
+            "informed": "Informado",
+            "explanation": "RACI generado a partir de los roles del proyecto. R=Responsible, A=Accountable, C=Consulted, I=Informed (PMI/PMBOK 7ª Ed.)"
+        },
+        "communication": {
+            "title": "Plan de Comunicación",
+            "event": "Reunión / Evento",
+            "frequency": "Frecuencia",
+            "participants": "Participantes",
+            "objective": "Objetivo"
+        },
+        "tracker": {
+            "title": "Tracker de Documentación PMO",
+            "ready": "listos",
+            "partial": "parciales",
+            "pending": "pendientes",
+            "completeness": "Completitud PMO"
+        }
+    },
+    "risk": {
+        "matrixView": "Matriz",
+        "registerView": "Registro",
+        "critical": "Crítico",
+        "high": "Alto",
+        "medium": "Medio",
+        "low": "Bajo",
+        "totalRisks": "riesgos totales",
+        "noRisks": "Sin riesgos críticos identificados.",
+        "impactAxis": "IMPACTO →",
+        "probabilityAxis": "PROBABILIDAD →",
+        "topCritical": "Top Riesgos Críticos",
+        "scoreFormula": "Score = Probabilidad × Impacto",
+        "scoreRange": "Score = Probabilidad (1–3) × Impacto (1–3)",
+        "registerDesc": "Registro completo de riesgos por tarea — ordenado por Score (P × I)",
+        "sortBy": "Ordenar por:",
+        "probability": "Prob.",
+        "impact": "Impacto",
+        "score": "Score",
+        "severity": "Severidad",
+        "phase": "Fase",
+        "riskTask": "Riesgo / Tarea",
+        "description": "Descripción / Mitigación",
+        "methodology": "Metodología: PMI Risk Standard — Score = Probabilidad (1–3) × Impacto (1–3)",
+        "probLevels": { "low": "Baja (1)", "medium": "Media (2)", "high": "Alta (3)" },
+        "impactLevels": { "low": "Bajo (1)", "medium": "Medio (2)", "high": "Alto (3)" },
+        "highRiskQuadrant": "Alto riesgo",
+        "criticalQuadrant": "Crítico",
+        "lowRiskQuadrant": "Bajo riesgo",
+        "monitoringQuadrant": "Monitoreo"
+    },
+    "methodology": {
+        "engineTitle": "Motor de Estimación PilotAI",
+        "engineDesc": "Cómo se calcularon los tiempos, costos y riesgos de este proyecto",
+        "plannedWeeks": "Semanas planificadas",
+        "fteCapacity": "FTEs × 30h/sem",
+        "breakdownTasks": "Tareas desglosadas",
+        "critical": "críticas",
+        "estimatedDuration": "Duración estimada",
+        "wbs": {
+            "title": "1. Desglose Paramétrico (WBS)",
+            "desc": "Cada funcionalidad se desglosa en tareas técnicas atómicas. La IA asigna horas base según benchmarks históricos de proyectos similares (COCOMO II calibration data).",
+            "phases": "Fases del proyecto:",
+            "tasks": "tareas",
+            "totalTasks": "Total tasks"
+        },
+        "pert": {
+            "title": "2. Ajuste PERT (Incertidumbre)",
+            "desc": "PERT (Program Evaluation and Review Technique, PMI) aplica tres escenarios por tarea para mitigar la incertidumbre del software.",
+            "formula": "E = (Opt + 4 × Prob + Pes) / 6",
+            "example": "Ejemplo:",
+            "optimistic": "O (Optimista):",
+            "probable": "M (Probable):",
+            "pessimistic": "P (Pesimista):",
+            "result": "Resultado (E):"
+        },
+        "formulas": {
+            "title": "3. Fórmulas de Duración y Costo",
+            "duration": "A. Duración del Proyecto",
+            "totalEffort": "Esfuerzo total:",
+            "totalEffortDesc": "Suma de E(PERT) de todas las tareas",
+            "teamCapacity": "Capacidad equipo:",
+            "brooksScaling": "Escalado Brooks:",
+            "brooksDesc": "eficiencia = (FTE₀/FTE₁)^0.8 — penaliza sobre-staffing",
+            "financial": "B. Proyección Financiera",
+            "monthly": "Mensual:",
+            "monthlyFormula": "Tarifa × 160h × FTE",
+            "perMonth": "/mes",
+            "base": "Base:",
+            "reserves": "Reservas (PMBOK):",
+            "totalBudget": "presupuesto total"
+        },
+        "risks": {
+            "title": "4. Metodología de Gestión de Riesgos",
+            "scale": "1 a 9",
+            "critical": { "label": "Crítico", "action": "Acción inmediata. Escalar a sponsor." },
+            "high": { "label": "Alto", "action": "Plan de mitigación activo requerido." },
+            "medium": { "label": "Medio", "action": "Monitoreo periódico en reuniones de estado." },
+            "low": { "label": "Bajo", "action": "Registrado. Aceptado. Sin acción." }
+        },
+        "assumptions": {
+            "title": "5. Supuestos y Restricciones del Modelo",
+            "items": [
+                "Capacidad efectiva: 30h/semana por FTE (excluye reuniones, overhead)",
+                "Mes laboral estándar: 160h (160h = 4 semanas × 5 días × 8h)",
+                "Semanas promedio por mes: 4.33 (estándar ISO)",
+                "Reserva de contingencia: 10% del costo base (riesgos conocidos, PMBOK)",
+                "Reserva de gestión: 5% del costo base (riesgos desconocidos)",
+                "Exponente de eficiencia Brooks: 0.8 (diminishing returns al agregar personas)",
+                "Duración mínima garantizada: 50% del plan original sin importar headcount",
+                "Tarifas en USD/hora. Ajustar según mercado local.",
+                "Las estimaciones PERT asumen 30% overhead por integración y pruebas",
+                "El cronograma no incluye fases post-lanzamiento en el cálculo de duración principal"
+            ]
+        },
+        "selector": {
+            "question": "¿Cómo gestionarás este proyecto?",
+            "pmo": {
+                "label": "PMO / PMBOK",
+                "tag": "Predictivo",
+                "desc1": "Gantt · WBS · Ruta Crítica",
+                "desc2": "Charter · RAG · RACI",
+                "desc3": "Gobernanza y cumplimiento"
+            },
+            "agile": {
+                "label": "Agile / Scrum",
+                "tag": "Adaptativo",
+                "desc1": "Sprints · Backlog · Velocidad",
+                "desc2": "Sprint Board · Burndown",
+                "desc3": "Iterativo y entrega rápida"
+            },
+            "hybrid": {
+                "label": "Híbrido",
+                "tag": "Flexible",
+                "desc1": "Fases PMO + Sprints Agile",
+                "desc2": "Gobernanza + iteraciones",
+                "desc3": "Lo mejor de ambos mundos"
+            }
+        },
+        "mode": {
+            "pmo": "Modo PMO",
+            "agile": "Modo Agile",
+            "hybrid": "Modo Híbrido",
+            "badge": {
+                "pmo": "PMO / PMBOK",
+                "agile": "Agile / Scrum",
+                "hybrid": "Híbrido"
+            }
+        },
+        "modal": {
+            "title": "Nueva Idea de Proyecto",
+            "ideaLabel": "Describe tu idea de negocio",
+            "ideaPlaceholder": "Ej.: Un marketplace para alquilar equipos fotográficos de alta gama con seguro incluido...",
+            "ideaHint": "Sé lo más específico posible. La IA usará esto para generar todo el blueprint.",
+            "languageLabel": "Idioma de salida",
+            "methodologyLabel": "Enfoque de gestión del proyecto",
+            "cancel": "Cancelar",
+            "submit": "Iniciar Pipeline",
+            "submitting": "Creando..."
+        }
+    },
+    "sprints": {
+        "title": "Sprint Board",
+        "subtitle": "Auto-calculado desde las fases WBS · Sprints de 2 semanas",
+        "sprintLabel": "Sprint",
+        "weeks": "Semanas",
+        "goal": "Sprint Goal",
+        "capacity": "Capacidad",
+        "planned": "Planificado",
+        "utilization": "Utilización",
+        "status": "PLANIFICADO",
+        "critical": "crítico",
+        "days": "d",
+        "hours": "h",
+        "phase2Banner": "En la Fase 2, la IA generará datos Agile reales con épicas, historias de usuario y story points adaptados a tu proyecto.",
+        "noTasks": "Sin tareas asignadas a este sprint"
+    },
+    "backlog": {
+        "title": "Backlog del Producto",
+        "subtitle": "Todas las tareas ordenadas por fase y prioridad",
+        "colSprint": "Sprint",
+        "colTask": "Tarea",
+        "colPhase": "Fase",
+        "colDays": "Días",
+        "colPriority": "Prioridad",
+        "colStory": "Historia de Usuario",
+        "colEstimate": "Estimación",
+        "colCriteria": "Criterios de Aceptación",
+        "moreCriteria": "más",
+        "high": "Alta",
+        "medium": "Media",
+        "low": "Baja"
+    },
+    "scrumInfo": {
+        "title": "Framework Scrum",
+        "subtitle": "Guía de referencia para tu equipo",
+        "velocityTitle": "Velocidad Estimada del Equipo",
+        "velocityDesc": "Capacidad disponible por sprint (70% de eficiencia)",
+        "perSprint": "por sprint",
+        "ceremoniesTitle": "Ceremonias Scrum",
+        "ceremonies": {
+            "planning": { "name": "Sprint Planning", "duration": "2–4h", "desc": "Definir el sprint goal y seleccionar ítems del backlog" },
+            "daily": { "name": "Daily Standup", "duration": "15 min/día", "desc": "Sincronizar avance, bloqueos y plan del día" },
+            "review": { "name": "Sprint Review", "duration": "1–2h", "desc": "Demo del trabajo completado a los stakeholders" },
+            "retro": { "name": "Retrospectiva", "duration": "1h", "desc": "Mejorar los procesos del equipo cada sprint" }
+        },
+        "dodTitle": "Definition of Done",
+        "dod": [
+            "Código revisado y aprobado por al menos 1 par",
+            "Tests unitarios escritos y en verde",
+            "Feature desplegada en entorno de staging",
+            "Criterios de aceptación verificados por el Product Owner",
+            "Documentación actualizada"
+        ],
+        "dorTitle": "Definition of Ready",
+        "dor": [
+            "Historia de usuario con criterios de aceptación claros",
+            "Historia estimada por el equipo",
+            "Dependencias identificadas y resueltas",
+            "Diseño aprobado (si aplica)"
+        ],
+        "phase2Note": "En Fase 2, este documento será generado por IA específicamente para tu proyecto."
+    },
+    "dashboard": {
+        "title": "Plan de Proyecto",
+        "subtitle": "Algoritmo: COCOMO II + PERT Ponderado (Modo Ejecutivo)"
+    },
+    "agileMethodology": {
+        "engineTitle": "Motor de Estimación Ágil de PilotAI",
+        "engineDesc": "Cómo se calculan los sprints, velocidad y costos de este proyecto",
+        "teamSize": "Tamaño del equipo",
+        "totalSprints": "Total de sprints",
+        "sprintCapacity": "Capacidad / sprint",
+        "avgUtilization": "Utilización promedio",
+        "critical": "críticas",
+        "sprintSizing": {
+            "title": "1. Dimensionamiento de Sprints (desde WBS)",
+            "desc": "La IA distribuye las tareas del WBS en ventanas de 2 semanas. Cada tarea se asigna al sprint según su semana de inicio calculada desde la fase correspondiente.",
+            "phases": "Fases del proyecto",
+            "tasks": "tareas",
+            "totalTasks": "Total tasks",
+            "sprintWindow": "Ventana sprint",
+            "weeks": "semanas"
+        },
+        "velocity": {
+            "title": "2. Cálculo de Velocidad del Equipo",
+            "desc": "La velocidad representa la capacidad real del equipo por sprint. Se aplica un factor de eficiencia del 70% para descontar reuniones, revisiones y overhead operativo.",
+            "formula": "Velocidad = Equipo × Semanas × 40h × 0.70",
+            "team": "Equipo (FTE):",
+            "sprintWeeks": "Semanas por sprint:",
+            "hoursPerWeek": "Horas laborales/sem:",
+            "efficiency": "Factor eficiencia:",
+            "result": "Velocidad estimada:"
+        },
+        "cost": {
+            "title": "3. Proyección de Duración y Costo",
+            "duration": "A. Duración del Proyecto",
+            "totalSprints": "Total sprints:",
+            "months": "Conversión a meses:",
+            "weeks": "semanas",
+            "monthsUnit": "meses",
+            "financial": "B. Proyección Financiera",
+            "burnRate": "Burn rate mensual:",
+            "burnRateFormula": "Tarifa × 160h × FTE",
+            "base": "Costo base:",
+            "reserves": "Reservas (PMBOK):",
+            "totalBudget": "presupuesto total"
+        },
+        "assumptions": {
+            "title": "4. Supuestos del Modelo Ágil",
+            "items": [
+                "Sprints de 2 semanas (duración estándar Scrum Guide 2020)",
+                "Eficiencia efectiva del equipo: 70% (excluye ceremonias, bloqueos, overhead)",
+                "Capacidad individual: 40h/semana laborales por FTE",
+                "Velocidad real puede variar ±15% según madurez del equipo",
+                "Las tareas WBS se distribuyen proporcionalmente dentro de cada fase",
+                "Costo calculado sobre burn rate mensual (Tarifa × 160h × FTE)",
+                "Reservas aplicadas: 10% contingencia + 5% gestión (estándar PMI)",
+                "Sprint Goal = nombre de la fase dominante en esa ventana temporal",
+                "La utilización >90% indica sprint sobrecargado — recomendado rebalancear",
+                "En Fase 2, la IA generará épicas, historias de usuario y story points reales"
+            ]
+        },
+        "antiHallucination": "✅ Transparencia del motor: Todos los valores mostrados (sprints, duración, costo) son calculados determinísticamente por PilotAI usando las fórmulas descritas arriba — no son generados por inferencia libre del modelo de lenguaje. Cada número tiene una fórmula trazable."
+    }
+}

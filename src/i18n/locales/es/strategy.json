@@ -1,0 +1,70 @@
+{
+    "title": "Centro de Comando Estratégico",
+    "executiveSummary": "Resumen Ejecutivo",
+    "ideo": {
+        "title": "Triángulo de Innovación IDEO",
+        "desirability": "Deseabilidad (Humana)",
+        "feasibility": "Factibilidad (Técnica)",
+        "viability": "Viabilidad (Negocio)",
+        "sweetSpot": "Sweet Spot",
+        "frameworkTitle": "IDEO Validation Framework"
+    },
+    "score": {
+        "label": "Puntaje de Confianza",
+        "verdict": "Veredicto",
+        "reason": "Análisis IA",
+        "analysisComplete": "ANÁLISIS COMPLETO"
+    },
+    "tabs": {
+        "overview": "Veredicto & IDEO",
+        "market": "Inteligencia de Mercado",
+        "strategy": "Matriz FODA / TOWS",
+        "financials": "Economía Unitaria",
+        "sources": "Fuentes"
+    },
+    "market": {
+        "title": "Tamaño del Mercado (TAM/SAM/SOM)",
+        "cagr": "CAGR (Crecimiento Anual)",
+        "trends": "Tendencias del Mercado y Crecimiento",
+        "trendsTitle": "Tendencias del Mercado y Crecimiento"
+    },
+    "matrix": {
+        "title": "Matriz Estratégica",
+        "swot": "FODA (Factores)",
+        "tows": "TOWS (Estrategias)",
+        "internal": "INTERNO",
+        "external": "EXTERNO",
+        "strategies": "ESTRATEGIAS",
+        "strengths": "Fortalezas",
+        "weaknesses": "Debilidades",
+        "opportunities": "Oportunidades",
+        "threats": "Amenazas",
+        "swotStrengths": "INTERNO (Fortalezas)",
+        "swotWeaknesses": "INTERNO (Debilidades)",
+        "swotOpportunities": "EXTERNO (Oportunidades)",
+        "swotThreats": "EXTERNO (Amenazas)",
+        "towsSO": "ESTRATEGIAS (Fortalezas + Oportunidades)",
+        "towsWO": "ESTRATEGIAS (Debilidades + Oportunidades)",
+        "towsST": "ESTRATEGIAS (Fortalezas + Amenazas)",
+        "towsWT": "ESTRATEGIAS (Debilidades + Amenazas)"
+    },
+    "financials": {
+        "title": "Economía Unitaria (LTV:CAC)",
+        "ratio": "Ratio",
+        "breakeven": "Punto de Equilibrio",
+        "breakevenTitle": "Línea de Tiempo de Rentabilidad",
+        "months": "meses",
+        "toBreakeven": "Para Punto de Equilibrio",
+        "basedOn": "Basado en CAC ${cac} y LTV ${ltv}",
+        "healthyRatio": "✅ Ratio saludable (referencia industria: ≥3x)",
+        "belowThreshold": "⚠️ Por debajo del umbral saludable (referencia: ≥3x)"
+    },
+    "sources": {
+        "title": "Fuentes",
+        "sourceLabel": "Fuente",
+        "tier": "Nivel",
+        "verified": "Verificado",
+        "estimated": "Estimación IA",
+        "noData": "Sin datos de fuentes disponibles."
+    }
+}

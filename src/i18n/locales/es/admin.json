@@ -1,0 +1,15 @@
+{
+    "title": "Consola de Administración",
+    "subtitle": "Gestiona roles de IA y configuración del sistema",
+    "createRole": "Crear Nuevo Rol",
+    "roleManagement": "Gestión de Roles",
+    "userManagement": "Gestión de Usuarios",
+    "subscriptionPlans": "Planes de Suscripción",
+    "docSettings": "Configuración de Documentación",
+    "workflowRoles": "Roles de Flujo de Trabajo",
+    "editRole": "Editar Rol",
+    "displayName": "Nombre para Mostrar",
+    "systemPrompt": "Prompt del Sistema",
+    "model": "Modelo",
+    "temperature": "Temperatura"
+}

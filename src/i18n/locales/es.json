@@ -1,0 +1,553 @@
+{
+    "common": {
+        "loading": "Cargando...",
+        "error": "Error",
+        "success": "Éxito",
+        "save": "Guardar",
+        "cancel": "Cancelar",
+        "delete": "Eliminar",
+        "edit": "Editar",
+        "back": "Atrás",
+        "next": "Siguiente",
+        "submit": "Enviar",
+        "export": "Exportar",
+        "share": "Compartir",
+        "createAccount": "Crear Cuenta",
+        "fullName": "Nombre Completo",
+        "refineWithAI": "Refinar con IA",
+        "hideChat": "Ocultar Chat",
+        "exportReport": "Informe Word (.docx)",
+        "exportExcel": "Datos Excel (.xlsx)",
+        "exportJson": "JSON Crudo",
+        "creating": "Creando...",
+        "sending": "Enviando...",
+        "saveChanges": "Grabar"
+    },
+    "roles": {
+        "pending": "Pendiente",
+        "processing": "Procesando",
+        "completed": "Completado",
+        "error": "Error",
+        "strategy-analyst": "Analista de Estrategia",
+        "product-manager": "Gerente de Producto",
+        "project-manager": "Gerente de Proyecto",
+        "business-analyst": "Analista de Negocios",
+        "ux-designer": "Diseñador UX/UI",
+        "architect": "Arquitecto de Software",
+        "frontend-dev": "Desarrollador Frontend",
+        "backend-dev": "Desarrollador Backend",
+        "qa-engineer": "Ingeniero QA",
+        "devops": "Ingeniero DevOps"
+    },
+    "diagnostic": {
+        "title": "Centro de Diagnóstico",
+        "subtitle": "Monitorea la salud del sistema y ejecuta pruebas automáticas",
+        "consoleOutput": "Salida de Consola",
+        "ready": "Listo para ejecutar diagnósticos...",
+        "starting": "Iniciando diagnósticos del sistema...",
+        "checkingFirebase": "Verificando conexión a Firebase... OK",
+        "checkingAuth": "Verificando Servicio de Autenticación... OK",
+        "checkingGemini": "Verificando configuración de API Gemini... OK",
+        "verifyingRoles": "Verificando Definiciones de Roles... 5 Roles Cargados",
+        "completed": "Diagnósticos completados exitosamente."
+    },
+    "admin": {
+        "title": "Consola de Administración",
+        "subtitle": "Gestiona roles de IA y configuración del sistema",
+        "createRole": "Crear Nuevo Rol",
+        "roleManagement": "Gestión de Roles",
+        "userManagement": "Gestión de Usuarios",
+        "subscriptionPlans": "Planes de Suscripción",
+        "docSettings": "Configuración de Documentación",
+        "workflowRoles": "Roles de Flujo de Trabajo",
+        "editRole": "Editar Rol",
+        "displayName": "Nombre para Mostrar",
+        "systemPrompt": "Prompt del Sistema",
+        "model": "Modelo",
+        "temperature": "Temperatura"
+    },
+    "settings": {
+        "title": "Configuración",
+        "profile": {
+            "title": "Perfil",
+            "editProfile": "Editar Perfil",
+            "editName": "Editar nombre",
+            "nameLabel": "Nombre",
+            "changePassword": "Cambiar contraseña",
+            "changePasswordDesc": "Recibe un email para cambiar tu contraseña"
+        },
+        "appearance": {
+            "title": "Apariencia",
+            "light": "Claro",
+            "dark": "Oscuro",
+            "system": "Sistema"
+        },
+        "language": {
+            "title": "Idioma",
+            "interfaceLanguage": "Idioma de Interfaz",
+            "selectLanguage": "Selecciona tu idioma preferido"
+        },
+        "notifications": {
+            "title": "Notificaciones",
+            "emailNotifications": "Notificaciones por Email",
+            "receiveUpdates": "Recibir actualizaciones sobre tus proyectos"
+        }
+    },
+    "dashboard": {
+        "autoStartPending": "Preparando tu análisis automático...",
+        "autoStartLabel": "Analizando tu idea automáticamente",
+        "loading": "Preparando tu espacio de trabajo...",
+        "loadingSubtitle": "Configurando tus herramientas de IA",
+        "newProject": "Nuevo Proyecto",
+        "askSpecialist": "Consultar Especialista",
+        "timelineTitle": "Línea de Tiempo",
+        "timelineSubtitle": "Seguimiento en tiempo real",
+        "systemOnline": "Sistema En Línea",
+        "ideaPlaceholder": "Describe tu idea de proyecto...",
+        "analyze": "Analizar",
+        "roleDisabled": "Rol Deshabilitado",
+        "runAnalysis": "Ejecutar Análisis",
+        "processFlow": "Flujo de Proceso",
+        "activeStep": "PASO ACTIVO",
+        "enableRoles": "Activa roles para ver el flujo de análisis",
+        "recordProject": "Grabar proyecto",
+        "analyzeWith": "Analizará con:",
+        "remainingAnalyses": "Te quedan {{count}} análisis este mes. ¡Aprovéchalos!",
+        "noRemainingAnalyses": "Has alcanzado el límite de análisis de tu plan este mes.",
+        "addAgents": "+ Agregar",
+        "rewardGate": {
+            "badge": "BENEFICIO BETA ACTIVADO",
+            "step1Title": "¿Te está sirviendo el análisis?",
+            "step1Subtitle": "Dinos qué te pareció para desbloquear un 3er experto gratis.",
+            "magia": "¡Es magia!",
+            "util": "Es útil",
+            "basico": "Muy básico",
+            "step2Question": "Para tu próxima entrega, ¿qué prefieres?",
+            "technical": "MÁS PROFUNDIDAD TÉCNICA",
+            "technicalSub": "Arquitectura y tecnología.",
+            "business": "MÁS DETALLE DE NEGOCIO",
+            "businessSub": "Fechas, costos y pasos.",
+            "step3Title": "Elige tu 3er experto",
+            "step3Subtitle": "Un rol adicional desbloqueado para este análisis",
+            "unlock": "Desbloquear",
+            "squadTitle": "Elige 2 expertos para empezar",
+            "squadBadge": "{{count}}/2 seleccionados",
+            "squadMax": "Máximo 2 roles en el análisis de prueba"
+        }
+    },
+    "input": {
+        "uploadPDF": "Subir PDF",
+        "uploadAudio": "Subir Audio",
+        "uploadImage": "Subir Imagen",
+        "recordVoice": "Grabar Voz",
+        "processingPDF": "Procesando PDF..."
+    },
+    "errors": {
+        "pdfProcessingFailed": "Error al procesar PDF.",
+        "fileSizeExceeded": "El archivo excede el límite permitido.",
+        "fileSizeDetails": "Por favor usa un archivo más pequeño.",
+        "audioSizeDetails": "Por favor usa un archivo más pequeño (Máximo 50MB para Audio/Imágenes).",
+        "invalidFileType": "Solo se admiten archivos PDF.",
+        "invalidTypeDetails": "Por favor selecciona un documento PDF válido.",
+        "corruptedFile": "No se puede leer el PDF. El archivo puede estar corrupto.",
+        "corruptedDetails": "Intenta abrir el archivo en un lector PDF para verificar que funciona.",
+        "extractionFailed": "No se pudo extraer texto del PDF.",
+        "extractionDetails": "Error técnico",
+        "summaryFailed": "No se pudo generar el resumen.",
+        "summaryDetails": "El PDF se leyó pero falló el resumen de IA. Intenta de nuevo.",
+        "technicalDetails": "Detalles técnicos",
+        "checkConsole": "Revisa la consola del navegador (F12) para más detalles."
+    },
+    "preview": {
+        "title": "PDF Procesado Exitosamente",
+        "subtitle": "Revisa y confirma el contenido extraído",
+        "pages": "Páginas",
+        "words": "Palabras",
+        "size": "Tamaño",
+        "fileName": "Nombre del Archivo",
+        "nativeExtraction": "Extracción Nativa",
+        "ocrExtraction": "Extracción OCR",
+        "scannedPDF": "PDF Escaneado",
+        "smartSummary": "Resumen Inteligente",
+        "viewMode": "Ver",
+        "editMode": "Editar",
+        "editSummaryPlaceholder": "Edita el resumen...",
+        "summaryHint": "Este resumen será usado para el análisis. Puedes editarlo para enfocarte en aspectos específicos.",
+        "fullContent": "Ver Contenido Completo Extraído",
+        "analyzeNow": "Analizar Ahora"
+    },
+    "audioPreview": {
+        "title": "Audio Transcrito Exitosamente",
+        "subtitle": "Revisa y confirma la transcripción",
+        "duration": "Duración",
+        "format": "Formato",
+        "transcribed": "Transcrito",
+        "transcription": "Transcripción",
+        "editTranscription": "Editar transcripción...",
+        "transcriptionHint": "Esta transcripción será usada para el análisis. Puedes editarla para corregir errores.",
+        "analyzeNow": "Analizar Ahora"
+    },
+    "contentBlock": {
+        "manualText": "Texto Manual",
+        "audioTranscription": "Transcripción de Audio",
+        "pdfSummary": "Resumen de PDF",
+        "imageDescription": "Descripción de Imagen",
+        "content": "Contenido",
+        "pages": "páginas",
+        "addedAt": "Agregado a las",
+        "expand": "Expandir",
+        "collapse": "Contraer",
+        "placeholder": "Describe tu proyecto o idea...",
+        "characters": "caracteres",
+        "additionalSources": "Fuentes Adicionales",
+        "multiSourceInfo": "Todas las fuentes de contenido serán combinadas y analizadas juntas. Puedes editar o eliminar bloques individuales usando los botones de arriba."
+    },
+    "businessAnalyst": {
+        "userStory": "Historia de Usuario",
+        "acceptanceCriteria": "Criterios de Aceptación",
+        "source": "Fuente",
+        "category": "Categoría",
+        "confidenceScore": "Puntaje de Confianza",
+        "strongViability": "Viabilidad Fuerte",
+        "moderateViability": "Viabilidad Moderada",
+        "highRisk": "Alto Riesgo",
+        "financialViability": "Viabilidad Financiera",
+        "marketSize": "Análisis de Tamaño de Mercado",
+        "swot": "Análisis FODA",
+        "tows": "Matriz TOWS",
+        "strengths": "Fortalezas",
+        "weaknesses": "Debilidades",
+        "opportunities": "Oportunidades",
+        "threats": "Amenazas",
+        "interactivePrototype": "Prototipo Interactivo Disponible",
+        "viewPrototype": "Ver Prototipo Interactivo"
+    },
+    "auth": {
+        "welcomeBack": "¡Bienvenido de nuevo!",
+        "startJourney": "Comienza tu viaje",
+        "subtitle": "Transforma tus ideas en realidad con IA",
+        "fullName": "Nombre Completo",
+        "email": "Correo Electrónico",
+        "password": "Contraseña",
+        "signIn": "Iniciar Sesión",
+        "createAccount": "Crear Cuenta",
+        "noAccount": "¿No tienes cuenta? Regístrate",
+        "hasAccount": "¿Ya tienes cuenta? Inicia sesión",
+        "failedToSignIn": "Error al iniciar sesión. Verifica tus credenciales."
+    },
+    "marketing": {
+        "dashboardTitle": "CMO Command Center",
+        "processMap": "Flujo de Adquisición de Clientes",
+        "funnelDiagram": "Embudo de Marketing y Ventas",
+        "launchProtocol": {
+            "title": "Roadmap de Validación y Escalamiento",
+            "description": "Protocolo secuencial para minimizar riesgo y maximizar retorno.",
+            "phase1": {
+                "title": "Infraestructura",
+                "subtitle": "La Plomería",
+                "check1": "Pixel Configurado",
+                "check2": "Dominio Verificado",
+                "check3": "Catálogo Cargado"
+            },
+            "phase2": {
+                "title": "Validación",
+                "subtitle": "El Laboratorio",
+                "check1": "Test A/B Creativos",
+                "check2": "Test de Ángulos",
+                "check3": "CPA Objetivo Validado"
+            },
+            "phase3": {
+                "title": "Escalamiento",
+                "subtitle": "La Maquinaria",
+                "check1": "Incremento 20% / 48hs",
+                "check2": "Nuevos Canales",
+                "check3": "Automatización"
+            }
+        },
+        "project": "Proyecto",
+        "launchCampaign": "Lanzar Campaña",
+        "connectingAPI": "Conectando API...",
+        "campaignActive": "¡Campaña Activa!",
+        "tabs": {
+            "simulation": "Simulación & ROAS",
+            "strategy": "Estrategia & Persona",
+            "execution": "Plan de Acción",
+            "channels": "Canales (ICE)"
+        },
+        "simulation": {
+            "variables": "Variables de Control",
+            "monthlyBudget": "Inversión Mensual",
+            "avgTicket": "Ticket Promedio",
+            "ticketHint": "Precio de venta estimado del producto.",
+            "cpcTooltip": "(CPC) Costo promedio estimado que pagarás a Meta/Google por cada clic.",
+            "convRate": "Tasa Conv."
+        },
+        "tips": {
+            "title": "¿Cómo mover la aguja?",
+            "subtitle": "Entiende qué variable afecta a qué resultado:",
+            "roasHint": "Para subir la **Rentabilidad (ROAS)**: Aumenta el **Ticket**. Vender más caro mejora tu margen directo.",
+            "volumeHint": "Para subir el **Volumen (Ventas)**: Aumenta la **Inversión**. Más dinero = Más alcance y clientes totales."
+        },
+        "roasTitle": "Simulador de Retorno (ROAS)",
+        "projectedRoas": "ROAS Proyectado",
+        "grossSales": "Ventas Brutas Est.",
+        "grossProfit": "Beneficio Bruto",
+        "loss": "Pérdida",
+        "breakeven": "Breakeven",
+        "profitable": "Rentable",
+        "roasAdvice": {
+            "low": "Aumenta el ticket promedio para mejorar el margen.",
+            "high": "Excelente configuración para escalar."
+        },
+        "growthProjection": "Proyección de Crecimiento (6 Meses)",
+        "scenario": "Escenario Compuesto",
+        "accumulatedRevenue": "Ingresos Acumulados",
+        "monthlySales": "Ventas Mensuales",
+        "buyerPersona": "Buyer Persona",
+        "demographics": "Demografía",
+        "age": "Edad",
+        "gender": "Género",
+        "location": "Zona",
+        "interests": "Intereses (Ads)",
+        "behavior": "Comportamiento",
+        "empathyMap": "Mapa de Empatía",
+        "tacticalFunnel": "Funnel Táctico",
+        "funnel": {
+            "reach": "Alcance",
+            "visits": "Visitas",
+            "sales": "Ventas"
+        },
+        "implementationPlan": "Plan de Implementación (30 Días)",
+        "iceMatrix": "Priorización de Canales (Matriz ICE)",
+        "col": {
+            "channel": "Canal",
+            "impact": "Impacto (1-10)",
+            "cost": "Costo Inv. (1-10)",
+            "effort": "Esfuerzo (1-10)",
+            "score": "ICE Score"
+        },
+        "recommended": "RECOMENDADO",
+        "dashboardError": "Error al cargar datos de marketing. Verifica la configuración del rol.",
+        "months": {
+            "m1": "Mes 1",
+            "m2": "Mes 2",
+            "m3": "Mes 3",
+            "m4": "Mes 4",
+            "m5": "Mes 5",
+            "m6": "Mes 6"
+        }
+    },
+    "qa": {
+        "kpi": {
+            "readiness": "Madurez del Proyecto",
+            "bugs": "Riesgos Críticos",
+            "coverage": "Cobertura Lógica",
+            "automation": "Testabilidad"
+        },
+        "maturity": {
+            "title": "Protocolo de Madurez del Proyecto",
+            "tooltip": "¡Este protocolo mide si el Blueprint está listo para desarrollo!",
+            "phase1": {
+                "title": "Solidez de Concepto"
+            },
+            "phase2": {
+                "title": "Validación de Flujos"
+            },
+            "phase3": {
+                "title": "Certificación de Build"
+            }
+        },
+        "tabs": {
+            "overview": "Panorama de Madurez",
+            "testSuites": "Suites de Prueba",
+            "risks": "Reporte de Riesgos",
+            "cicd": "CI/CD y Herramientas"
+        },
+        "scenarios": {
+            "title": "Escenarios Críticos de Negocio",
+            "tooltip": "Estos son los flujos 'imprescindibles'. ¡Si fallan, el producto falla!"
+        },
+        "suites": {
+            "description": "Copia estos pasos directamente a tu herramienta de pruebas manuales o conviértelos a scripts de Cypress/Playwright."
+        },
+        "risks": {
+            "matrixTitle": "Matriz de Impacto de Riesgos"
+        },
+        "techStack": {
+            "title": "Stack de Calidad Recomendado"
+        }
+    },
+    "strategy": {
+        "title": "Centro de Comando Estratégico",
+        "ideo": {
+            "title": "Triángulo de Innovación IDEO",
+            "desirability": "Deseabilidad (Humana)",
+            "feasibility": "Factibilidad (Técnica)",
+            "viability": "Viabilidad (Negocio)",
+            "sweetSpot": "Sweet Spot"
+        },
+        "score": {
+            "label": "Puntaje de Confianza",
+            "verdict": "Veredicto",
+            "reason": "Análisis IA"
+        },
+        "tabs": {
+            "overview": "Veredicto & IDEO",
+            "market": "Inteligencia de Mercado",
+            "strategy": "Matriz FODA / TOWS",
+            "financials": "Economía Unitaria"
+        },
+        "market": {
+            "title": "Tamaño del Mercado (TAM/SAM/SOM)",
+            "cagr": "CAGR (Crecimiento Anual)",
+            "trends": "Tendencias Clave"
+        },
+        "matrix": {
+            "title": "Matriz Estratégica",
+            "swot": "FODA (Factores)",
+            "tows": "TOWS (Estrategias)",
+            "internal": "INTERNO",
+            "external": "EXTERNO",
+            "strategies": "ESTRATEGIAS"
+        },
+        "financials": {
+            "title": "Proyecciones Financieras",
+            "ratio": "Ratio LTV:CAC",
+            "breakeven": "Punto de Equilibrio"
+        }
+    },
+    "landing": {
+        "nav": {
+            "features": "Roles AI",
+            "pricing": "Precios",
+            "login": "Ingresar"
+        },
+        "hero": {
+            "badge": "EL FUTURO DEL TRABAJO ESTÁ AQUÍ",
+            "titleStart": "Tu Idea de Negocio,",
+            "titleEnd": "Construida por IA.",
+            "subtitle": "Imagina tener a los mejores Gerentes del mundo trabajando para ti. Un equipo autónomo de expertos (PM, Estrategia, Marketing) dedicados a tu éxito 24/7.",
+            "ctaPrimary": "Validar mi Idea",
+            "ctaSecondary": "Ver Demo",
+            "carousel": {
+                "strategy": {
+                    "label": "Validación de Estrategia",
+                    "status": "Escaneando Viabilidad..."
+                },
+                "marketing": {
+                    "label": "Motor de Crecimiento",
+                    "status": "Generando Audiencias..."
+                },
+                "qa": {
+                    "label": "Escudo de Calidad",
+                    "status": "Ejecutando Pruebas..."
+                }
+            }
+        },
+        "tour": {
+            "title": "TOUR DE LA PLATAFORMA",
+            "subtitle": "Walkthrough Interactivo",
+            "pause": "Pausa",
+            "resume": "Reanudar",
+            "steps": {
+                "inception": {
+                    "label": "Inception",
+                    "desc": "De idea a proyecto en segundos",
+                    "inputPlaceholder": "Describe tu idea revolucionaria...",
+                    "exampleIdea": "Red de Logística Urbana con Drones Autónomos impulsada por Energía Solar y IA."
+                },
+                "strategy": {
+                    "label": "Análisis Estratégico",
+                    "desc": "IA analiza viabilidad de mercado"
+                },
+                "roles": {
+                    "label": "La Fábrica de Roles",
+                    "desc": "11 especialistas trabajando en paralelo",
+                    "title": "Especialistas en Acción",
+                    "subtitle": "11 roles de IA trabajando simultáneamente en tu proyecto",
+                    "cards": {
+                        "prd": "Documento PRD",
+                        "flow": "Diagramas de Flujo",
+                        "cases": "Casos de Prueba"
+                    }
+                },
+                "consult": {
+                    "label": "Consulta IA Especializada",
+                    "desc": "Refina con chat inteligente por rol",
+                    "message": "¿Podemos optimizar la ruta de entrega para minimizar el ruido en zonas residenciales?"
+                },
+                "prototype": {
+                    "label": "Generación de Prototipo",
+                    "desc": "De wireframes a UI interactiva"
+                }
+            }
+        },
+        "pricing": {
+            "title": "Planes para Visionarios",
+            "subtitle": "",
+            "starter": {
+                "name": "Starter",
+                "desc": "Para validación temprana",
+                "price": "$29",
+                "features": [
+                    "1 Rol (Strategy Analyst)",
+                    "5 Validaciones/mes",
+                    "Exportación PDF"
+                ]
+            },
+            "pro": {
+                "name": "Pro",
+                "desc": "Para constructores serios",
+                "price": "$99",
+                "features": [
+                    "3 Roles (PM, Strategy, UX)",
+                    "Ilimitado",
+                    "Exportación a Código"
+                ]
+            },
+            "enterprise": {
+                "name": "Enterprise",
+                "desc": "Para corporaciones",
+                "price": "Custom",
+                "features": [
+                    "Todos los Roles",
+                    "API Access",
+                    "Soporte Dedicado 24/7"
+                ]
+            }
+        },
+        "features": {
+            "title": "Un Equipo de Élite a tu Servicio",
+            "subtitle": "Orquesta tu empresa con agentes autónomos especializados.",
+            "roles": {
+                "strategy": {
+                    "title": "Strategy Analyst",
+                    "desc": "Valida ideas con el framework de IDEO. Matrices FODA y Scores de Confianza al instante."
+                },
+                "ia": {
+                    "title": "Information Architect",
+                    "desc": "Convierte el caos en estructura. Mapas de sitio y flujos de usuario automatizados."
+                },
+                "pm": {
+                    "title": "Product Manager",
+                    "desc": "Define MVPs, Roadmaps e Historias de Usuario con precisión de IA."
+                },
+                "arch": {
+                    "title": "Software Architect",
+                    "desc": "Recomendaciones de stack robusto y modelos C4 escalables."
+                },
+                "marketing": {
+                    "title": "Marketing Manager",
+                    "desc": "Estrategias GTM, Buyer Personas y cálculo de ROAS antes de gastar un dólar."
+                },
+                "qa": {
+                    "title": "QA Engineer",
+                    "desc": "Planes de prueba, análisis de riesgos y detección de bugs proactiva."
+                }
+            }
+        },
+        "footer": {
+            "rights": "© 2025 PILOTAI. Diseñado para visionarios."
+        }
+    }
+}

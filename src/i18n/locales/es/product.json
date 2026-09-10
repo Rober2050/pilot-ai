@@ -1,0 +1,58 @@
+{
+    "executiveSummary": "Resumen Ejecutivo",
+    "northStar": "North Star",
+    "tabs": {
+        "dna": "ADN del Producto",
+        "scope": "Alcance MVP",
+        "roadmap": "Roadmap & OKRs",
+        "discovery": "Discovery"
+    },
+    "save": "Guardar",
+    "saving": "Guardando...",
+    "noData": "Sin datos disponibles",
+    "sections": {
+        "productVision": "Visión del Producto",
+        "positioningStatement": "Declaración de Posicionamiento",
+        "jtbd": "Jobs-to-be-Done",
+        "jtbdSubtitle": "Qué contratan los clientes de este producto",
+        "icp": "Perfil de Cliente Ideal",
+        "hypotheses": "Hipótesis a Validar",
+        "hypothesesSubtitle": "Supuestos clave con evaluación de riesgo",
+        "riceTable": "Priorización de Features (RICE)",
+        "riceTableSubtitle": "Alcance × Impacto × Confianza / Esfuerzo",
+        "mvpScope": "Alcance MVP",
+        "mvpScopeSubtitle": "Funciones principales para el lanzamiento inicial",
+        "competitive": "Panorama Competitivo",
+        "competitiveSubtitle": "Cómo nos diferenciamos de las soluciones existentes",
+        "inScope": "✅ En Alcance (MVP1)",
+        "outScope": "❌ Fuera del Alcance (Futuro)",
+        "roadmap": "Roadmap del Producto",
+        "roadmapSubtitle": "Línea de tiempo de evolución e hitos clave",
+        "okrs": "OKRs — Objetivos y Resultados Clave",
+        "okrsSubtitle": "Metas medibles para el post-lanzamiento",
+        "prioritization": "Matriz de Priorización",
+        "prioritizationSubtitle": "Análisis de Impacto vs. Esfuerzo",
+        "stakeholderDiscovery": "Discovery de Stakeholders",
+        "stakeholderDiscoverySubtitle": "Preguntas críticas para validar supuestos antes del desarrollo"
+    },
+    "empty": {
+        "vision": "Sin Visión de Producto definida.",
+        "audience": "Sin Audiencia Objetivo definida.",
+        "features": "Sin Features definidas.",
+        "roadmap": "Sin datos de Roadmap disponibles.",
+        "discovery": "Sin preguntas de discovery generadas."
+    },
+    "rice": {
+        "feature": "Característica",
+        "score": "Puntaje",
+        "mvp": "MVP",
+        "inMvp": "✓ INCLUIDO",
+        "outMvp": "— EXCLUIDO"
+    },
+    "okr": {
+        "objective": "Objetivo"
+    },
+    "discovery": {
+        "placeholder": "Escribe tu respuesta aquí para enriquecer el contexto del proyecto..."
+    }
+}

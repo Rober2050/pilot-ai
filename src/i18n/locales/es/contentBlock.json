@@ -1,0 +1,15 @@
+{
+    "manualText": "Texto Manual",
+    "audioTranscription": "Transcripción de Audio",
+    "pdfSummary": "Resumen de PDF",
+    "imageDescription": "Descripción de Imagen",
+    "content": "Contenido",
+    "pages": "páginas",
+    "addedAt": "Agregado a las",
+    "expand": "Expandir",
+    "collapse": "Contraer",
+    "placeholder": "Describe tu proyecto o idea...",
+    "characters": "caracteres",
+    "additionalSources": "Fuentes Adicionales",
+    "multiSourceInfo": "Todas las fuentes de contenido serán combinadas y analizadas juntas. Puedes editar o eliminar bloques individuales usando los botones de arriba."
+}

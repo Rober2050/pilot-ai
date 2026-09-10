@@ -1,0 +1,136 @@
+{
+    "dashboardTitle": "Marketing Manager",
+    "dashboardSubtitle": "Go-to-Market Engine",
+    "processMap": "Flujo de Adquisición de Clientes",
+    "funnelDiagram": "Embudo de Marketing y Ventas",
+    "project": "Proyecto",
+    "exportGTM": "Exportar Plan GTM",
+    "exporting": "Generando...",
+    "tabs": {
+        "simulation": "Simulación & ROAS",
+        "strategy": "Estrategia & Persona",
+        "execution": "Calendario GTM",
+        "channels": "Canales (ICE)",
+        "messaging": "Messaging",
+        "economics": "Unit Economics",
+        "competitive": "Mapa Competitivo"
+    },
+    "simulation": {
+        "variables": "Variables de Control",
+        "monthlyBudget": "Inversión Mensual",
+        "avgTicket": "Ticket Promedio",
+        "ticketHint": "Precio de venta estimado del producto.",
+        "cpcTooltip": "(CPC) Costo promedio estimado que pagarás a Meta/Google por cada clic.",
+        "convRate": "Tasa Conv.",
+        "scenarioToggle": "Escenarios IA",
+        "customMode": "Personalizado",
+        "scenarioConservative": "Conservador",
+        "scenarioBase": "Base",
+        "scenarioAggressive": "Agresivo"
+    },
+    "tips": {
+        "title": "¿Cómo mover la aguja?",
+        "subtitle": "Entiende qué variable afecta a qué resultado:",
+        "roasHint": "Para subir la **Rentabilidad (ROAS)**: Aumenta el **Ticket**. Vender más caro mejora tu margen directo.",
+        "volumeHint": "Para subir el **Volumen (Ventas)**: Aumenta la **Inversión**. Más dinero = Más alcance y clientes totales."
+    },
+    "roasTitle": "Simulador de Retorno (ROAS)",
+    "projectedRoas": "ROAS Proyectado",
+    "grossSales": "Ventas Brutas Est.",
+    "grossProfit": "Beneficio Bruto",
+    "loss": "Pérdida",
+    "breakeven": "Breakeven",
+    "profitable": "Rentable",
+    "roasAdvice": {
+        "low": "Aumenta el ticket promedio para mejorar el margen.",
+        "high": "Excelente configuración para escalar."
+    },
+    "growthProjection": "Proyección de Crecimiento (6 Meses)",
+    "scenario": "Escenario Compuesto",
+    "accumulatedRevenue": "Ingresos Acumulados",
+    "monthlySales": "Ventas Mensuales",
+    "buyerPersona": "Buyer Persona",
+    "demographics": "Demografía",
+    "age": "Edad",
+    "gender": "Género",
+    "location": "Zona",
+    "income": "Ingresos",
+    "interests": "Intereses (Ads)",
+    "behavior": "Comportamiento",
+    "goals": "Objetivos",
+    "objections": "Objeciones",
+    "empathyMap": "Mapa de Empatía",
+    "tacticalFunnel": "Funnel Táctico",
+    "funnel": {
+        "reach": "Alcance",
+        "visits": "Visitas",
+        "sales": "Ventas"
+    },
+    "gtmCalendar": "Calendario Go-to-Market (12 Semanas)",
+    "gtmPhases": {
+        "preLaunch": "Pre-Lanzamiento",
+        "launch": "Lanzamiento",
+        "growth": "Crecimiento"
+    },
+    "iceMatrix": "Priorización de Canales (Matriz ICE)",
+    "col": {
+        "channel": "Canal",
+        "impact": "Impacto (1-10)",
+        "cost": "Costo Inv. (1-10)",
+        "effort": "Esfuerzo (1-10)",
+        "score": "ICE Score",
+        "budget": "% Presupuesto",
+        "rationale": "Justificación"
+    },
+    "recommended": "RECOMENDADO",
+    "channelMix": "Mix de Presupuesto por Canal",
+    "competitive": {
+        "title": "Mapa de Posicionamiento Competitivo",
+        "noData": "No hay datos de mapa competitivo disponibles aún.",
+        "hint": "Vuelve a analizar para integrar el posicionamiento de competidores.",
+        "highValue": "Alto Valor",
+        "lowValue": "Bajo Valor",
+        "highPrice": "Alto Precio",
+        "lowPrice": "Bajo Precio"
+    },
+    "messaging": {
+        "title": "Messaging Framework",
+        "valueProp": "Propuesta de Valor",
+        "pitch": "Elevator Pitch (30s)",
+        "tagline": "Tagline",
+        "keyMessages": "Mensajes Clave por Audiencia",
+        "audience": "Audiencia",
+        "message": "Mensaje",
+        "tone": "Tono"
+    },
+    "economics": {
+        "title": "Unit Economics",
+        "cac": "Costo de Adquisición de Cliente",
+        "ltv": "Valor de Vida del Cliente",
+        "ltvCacRatio": "Ratio LTV / CAC",
+        "payback": "Período de Recuperación",
+        "churn": "Churn Mensual",
+        "arpu": "Ingreso Promedio por Usuario",
+        "months": "meses",
+        "healthy": "Saludable",
+        "warning": "Alerta",
+        "critical": "Crítico"
+    },
+    "benchmarks": {
+        "title": "Benchmarks de Industria",
+        "vertical": "Vertical",
+        "avgCPC": "CPC Promedio",
+        "avgConversion": "Conv. Promedio",
+        "source": "Fuente"
+    },
+    "summaryTitle": "Resumen de Estrategia de Marketing",
+    "dashboardError": "Error al cargar datos de marketing. Verifica la configuración del rol.",
+    "months": {
+        "m1": "Mes 1",
+        "m2": "Mes 2",
+        "m3": "Mes 3",
+        "m4": "Mes 4",
+        "m5": "Mes 5",
+        "m6": "Mes 6"
+    }
+}

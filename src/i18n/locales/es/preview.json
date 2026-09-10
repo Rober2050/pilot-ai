@@ -1,0 +1,18 @@
+{
+    "title": "PDF Procesado Exitosamente",
+    "subtitle": "Revisa y confirma el contenido extraído",
+    "pages": "Páginas",
+    "words": "Palabras",
+    "size": "Tamaño",
+    "fileName": "Nombre del Archivo",
+    "nativeExtraction": "Extracción Nativa",
+    "ocrExtraction": "Extracción OCR",
+    "scannedPDF": "PDF Escaneado",
+    "smartSummary": "Resumen Inteligente",
+    "viewMode": "Ver",
+    "editMode": "Editar",
+    "editSummaryPlaceholder": "Edita el resumen...",
+    "summaryHint": "Este resumen será usado para el análisis. Puedes editarlo para enfocarte en aspectos específicos.",
+    "fullContent": "Ver Contenido Completo Extraído",
+    "analyzeNow": "Analizar Ahora"
+}

@@ -1,0 +1,16 @@
+{
+    "pdfProcessingFailed": "Error al procesar PDF.",
+    "fileSizeExceeded": "El archivo excede el límite permitido.",
+    "fileSizeDetails": "Por favor usa un archivo más pequeño.",
+    "audioSizeDetails": "Por favor usa un archivo más pequeño (Máximo 50MB para Audio/Imágenes).",
+    "invalidFileType": "Solo se admiten archivos PDF.",
+    "invalidTypeDetails": "Por favor selecciona un documento PDF válido.",
+    "corruptedFile": "No se puede leer el PDF. El archivo puede estar corrupto.",
+    "corruptedDetails": "Intenta abrir el archivo en un lector PDF para verificar que funciona.",
+    "extractionFailed": "No se pudo extraer texto del PDF.",
+    "extractionDetails": "Error técnico",
+    "summaryFailed": "No se pudo generar el resumen.",
+    "summaryDetails": "El PDF se leyó pero falló el resumen de IA. Intenta de nuevo.",
+    "technicalDetails": "Detalles técnicos",
+    "checkConsole": "Revisa la consola del navegador (F12) para más detalles."
+}
