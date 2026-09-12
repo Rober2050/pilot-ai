@@ -4,28 +4,47 @@
 -- WHY: 001_schema.sql let an authenticated user UPDATE any column of their own
 -- row (no WITH CHECK), and the signup trigger copied `rol` from the client-
 -- supplied auth metadata. Either path let a free user grant themselves
--- rol = 'admin' or an enterprise plan from the browser console.
+-- rol = 'admin' or an enterprise plan straight from the browser console:
+--     supabase.from('users').update({ rol: 'admin' }).eq('id', myId)
 --
--- WHAT: role/plan/subscription columns become server-owned. Users can still
--- edit profile fields (display_name, avatar, preferences). Admin and plan
--- changes must be done with the service_role key or from the SQL editor.
+-- WHAT: role / plan / subscription columns become server-owned. The signup
+-- trigger now writes them (including the 3-day trial window) instead of the
+-- client. Users can still edit their own profile fields. Promotions are done
+-- with promote_to_admin() from the SQL editor or with the service_role key.
+--
+-- Safe to re-run.
 -- ============================================================================
 
--- 1. Signup trigger: never trust rol/plan from client metadata ---------------
+-- 1. Signup trigger: server owns role, plan and the trial window --------------
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
-  INSERT INTO public.users (id, email, display_name, rol, plan_id)
+  INSERT INTO public.users (
+    id, email, display_name,
+    rol, plan_id, subscription_plan, subscription_status,
+    subscription_start_date, subscription_end_date, status
+  )
   VALUES (
     NEW.id,
     NEW.email,
     COALESCE(NEW.raw_user_meta_data->>'display_name', split_part(NEW.email, '@', 1)),
-    'user',
-    'free'
-  );
+    'user',            -- never from client metadata
+    'free',
+    'free',
+    'active',
+    NOW(),
+    NOW() + INTERVAL '3 days',   -- trial window, previously set by the client
+    'active'
+  )
+  ON CONFLICT (id) DO NOTHING;
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
+
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
 -- 2. Helper: are the protected columns unchanged? ----------------------------
 -- Compares the proposed row against the stored row. SECURITY DEFINER so it can
@@ -60,7 +79,7 @@ $$;
 REVOKE ALL ON FUNCTION public.users_protected_columns_unchanged(uuid, text, text, text, text, timestamptz, timestamptz) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION public.users_protected_columns_unchanged(uuid, text, text, text, text, timestamptz, timestamptz) TO authenticated;
 
--- 3. UPDATE policy: own row only, and protected columns must not change -------
+-- 3. UPDATE policy: own row only, and protected columns must not change ------
 DROP POLICY IF EXISTS "users_update_own" ON public.users;
 CREATE POLICY "users_update_own" ON public.users
   FOR UPDATE
@@ -73,9 +92,9 @@ CREATE POLICY "users_update_own" ON public.users
     )
   );
 
--- 4. INSERT policy: a client may only create a plain free user ----------------
--- (Normal signups go through the trigger above; this covers the client-side
--- upsert fallback in authService.register.)
+-- 4. INSERT policy: a client may only create a plain free user ---------------
+-- Normal signups go through the trigger above; this covers the client-side
+-- upsert fallback in authService.register.
 DROP POLICY IF EXISTS "users_insert_own" ON public.users;
 CREATE POLICY "users_insert_own" ON public.users
   FOR INSERT
@@ -86,8 +105,8 @@ CREATE POLICY "users_insert_own" ON public.users
     AND COALESCE(subscription_plan, 'free') = 'free'
   );
 
--- 5. Admin helper: promote a user by email (run from the SQL editor) ----------
--- SELECT public.promote_to_admin('you@example.com');
+-- 5. Admin helper: promote a user by email (SQL editor / service_role only) ---
+--    SELECT public.promote_to_admin('you@example.com');
 CREATE OR REPLACE FUNCTION public.promote_to_admin(p_email text)
 RETURNS void
 LANGUAGE sql
@@ -97,4 +116,37 @@ AS $$
   UPDATE public.users SET rol = 'admin' WHERE email = p_email;
 $$;
 REVOKE ALL ON FUNCTION public.promote_to_admin(text) FROM PUBLIC;
--- Only service_role / SQL editor can call it (no GRANT to authenticated).
+-- No GRANT to `authenticated`: only service_role / the SQL editor may call it.
+
+-- 6. Same for plan changes ---------------------------------------------------
+--    SELECT public.set_user_plan('you@example.com', 'pro', NOW() + INTERVAL '1 year');
+CREATE OR REPLACE FUNCTION public.set_user_plan(
+  p_email text,
+  p_plan  text,
+  p_until timestamptz DEFAULT NULL
+)
+RETURNS void
+LANGUAGE sql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+  UPDATE public.users
+     SET plan_id               = p_plan,
+         subscription_plan     = p_plan,
+         subscription_status   = 'active',
+         subscription_end_date = p_until
+   WHERE email = p_email;
+$$;
+REVOKE ALL ON FUNCTION public.set_user_plan(text, text, timestamptz) FROM PUBLIC;
+
+-- ---------------------------------------------------------------------------
+-- NOTE FOR EXISTING DEPLOYMENTS
+-- After this runs, authService.register()'s post-signup UPDATE (which sends
+-- rol/plan/subscription columns) is rejected by the new policy. That is
+-- expected and harmless: the trigger already wrote those values, and the
+-- client logs a warning it already handles. Two behaviours do change:
+--   * emergency-admin self-promotion at signup no longer works -> use
+--     promote_to_admin()
+--   * invitations that granted a paid plan now land on 'free' -> use
+--     set_user_plan()
+-- ---------------------------------------------------------------------------
