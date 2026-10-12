@@ -64,14 +64,17 @@ import { RewardGateModal } from '../components/RewardGateModal';
 import { usersService } from '../services/firebase/usersService';
 import { usageService } from '../services/firebase/usageService';
 import { WarRoomService } from '../services/ai/WarRoomService';
+import { buildPreviousRolesContext } from '../utils/compactRoleContext';
 
 type AutoStartPayload = { idea: string; methodology: 'agile' | 'pmo' | 'hybrid'; selectedRoles?: string[] };
 
-// Per-role analysis timeout (ms). UX Designer generates a full HTML prototype → needs more time.
+// Per-role analysis timeout (ms). Heavy roles may need a stream continuation after the
+// proxy's 150s Edge Function cut (see AnthropicProvider), so they get extra room.
 const ROLE_TIMEOUTS_MS: Record<string, number> = {
-    'ux-designer': 6 * 60 * 1000,  // 6 min
+    'ux-designer': 10 * 60 * 1000,  // 10 min — full HTML prototype
+    'architect': 8 * 60 * 1000,     // 8 min — largest JSON output
 };
-const DEFAULT_TIMEOUT_MS = 4 * 60 * 1000; // 4 min for all other roles
+const DEFAULT_TIMEOUT_MS = 6 * 60 * 1000; // 6 min for all other roles
 
 // Deep patch: finds each key anywhere in the content tree (not just top level) and updates it.
 // Falls back to adding the key at top level if not found. Enables AI patches like { "mvpInScope": [...] }
@@ -1335,7 +1338,7 @@ OBJECTIVE: Analyze, diagram, and optimize this sub-process as an independent ent
         Output Language: ${updatedProject.language === 'es' ? 'Spanish' : 'English'} (IMPORTANT: Generate all content in this language)
 
         Previous Analyses:
-        ${JSON.stringify(previousRolesContext, null, 2)}
+        ${buildPreviousRolesContext(previousRolesContext)}
         ${swimlaneInstruction}
         ${agileInstruction}
 

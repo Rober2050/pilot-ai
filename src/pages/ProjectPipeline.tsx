@@ -13,6 +13,7 @@ import RolePanel from '../components/RolePanel';
 import RoleCard from '../components/RoleCard';
 import { Download, Share2, Settings, Loader2, FileText, Table as TableIcon } from 'lucide-react';
 import { cn } from '../lib/utils';
+import { buildPreviousRolesContext } from '../utils/compactRoleContext';
 
 export default function ProjectPipeline() {
     const { t } = useTranslation(['project', 'translation']);
@@ -181,7 +182,7 @@ export default function ProjectPipeline() {
         Output Language: ${currentProject.language === 'es' ? 'Spanish' : 'English'} (IMPORTANT: Generate all content in this language)
         
         Previous Analyses:
-        ${JSON.stringify(previousRolesContext, null, 2)}
+        ${buildPreviousRolesContext(previousRolesContext)}
         
         Your Task:
         Perform your specific role analysis based on the idea and previous context.

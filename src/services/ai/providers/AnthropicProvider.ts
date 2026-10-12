@@ -22,6 +22,14 @@ const DEFAULT_MODEL = 'claude-haiku-4-5-20251001';
  */
 const MAX_TOKENS = 64000;
 
+/**
+ * The proxy runs as a Supabase Edge Function, which is killed after 150s on the
+ * FREE plan even while streaming. Heavy roles (Architect, UX) can need longer, so
+ * a cut stream is resumed: the partial output goes back as an assistant prefill
+ * and the model continues exactly where it stopped.
+ */
+const MAX_CONTINUATIONS = 3;
+
 /** Maps non-Anthropic model IDs to our default Haiku model. */
 function resolveModel(modelName: string): string {
     if (modelName?.startsWith('claude')) return modelName;
@@ -42,12 +50,16 @@ interface AnthropicResponse {
     stop_reason?: 'end_turn' | 'max_tokens' | 'stop_sequence' | 'tool_use';
     usage?: { input_tokens: number; output_tokens: number };
     error?: { type: string; message: string };
+    /** True when the stream closed without `message_stop` (connection cut mid-generation). */
+    incomplete?: boolean;
 }
 
 interface CallProxyOptions {
     tools?: any[];
     tool_choice?: any;
     prefillJSON?: boolean;
+    /** Partial assistant output to continue from (overrides prefillJSON). */
+    assistantPrefill?: string;
 }
 
 /**
@@ -136,10 +148,29 @@ export class AnthropicProvider extends BaseAIProvider {
             `- Every field from your instructions must appear with real, substantive data.`;
 
         return this.retryOperation(async () => {
-            const response = await this.callProxy(
+            let response = await this.callProxy(
                 model, systemPrompt, jsonEnforcedUserPrompt, MAX_TOKENS, { prefillJSON: true },
             );
-            const raw = response.content?.find(c => c.type === 'text')?.text ?? '';
+            let raw = response.content?.find(c => c.type === 'text')?.text ?? '';
+
+            // Resume streams cut by the Edge Function wall-clock limit.
+            for (let attempt = 1; response.incomplete && attempt <= MAX_CONTINUATIONS; attempt++) {
+                // Anthropic rejects an assistant prefill that ends in whitespace.
+                const prefill = `{${raw}`.replace(/\s+$/, '');
+                console.warn('[AnthropicProvider] Stream cut mid-generation — continuing', {
+                    model, attempt, charsSoFar: prefill.length,
+                });
+                try {
+                    response = await this.callProxy(
+                        model, systemPrompt, jsonEnforcedUserPrompt, MAX_TOKENS, { assistantPrefill: prefill },
+                    );
+                } catch (continuationError) {
+                    // Keep what we have; the repair tiers below try to salvage it.
+                    console.warn('[AnthropicProvider] Continuation failed — using partial output', continuationError);
+                    break;
+                }
+                raw = prefill.slice(1) + (response.content?.find(c => c.type === 'text')?.text ?? '');
+            }
 
             // Prefill injected '{' as the first assistant token. The SSE stream
             // starts AFTER the prefill, so we prepend it before parsing.
@@ -260,7 +291,9 @@ export class AnthropicProvider extends BaseAIProvider {
         const messages: Array<{ role: string; content: string }> = [
             { role: 'user', content: userPrompt },
         ];
-        if (options?.prefillJSON) {
+        if (options?.assistantPrefill) {
+            messages.push({ role: 'assistant', content: options.assistantPrefill });
+        } else if (options?.prefillJSON) {
             messages.push({ role: 'assistant', content: '{' });
         }
 
@@ -322,6 +355,7 @@ export class AnthropicProvider extends BaseAIProvider {
         let inputTokens = 0;
         let outputTokens = 0;
         let streamError: { type: string; message: string } | null = null;
+        let sawMessageStop = false;
 
         const ensureBlock = (idx: number, type: 'text' | 'tool_use', toolName?: string) => {
             if (!blocks[idx]) {
@@ -368,6 +402,8 @@ export class AnthropicProvider extends BaseAIProvider {
                         if (typeof evt.usage?.input_tokens === 'number') {
                             inputTokens = evt.usage.input_tokens;
                         }
+                    } else if (evt.type === 'message_stop') {
+                        sawMessageStop = true;
                     } else if (evt.type === 'error') {
                         streamError = evt.error;
                     }
@@ -433,6 +469,7 @@ export class AnthropicProvider extends BaseAIProvider {
             content,
             stop_reason: stopReason,
             usage: { input_tokens: inputTokens, output_tokens: outputTokens },
+            incomplete: !sawMessageStop,
         };
     }
 
@@ -443,6 +480,12 @@ export class AnthropicProvider extends BaseAIProvider {
         if (status === 401) throw new AIAuthenticationError(this.providerId, String(msg));
         if (status === 429) throw new AIRateLimitError(this.providerId, String(msg));
         if (status === 408) throw new AITimeoutError(this.providerId, String(msg));
+
+        // 413 = the proxy rejected the prompt as too large. Deterministic for this
+        // input — retrying sends the same payload — so surface it as non-retryable.
+        if (status === 413) {
+            throw new AIInvalidResponseError(this.providerId, `Prompt too large for the proxy (413): ${msg}`);
+        }
 
         // 504/546 = Supabase Edge Function wall-clock limit exceeded.
         // Deterministic for this prompt size — retrying burns another 30s and triggers 429.

@@ -26,7 +26,7 @@ export const DiscoveryOverlay: React.FC<DiscoveryOverlayProps> = ({
     onComplete,
     onSkip
 }) => {
-    const [discoveryAgent] = useState(() => new DiscoveryAgent(import.meta.env.VITE_GEMINI_API_KEY));
+    const [discoveryAgent] = useState(() => new DiscoveryAgent());
     const [conversationHistory, setConversationHistory] = useState<string[]>([]);
     const [currentResponse, setCurrentResponse] = useState<DiscoveryResponse | null>(null);
     const [currentAnswer, setCurrentAnswer] = useState('');

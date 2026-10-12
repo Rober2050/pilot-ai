@@ -1,7 +1,7 @@
 {
     "nav": {
         "features": "Roles AI",
-        "pricing": "Precios",
+        "openSource": "Código abierto",
         "contact": "Contacto",
         "login": "Ingresar"
     },
@@ -13,21 +13,31 @@
         "ctaPrimary": "Validar mi Idea",
         "ctaSecondary": "Ver Demo",
         "carousel": {
-            "strategy": { "label": "Validación de Estrategia", "status": "Escaneando Viabilidad..." },
-            "marketing": { "label": "Motor de Crecimiento", "status": "Generando Audiencias..." },
-            "qa": { "label": "Escudo de Calidad", "status": "Ejecutando Pruebas..." }
+            "strategy": {
+                "label": "Validación de Estrategia",
+                "status": "Escaneando Viabilidad..."
+            },
+            "marketing": {
+                "label": "Motor de Crecimiento",
+                "status": "Generando Audiencias..."
+            },
+            "qa": {
+                "label": "Escudo de Calidad",
+                "status": "Ejecutando Pruebas..."
+            }
         }
     },
     "plg": {
         "title": "Transforma tu idea en",
         "titleGradient": "Estrategia Real.",
-        "subtitle": "Describe tu proyecto y un equipo de IA generará un plan completo: estrategia, arquitectura, costos y riesgos.",
+        "subtitle": "Nueve roles de IA convierten una idea en estrategia, producto, arquitectura, plan y riesgos. Mirá una ejecución real de punta a punta.",
         "inputPlaceholder": "Describe tu idea de proyecto...",
         "validation": {
             "tooShort": "Tu idea es muy breve — agrega el sector, la audiencia y el problema que resuelve.",
             "notMeaningful": "Añade más contexto: especifica el tipo de producto, industria o audiencia objetivo.",
             "selectRoles": "Selecciona 2 roles para continuar con el análisis",
-            "tryThis": "Prueba con uno de estos"
+            "tryThis": "Prueba con uno de estos",
+            "selectAtLeastOne": "Elegí al menos un rol para analizar tu idea."
         },
         "methodology": {
             "label": "¿Cómo gestionarás este proyecto?",
@@ -43,7 +53,7 @@
         },
         "roles": {
             "sectionTitle": "Arma tu Equipo de IA",
-            "selectInstruction": "Selecciona 2 roles y recibí análisis de expertos",
+            "selectInstruction": "Elegí hasta 2 roles y recibí análisis de expertos",
             "freeTag": "GRATIS",
             "proTag": "PRO",
             "lockTooltip": "Desbloquear con plan Pro",
@@ -56,7 +66,8 @@
                 "marketing-manager": "Marketing Manager",
                 "architect": "Arquitecto de Software",
                 "ux-designer": "Diseñador UX/UI",
-                "qa-engineer": "Ingeniero QA"
+                "qa-engineer": "Ingeniero QA",
+                "devops-engineer": "Ingeniero DevOps"
             },
             "subtitles": {
                 "strategy-analyst": "STRATEGY LEAD",
@@ -66,12 +77,13 @@
                 "marketing-manager": "CMO",
                 "architect": "CTO",
                 "ux-designer": "UX DESIGNER",
-                "qa-engineer": "QA LEAD"
+                "qa-engineer": "QA LEAD",
+                "devops-engineer": "DEVOPS"
             }
         },
         "modal": {
-            "badge": "¡Análisis Preliminar Listo!",
-            "title": "Tu idea fue validada por la IA",
+            "badge": "Idea lista",
+            "title": "Tu idea está lista para analizar",
             "message": "Regístrate gratis para ver el reporte completo del Analista de Estrategia y desbloquear tu equipo de IA.",
             "register": "Crear cuenta gratis",
             "login": "Ya tengo una cuenta",
@@ -105,20 +117,30 @@
                 "inputPlaceholder": "Describe tu idea revolucionaria...",
                 "exampleIdea": "Red de Logística Urbana con Drones Autónomos impulsada por Energía Solar y IA."
             },
-            "strategy": { "label": "Análisis Estratégico", "desc": "IA analiza viabilidad de mercado" },
+            "strategy": {
+                "label": "Análisis Estratégico",
+                "desc": "IA analiza viabilidad de mercado"
+            },
             "roles": {
                 "label": "La Fábrica de Roles",
                 "desc": "11 especialistas trabajando en paralelo",
                 "title": "Especialistas en Acción",
                 "subtitle": "11 roles de IA trabajando simultáneamente en tu proyecto",
-                "cards": { "prd": "Documento PRD", "flow": "Diagramas de Flujo", "cases": "Casos de Prueba" }
+                "cards": {
+                    "prd": "Documento PRD",
+                    "flow": "Diagramas de Flujo",
+                    "cases": "Casos de Prueba"
+                }
             },
             "consult": {
                 "label": "Consulta IA Especializada",
                 "desc": "Refina con chat inteligente por rol",
                 "message": "¿Podemos optimizar la ruta de entrega para minimizar el ruido en zonas residenciales?"
             },
-            "prototype": { "label": "Generación de Prototipo", "desc": "De wireframes a UI interactiva" }
+            "prototype": {
+                "label": "Generación de Prototipo",
+                "desc": "De wireframes a UI interactiva"
+            }
         }
     },
     "footer": {
@@ -129,5 +151,25 @@
         "terms": "Términos de Servicio",
         "termsLink": "/terms-of-service",
         "rights": "Todos los derechos reservados."
+    },
+    "open": {
+        "eyebrow": "Código abierto",
+        "title": "No es un producto a la venta. Es la herramienta que uso, abierta.",
+        "body": "Construí PILOT AI para no volver a armar el mismo análisis en cada proyecto. Empezó con un rol, creció hasta nueve y hoy está abierta: mirá una ejecución real en el video o levantala en tu propia cuenta con tu propia clave.",
+        "ctaPrimary": "Ver demo",
+        "ctaSecondary": "Ver el código",
+        "facts": {
+            "roles": "Nueve roles especializados que se pasan el contexto y un moderador que resuelve las contradicciones.",
+            "exports": "Cada análisis sale en PowerPoint, Word, PDF y Excel, listo para presentar.",
+            "selfHost": "Instalación propia en cinco pasos. Tus claves, tu base de datos, tu costo."
+        }
+    },
+    "demo": {
+        "label": "Ejecución real",
+        "ctaWatch": "Ver demo",
+        "ctaCode": "Ver el código",
+        "teamLabel": "El equipo que analiza cada idea",
+        "caption": "Una idea real, nueve roles trabajando en cadena y entregables listos para presentar.",
+        "videoUnsupported": "Tu navegador no puede reproducir este video."
     }
 }

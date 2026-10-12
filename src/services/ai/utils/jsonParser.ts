@@ -46,14 +46,19 @@ export function isJsonTruncated(raw: string): boolean {
  * Returns the most likely JSON substring (caller must still JSON.parse).
  */
 export function extractJSONFromText(text: string): string {
-    // Strategy 1: Markdown code fence
-    const markdownRegex = /```(?:json)?\s*([\s\S]*?)\s*```/;
-    const match = text.match(markdownRegex);
-    if (match) return match[1];
-
-    // Strategy 2: First { to last }
     const firstOpen = text.indexOf('{');
     const lastClose = text.lastIndexOf('}');
+
+    // Strategy 1: Markdown code fence — only when the fence wraps the JSON, i.e. it
+    // opens BEFORE the first '{'. A fence inside a string value (roles often quote
+    // code snippets) must not hijack extraction and discard the rest of the JSON.
+    const fenceIdx = text.indexOf('```');
+    if (fenceIdx !== -1 && (firstOpen === -1 || fenceIdx < firstOpen)) {
+        const match = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+        if (match) return match[1];
+    }
+
+    // Strategy 2: First { to last }
     if (firstOpen !== -1 && lastClose !== -1 && lastClose > firstOpen) {
         return text.substring(firstOpen, lastClose + 1);
     }

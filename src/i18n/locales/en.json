@@ -175,7 +175,17 @@
         "placeholder": "Describe your project or idea...",
         "characters": "characters",
         "additionalSources": "Additional Sources",
-        "multiSourceInfo": "All content sources will be combined and analyzed together. You can edit or remove individual blocks using the buttons above."
+        "multiSourceInfo": "All content sources will be combined and analyzed together. You can edit or remove individual blocks using the buttons above.",
+        "suggestionLabel": "Suggestion:",
+        "selectedModules_one": "{{count}} module selected:",
+        "selectedModules_other": "{{count}} modules selected:",
+        "removeModule": "Click to remove",
+        "addModule": "Click to add",
+        "useSuggestion": "Use suggestion",
+        "writeMine": "Write my own",
+        "customizeModules": "Customize — add modules to your idea:",
+        "allModulesSelected": "All modules selected — click \"Use suggestion\" to continue.",
+        "keyModules": "Key modules"
     },
     "businessAnalyst": {
         "userStory": "User Story",

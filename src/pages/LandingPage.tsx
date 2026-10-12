@@ -1,30 +1,29 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import {
     Globe, LogIn, Mail, GraduationCap,
     TrendingUp, Package, BarChart2, Briefcase,
-    Palette, Server, Layout, Shield,
+    Palette, Server, Layout, Shield, Cloud,
+    Play, Github,
 } from 'lucide-react';
-import { PLGModal } from '../components/landing/PLGModal';
-import { SmartIdeaInput } from '../components/landing/SmartIdeaInput';
-import { WarRoomService } from '../services/ai/WarRoomService';
+import { REPO_URL } from '../constants/repo';
 import { cn } from '../lib/utils';
 
 // ─── Below-the-fold sections — code-split so they don't block initial paint ───
 const FeaturesGrid = React.lazy(() =>
     import('../components/landing/FeaturesGrid').then(m => ({ default: m.FeaturesGrid }))
 );
-const PricingSection = React.lazy(() =>
-    import('../components/landing/PricingSection').then(m => ({ default: m.PricingSection }))
+const OpenSourceSection = React.lazy(() =>
+    import('../components/landing/OpenSourceSection').then(m => ({ default: m.OpenSourceSection }))
 );
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-type Methodology = 'pmo' | 'agile' | 'hybrid';
-
-// Planes restringen cantidad de roles, no tipos específicos
-// Landing page: usuarios pueden elegir cualquier rol hasta máximo 2
+// The hosted demo is a showcase, not a free trial: visitors watch a real run
+// (public/demo) instead of spending the owner's AI budget.
+const DEMO_VIDEO_MP4 = '/demo/pilot-ai-demo.mp4';
+const DEMO_VIDEO_POSTER = '/demo/pilot-ai-demo-poster.jpg';
 
 interface RoleDef {
     id: string;
@@ -90,39 +89,13 @@ const LANDING_ROLES: RoleDef[] = [
         color: { border: 'border-emerald-200', bg: 'bg-emerald-50', iconBg: 'bg-emerald-100', iconColor: 'text-emerald-600', dot: 'bg-emerald-400', tag: 'bg-emerald-100', tagText: 'text-emerald-700' },
         deliverables: 'DOC / PPT',
     },
+    {
+        id: 'devops-engineer',
+        icon: <Cloud size={22} />,
+        color: { border: 'border-sky-200', bg: 'bg-sky-50', iconBg: 'bg-sky-100', iconColor: 'text-sky-600', dot: 'bg-sky-400', tag: 'bg-sky-100', tagText: 'text-sky-700' },
+        deliverables: 'DOC / PPT',
+    },
 ];
-
-// ─── Validation ───────────────────────────────────────────────────────────────
-// Four-level check: length → gibberish → vague phrases → domain specificity
-
-/**
- * MINIMAL validation — only catch obvious spam/gibberish
- * Delegate real validation to WarRoomService.validateTopic() (AI-powered)
- * This prevents resource waste on spam while allowing legitimate ideas through
- */
-function validateIdea(text: string): 'ok' | 'tooShort' {
-    const trimmed = text.trim();
-    const lower = trimmed.toLowerCase();
-    const words = trimmed.split(/\s+/).filter(Boolean);
-
-    // ── 1. Absolute minimum — at least 2 words, 10 chars ──────────────────────
-    if (words.length < 2 || trimmed.length < 10) return 'tooShort';
-
-    // ── 2. Obvious gibberish detection — pure spam prevention ──────────────────
-    const stripped = lower.replace(/\s/g, '');
-
-    // 'aaaaaa' or only 3 unique letters = gibberish
-    if (new Set(stripped).size < 4) return 'tooShort';
-
-    // 'aaaa' repeated = gibberish (5+ same char in a row)
-    if (/(.)\1{4,}/.test(stripped)) return 'tooShort';
-
-    // 'qwertyqwerty' = keyboard mashing
-    if (/^[qwerty]{5,}$/i.test(stripped)) return 'tooShort';
-
-    // Pass all else to WarRoomService — it handles real intelligence
-    return 'ok';
-}
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
@@ -138,97 +111,11 @@ const LandingPage: React.FC = () => {
         return () => window.removeEventListener('scroll', onScroll);
     }, []);
 
-    // PLG form state
-    const [idea, setIdea] = useState('');
-    const [methodology, setMethodology] = useState<Methodology>('pmo');
-    const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
-    const [validationError, setValidationError] = useState<string | null>(null);
-    const [suggestedIdea, setSuggestedIdea] = useState<string | null>(null);
-    const [isAnalyzing, setIsAnalyzing] = useState(false);
-    const [loadingStep, setLoadingStep] = useState(0);
-    const [showModal, setShowModal] = useState(false);
-    const textareaRef = useRef<HTMLTextAreaElement>(null);
-    const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-
-    const toggleLandingRole = (roleId: string) => {
-        setSelectedRoles(prev => {
-            if (prev.includes(roleId)) return prev.filter(id => id !== roleId);
-            if (prev.length >= 2) return prev; // max 2 — ignore extra clicks
-            return [...prev, roleId];
-        });
+    const playDemo = () => {
+        const demo = document.getElementById('demo');
+        demo?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        demo?.querySelector('video')?.play().catch(() => { /* autoplay blocked: controls stay visible */ });
     };
-
-    // Cleanup timeouts on unmount
-    useEffect(() => {
-        return () => { timeoutsRef.current.forEach(clearTimeout); };
-    }, []);
-
-    const handleAnalyze = useCallback(async () => {
-        // Validate idea text (local check only — no roles required yet)
-        const result = validateIdea(idea);
-        if (result !== 'ok') {
-            setValidationError(t(`plg.validation.${result}`));
-            textareaRef.current?.focus();
-            return;
-        }
-
-        setValidationError(null);
-        setSuggestedIdea(null);
-
-        // Enhanced validation: Check if idea is complete and generate smart suggestions
-        try {
-            console.log('[SMART] Validando idea con WarRoomService:', idea);
-            const validation = await WarRoomService.validateTopic(idea, i18n.language as 'es' | 'en');
-            console.log('[SMART] Resultado validación:', validation);
-            console.log('[SMART] validation.incomplete:', validation.incomplete, 'validation.suggestion:', validation.suggestion);
-
-            // If idea is incomplete, show suggestion (if available)
-            if (validation.incomplete) {
-                console.log('[SMART] Idea incompleta, mostrando sugerencia card');
-                // Show suggestion card instead of proceeding
-                setValidationError(validation.reason || (i18n.language === 'es' ? 'La idea es válida pero necesita más detalles' : 'Your idea is valid but needs more details'));
-                if (validation.suggestion) {
-                    console.log('[SMART] Sugerencia disponible:', validation.suggestion);
-                    setSuggestedIdea(validation.suggestion);
-                } else {
-                    console.warn('[SMART] Idea incompleta pero sin sugerencia generada');
-                    setSuggestedIdea(null);
-                }
-                textareaRef.current?.focus();
-                return;
-            }
-            console.log('[SMART] Idea válida/completa, continuando con análisis...');
-        } catch (e) {
-            console.error('[SMART] Error en validación mejorada:', e);
-            // Continue even if enhanced validation fails
-        }
-
-        // Solo aquí validar roles — después de que IA valide la idea
-        if (selectedRoles.length < 2) {
-            setValidationError(i18n.language === 'es' ? 'Selecciona 2 roles para continuar con el análisis' : 'Select 2 roles to continue with the analysis');
-            return;
-        }
-
-        // Save to storage (with fallback for restricted browsers)
-        try {
-            sessionStorage.setItem('pilotai_pending_idea', JSON.stringify({ idea, methodology, selectedRoles }));
-        } catch (_) {
-            try { localStorage.setItem('pilotai_pending_idea', JSON.stringify({ idea, methodology, selectedRoles })); } catch (_) { /* silently ignore */ }
-        }
-
-        // Start loading simulation
-        setIsAnalyzing(true);
-        setLoadingStep(0);
-
-        const t1 = setTimeout(() => setLoadingStep(1), 600);
-        const t2 = setTimeout(() => setLoadingStep(2), 1400);
-        const t3 = setTimeout(() => {
-            setIsAnalyzing(false);
-            setShowModal(true);
-        }, 1900);
-
-        timeoutsRef.current = [t1, t2, t3];
-    }, [idea, methodology, selectedRoles, t, i18n.language]);
 
     const scrollToSection = (id: string) => {
         document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -272,10 +159,10 @@ const LandingPage: React.FC = () => {
                         </button>
 
                         <button
-                            onClick={() => scrollToSection('pricing')}
+                            onClick={() => scrollToSection('open-source')}
                             className="hidden sm:block text-sm text-slate-500 hover:text-slate-900 transition-colors font-medium"
                         >
-                            {t('nav.pricing')}
+                            {t('nav.openSource')}
                         </button>
 
                         <button
@@ -322,109 +209,72 @@ const LandingPage: React.FC = () => {
                         </p>
                     </div>
 
-                    {/* Input Card */}
-                    <SmartIdeaInput
-                        idea={idea}
-                        setIdea={setIdea}
-                        methodology={methodology}
-                        setMethodology={setMethodology}
-                        isAnalyzing={isAnalyzing}
-                        loadingStep={loadingStep}
-                        onAnalyze={handleAnalyze}
-                        validationError={validationError}
-                        setValidationError={setValidationError}
-                        suggestedIdea={suggestedIdea}
-                        setSuggestedIdea={setSuggestedIdea}
-                        textareaRef={textareaRef}
-                    />
+                    {/* Demo video — a recorded real run instead of a live free trial */}
+                    <div id="demo" className="relative rounded-2xl overflow-hidden border border-slate-200 bg-slate-900 shadow-xl shadow-slate-900/10 aspect-video">
+                        <video
+                            className="w-full h-full object-cover"
+                            controls
+                            playsInline
+                            preload="none"
+                            poster={DEMO_VIDEO_POSTER}
+                            aria-label={t('demo.caption')}
+                        >
+                            <source src={DEMO_VIDEO_MP4} type="video/mp4" />
+                            {t('demo.videoUnsupported')}
+                        </video>
+                        <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/90 text-[11px] font-bold text-slate-700 pointer-events-none">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
+                            {t('demo.label')}
+                        </span>
+                    </div>
+                    <p className="mt-3 text-center text-sm text-slate-500">{t('demo.caption')}</p>
 
-                    {/* Role Cards Grid */}
-                    <div className="mt-6">
-                        {/* Instruction header */}
-                        <div className="flex items-center justify-between px-1 mb-3">
-                            <span className={cn(
-                                'text-sm font-bold transition-colors',
-                                selectedRoles.length === 2
-                                    ? 'text-indigo-600'
-                                    : 'text-slate-700'
-                            )}>
-                                {t('plg.roles.selectInstruction', 'Selecciona 2 roles y recibí análisis de expertos')}
-                            </span>
-                            <span className={cn(
-                                'text-xs font-black px-2.5 py-1 rounded-full transition-all',
-                                selectedRoles.length === 2
-                                    ? 'bg-indigo-100 text-indigo-700'
-                                    : 'bg-slate-100 text-slate-500'
-                            )}>
-                                {selectedRoles.length}/2
-                            </span>
-                        </div>
+                    {/* CTAs */}
+                    <div className="mt-7 flex flex-col sm:flex-row gap-3 justify-center">
+                        <button
+                            type="button"
+                            onClick={playDemo}
+                            className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm transition-colors active:scale-95"
+                        >
+                            <Play className="w-4 h-4" aria-hidden="true" />
+                            {t('demo.ctaWatch')}
+                        </button>
+                        <a
+                            href={REPO_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 font-semibold text-sm transition-colors active:scale-95"
+                        >
+                            <Github className="w-4 h-4" aria-hidden="true" />
+                            {t('demo.ctaCode')}
+                        </a>
+                    </div>
 
-                        {selectedRoles.length === 2 && (
-                            <p className="text-xs text-amber-600 font-medium mb-3">
-                                {t('plg.maxRolesReached')}
-                            </p>
-                        )}
-
-                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3">
-                            {LANDING_ROLES.map((role) => {
-                                const isSelected = selectedRoles.includes(role.id);
-                                const isMaxReached = selectedRoles.length >= 2 && !isSelected;
-                                const c = role.color;
-
-                                return (
-                                    <button
-                                        key={role.id}
-                                        type="button"
-                                        onClick={() => toggleLandingRole(role.id)}
-                                        disabled={isMaxReached}
-                                        className={cn(
-                                            'relative flex flex-col items-center text-center gap-2 p-4 rounded-2xl border-2 transition-all duration-200 select-none text-left w-full',
-                                            isSelected
-                                                ? `${c.border} ${c.bg} shadow-sm scale-[1.02]`
-                                                : isMaxReached
-                                                    ? 'border-slate-100 bg-slate-50/40 opacity-40 cursor-not-allowed'
-                                                    : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 cursor-pointer'
-                                        )}
-                                    >
-                                        {/* Selection indicator */}
-                                        {isSelected ? (
-                                            <span className={cn('absolute top-2.5 right-2.5 w-5 h-5 rounded-full flex items-center justify-center text-white text-[10px] font-black shadow-sm', c.dot.replace('bg-', 'bg-'))}>
-                                                ✓
-                                            </span>
-                                        ) : (
-                                            <span className="absolute top-2.5 right-2.5 w-4 h-4 rounded-full border-2 border-slate-300" />
-                                        )}
-
-                                        {/* Icon */}
-                                        <div className={cn(
-                                            'w-11 h-11 rounded-xl flex items-center justify-center mt-1 transition-colors',
-                                            isSelected ? `${c.iconBg} ${c.iconColor}` : 'bg-slate-100 text-slate-500'
-                                        )}>
-                                            {role.icon}
-                                        </div>
-
-                                        {/* Name */}
-                                        <div>
-                                            <p className="text-xs font-bold text-slate-800 leading-tight">
-                                                {t(`plg.roles.names.${role.id}`)}
-                                            </p>
-                                            <p className={cn(
-                                                'text-[9px] font-bold uppercase tracking-wider mt-0.5',
-                                                isSelected ? c.iconColor : 'text-slate-400'
-                                            )}>
-                                                {t(`plg.roles.subtitles.${role.id}`)}
-                                            </p>
-                                        </div>
-
-                                        {/* Deliverable */}
-                                        <p className="text-[10px] text-slate-400 mt-auto">
-                                            {t('plg.roles.deliverable')}: {role.deliverables}
-                                        </p>
-                                    </button>
-                                );
-                            })}
-                        </div>
+                    {/* The team — display only */}
+                    <div className="mt-12">
+                        <p className="text-center text-xs font-semibold tracking-[0.18em] uppercase text-slate-400 mb-4">
+                            {t('demo.teamLabel')}
+                        </p>
+                        <ul className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                            {LANDING_ROLES.map((role) => (
+                                <li
+                                    key={role.id}
+                                    className="flex items-center gap-3 p-3 rounded-xl border border-slate-200 bg-white"
+                                >
+                                    <span className={cn('w-9 h-9 shrink-0 rounded-lg flex items-center justify-center', role.color.iconBg, role.color.iconColor)}>
+                                        {role.icon}
+                                    </span>
+                                    <span className="min-w-0">
+                                        <span className="block text-xs font-bold text-slate-800 leading-tight">
+                                            {t(`plg.roles.names.${role.id}`)}
+                                        </span>
+                                        <span className={cn('block text-[9px] font-bold uppercase tracking-wider mt-0.5', role.color.iconColor)}>
+                                            {t(`plg.roles.subtitles.${role.id}`)}
+                                        </span>
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
 
                 </div>
@@ -437,10 +287,12 @@ const LandingPage: React.FC = () => {
                 </React.Suspense>
             </div>
 
-            {/* ── Pricing Section ── */}
-            <React.Suspense fallback={<div className="bg-slate-50/50 py-24" />}>
-                <PricingSection />
-            </React.Suspense>
+            {/* ── Open Source Section ── */}
+            <div id="open-source">
+                <React.Suspense fallback={<div className="bg-slate-50 py-24" />}>
+                    <OpenSourceSection />
+                </React.Suspense>
+            </div>
 
             {/* ── Footer ── */}
             <footer className="bg-white py-16 border-t border-slate-100">
@@ -482,9 +334,6 @@ const LandingPage: React.FC = () => {
                     </div>
                 </div>
             </footer>
-
-            {/* ── PLG Paywall Modal ── */}
-            <PLGModal isOpen={showModal} onClose={() => setShowModal(false)} />
         </div>
     );
 };

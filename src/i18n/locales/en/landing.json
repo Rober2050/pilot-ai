@@ -1,5 +1,10 @@
 {
-    "nav": { "features": "AI Roles", "pricing": "Pricing", "contact": "Contact", "login": "Login" },
+    "nav": {
+        "features": "AI Roles",
+        "openSource": "Open source",
+        "contact": "Contact",
+        "login": "Login"
+    },
     "hero": {
         "badge": "THE FUTURE OF WORK IS HERE",
         "titleStart": "Your Business Idea,",
@@ -8,21 +13,31 @@
         "ctaPrimary": "Validate my Idea",
         "ctaSecondary": "Watch Demo",
         "carousel": {
-            "strategy": { "label": "Strategy Validation", "status": "Scanning Viability..." },
-            "marketing": { "label": "Growth Engine", "status": "Generating Audiences..." },
-            "qa": { "label": "Quality Shield", "status": "Running Test Suites..." }
+            "strategy": {
+                "label": "Strategy Validation",
+                "status": "Scanning Viability..."
+            },
+            "marketing": {
+                "label": "Growth Engine",
+                "status": "Generating Audiences..."
+            },
+            "qa": {
+                "label": "Quality Shield",
+                "status": "Running Test Suites..."
+            }
         }
     },
     "plg": {
         "title": "Transform your idea into",
         "titleGradient": "Real Strategy.",
-        "subtitle": "Describe your project and a team of AI will generate a complete plan: strategy, architecture, costs and risks.",
+        "subtitle": "Nine AI roles turn an idea into strategy, product, architecture, plan and risks. Watch a real end-to-end run.",
         "inputPlaceholder": "Describe your project idea...",
         "validation": {
             "tooShort": "Your idea is too brief — add the sector, target audience, and the problem it solves.",
             "notMeaningful": "Add more context: specify the product type, industry, or target audience.",
             "selectRoles": "Select 2 roles to continue with the analysis",
-            "tryThis": "Try one of these"
+            "tryThis": "Try one of these",
+            "selectAtLeastOne": "Pick at least one role to analyze your idea."
         },
         "methodology": {
             "label": "How will you manage this project?",
@@ -38,7 +53,7 @@
         },
         "roles": {
             "sectionTitle": "Build your AI Team",
-            "selectInstruction": "Select 2 roles and get expert analysis",
+            "selectInstruction": "Pick up to 2 roles and get expert analysis",
             "freeTag": "FREE",
             "proTag": "PRO",
             "lockTooltip": "Unlock with Pro plan",
@@ -51,7 +66,8 @@
                 "marketing-manager": "Marketing Manager",
                 "architect": "Software Architect",
                 "ux-designer": "UX/UI Designer",
-                "qa-engineer": "QA Engineer"
+                "qa-engineer": "QA Engineer",
+                "devops-engineer": "DevOps Engineer"
             },
             "subtitles": {
                 "strategy-analyst": "STRATEGY LEAD",
@@ -61,12 +77,13 @@
                 "marketing-manager": "CMO",
                 "architect": "CTO",
                 "ux-designer": "UX DESIGNER",
-                "qa-engineer": "QA LEAD"
+                "qa-engineer": "QA LEAD",
+                "devops-engineer": "DEVOPS"
             }
         },
         "modal": {
-            "badge": "Preliminary Analysis Ready!",
-            "title": "Your idea has been validated by the AI",
+            "badge": "Idea ready",
+            "title": "Your idea is ready to analyze",
             "message": "Register for free to see the full Strategy Analyst report and unlock your AI team.",
             "register": "Create free account",
             "login": "I already have an account",
@@ -94,11 +111,36 @@
         "pause": "Pause",
         "resume": "Resume",
         "steps": {
-            "inception": { "label": "Inception", "desc": "From idea to project in seconds", "inputPlaceholder": "Describe your revolutionary idea...", "exampleIdea": "Autonomous Drone Logistics Network powered by Solar Energy and AI." },
-            "strategy": { "label": "Strategic Analysis", "desc": "AI analyzes market viability" },
-            "roles": { "label": "The Role Factory", "desc": "11 specialists working in parallel", "title": "Specialists in Action", "subtitle": "11 AI roles working simultaneously on your project", "cards": { "prd": "PRD Document", "flow": "Flow Diagrams", "cases": "Test Cases" } },
-            "consult": { "label": "Specialized AI Consult", "desc": "Refine with smart chat per role", "message": "Can we optimize the delivery route to minimize noise in residential zones?" },
-            "prototype": { "label": "Prototype Generation", "desc": "From wireframes to interactive UI" }
+            "inception": {
+                "label": "Inception",
+                "desc": "From idea to project in seconds",
+                "inputPlaceholder": "Describe your revolutionary idea...",
+                "exampleIdea": "Autonomous Drone Logistics Network powered by Solar Energy and AI."
+            },
+            "strategy": {
+                "label": "Strategic Analysis",
+                "desc": "AI analyzes market viability"
+            },
+            "roles": {
+                "label": "The Role Factory",
+                "desc": "11 specialists working in parallel",
+                "title": "Specialists in Action",
+                "subtitle": "11 AI roles working simultaneously on your project",
+                "cards": {
+                    "prd": "PRD Document",
+                    "flow": "Flow Diagrams",
+                    "cases": "Test Cases"
+                }
+            },
+            "consult": {
+                "label": "Specialized AI Consult",
+                "desc": "Refine with smart chat per role",
+                "message": "Can we optimize the delivery route to minimize noise in residential zones?"
+            },
+            "prototype": {
+                "label": "Prototype Generation",
+                "desc": "From wireframes to interactive UI"
+            }
         }
     },
     "footer": {
@@ -109,5 +151,25 @@
         "terms": "Terms of Service",
         "termsLink": "/terms-of-service",
         "rights": "All rights reserved."
+    },
+    "open": {
+        "eyebrow": "Open source",
+        "title": "Not a product for sale. It's the tool I use, opened up.",
+        "body": "I built PILOT AI so I'd stop rebuilding the same analysis on every project. It started with one role, grew to nine and is now open: watch a real run in the video or deploy it on your own account with your own key.",
+        "ctaPrimary": "Watch demo",
+        "ctaSecondary": "View the code",
+        "facts": {
+            "roles": "Nine specialized roles that hand each other context, plus a moderator that resolves their contradictions.",
+            "exports": "Every analysis exports to PowerPoint, Word, PDF and Excel, ready to present.",
+            "selfHost": "Self-host in five steps. Your keys, your database, your cost."
+        }
+    },
+    "demo": {
+        "label": "Real run",
+        "ctaWatch": "Watch demo",
+        "ctaCode": "View the code",
+        "teamLabel": "The team that analyzes every idea",
+        "caption": "One real idea, nine roles working in sequence and deliverables ready to present.",
+        "videoUnsupported": "Your browser can't play this video."
     }
 }

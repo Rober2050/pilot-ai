@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import LandingPage from './pages/LandingPage';
+import { PUBLIC_SIGNUP_ENABLED } from './constants/authFeatures';
 
 // ─── Route-level code splitting ───────────────────────────────────────────────
 // Each lazy import becomes a separate chunk — only downloaded when the user
@@ -102,9 +103,11 @@ function App() {
                         </React.Suspense>
                     } />
                     <Route path="/register" element={
-                        <React.Suspense fallback={<RouteLoader />}>
-                            <PublicRegistrationForm />
-                        </React.Suspense>
+                        PUBLIC_SIGNUP_ENABLED ? (
+                            <React.Suspense fallback={<RouteLoader />}>
+                                <PublicRegistrationForm />
+                            </React.Suspense>
+                        ) : <Navigate to="/login" replace />
                     } />
                     <Route path="/reset-password" element={
                         <React.Suspense fallback={<RouteLoader />}>

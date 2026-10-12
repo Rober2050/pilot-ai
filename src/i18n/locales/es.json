@@ -200,7 +200,17 @@
         "placeholder": "Describe tu proyecto o idea...",
         "characters": "caracteres",
         "additionalSources": "Fuentes Adicionales",
-        "multiSourceInfo": "Todas las fuentes de contenido serán combinadas y analizadas juntas. Puedes editar o eliminar bloques individuales usando los botones de arriba."
+        "multiSourceInfo": "Todas las fuentes de contenido serán combinadas y analizadas juntas. Puedes editar o eliminar bloques individuales usando los botones de arriba.",
+        "suggestionLabel": "Sugerencia:",
+        "selectedModules_one": "{{count}} módulo seleccionado:",
+        "selectedModules_other": "{{count}} módulos seleccionados:",
+        "removeModule": "Clic para quitar",
+        "addModule": "Clic para agregar",
+        "useSuggestion": "Usar sugerencia",
+        "writeMine": "Escribir la mía",
+        "customizeModules": "Personaliza — agrega módulos a tu idea:",
+        "allModulesSelected": "Todos los módulos seleccionados — hacé clic en \"Usar sugerencia\" para continuar.",
+        "keyModules": "Módulos clave"
     },
     "businessAnalyst": {
         "userStory": "Historia de Usuario",

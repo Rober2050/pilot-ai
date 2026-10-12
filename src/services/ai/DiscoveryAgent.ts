@@ -1,4 +1,13 @@
-import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
+import { AIProviderFactory } from "./AIProviderFactory";
+
+/** Resolves the provider (Anthropic proxy) for a model and returns parsed JSON. */
+const generateJSON = async <T = any>(model: string, systemPrompt: string, userPrompt: string): Promise<T> => {
+    const provider = await AIProviderFactory.getInstance().getProviderForModel(model);
+    return provider.generateJSON<T>(model, systemPrompt, userPrompt);
+};
+
+// Routed through the provider factory (Anthropic proxy) — no API keys in the browser.
+const DISCOVERY_MODEL = 'claude-haiku-4-5-20251001';
 
 // --- ESTRUCTURAS DE DATOS ROBUSTAS ---
 
@@ -29,20 +38,6 @@ export interface DiscoveryResponse {
 }
 
 export class DiscoveryAgent {
-    private model: any;
-
-    constructor(apiKey: string) {
-        const genAI = new GoogleGenerativeAI(apiKey);
-
-        // Usamos FLASH 2.5 para velocidad, pero con temperatura baja para precisión quirúrgica.
-        this.model = genAI.getGenerativeModel({
-            model: "gemini-2.5-flash",
-            generationConfig: {
-                responseMimeType: "application/json",
-                temperature: 0.2 // Frialdad analítica, no creatividad poética
-            }
-        });
-    }
 
     /**
      * MOTOR DE RAZONAMIENTO RECURSIVO
@@ -253,11 +248,9 @@ export class DiscoveryAgent {
     `;
 
         try {
-            const result = await this.model.generateContent([systemPrompt, chatContext]);
-            const responseText = result.response.text();
-
-            // Parsing seguro
-            const parsed = JSON.parse(responseText) as DiscoveryResponse;
+            const parsed = await generateJSON(
+                DISCOVERY_MODEL, systemPrompt, chatContext
+            ) as DiscoveryResponse;
 
             // Validación de seguridad (Fallback por si el modelo alucina un 100% muy rápido)
             if (parsed.isComplete && (!parsed.manifest || parsed.manifest.readiness < 60)) {
@@ -357,16 +350,11 @@ Respond ONLY with valid JSON (no markdown):
 }`;
 
         try {
-            const result = await this.model.generateContent(prompt);
-            const text = result.response.text();
-
-            // Clean JSON response
-            const jsonMatch = text.match(/\{[\s\S]*\}/);
-            if (!jsonMatch) {
-                throw new Error('No JSON found in response');
-            }
-
-            const parsed = JSON.parse(jsonMatch[0]);
+            const parsed = await generateJSON(
+                DISCOVERY_MODEL,
+                'You are an expert analyst. Respond only with the requested JSON object.',
+                prompt
+            );
 
             return {
                 domain: parsed.domain || 'General',

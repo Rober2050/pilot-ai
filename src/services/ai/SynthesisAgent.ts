@@ -1,6 +1,8 @@
 import { geminiService } from '../gemini/geminiService';
 import { configService } from '../firebase/configService';
 import type { SynthesisOutput } from '../../types/blueprint';
+// Nine full role outputs exceed the proxy's per-message cap (413), so they are compacted.
+import { buildPreviousRolesContext } from '../../utils/compactRoleContext';
 
 const SYNTHESIS_PROTOCOL = `
 You are a senior strategy synthesis AI. You receive the structured outputs of multiple specialized AI agents that analyzed a business idea. Read ALL agent outputs and produce a unified executive synthesis.
@@ -108,7 +110,7 @@ severity MUST be EXACTLY one of: "low", "medium", or "high".`;
 Original idea: "${input.ideaOriginal}"
 
 Agent outputs to synthesize:
-${JSON.stringify(input.roleOutputs, null, 2)}
+${buildPreviousRolesContext(input.roleOutputs.map(r => ({ role: `${r.displayName} (${r.roleId})`, output: r.content })))}
 
 Generate the unified synthesis JSON now.`;
 

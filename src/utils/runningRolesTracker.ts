@@ -26,9 +26,9 @@ const STORAGE_KEY_PREFIX = 'pilot_running_roles__';
 /**
  * Maximum time a role analysis can legitimately take before we treat it as
  * abandoned. Aligned with the longest per-role timeout in StrategyHub
- * (currently 4 min) plus 1 min margin for slow networks / retries.
+ * (currently 10 min, UX Designer) plus 1 min margin for slow networks / retries.
  */
-export const MAX_ANALYSIS_DURATION_MS = 5 * 60 * 1000;
+export const MAX_ANALYSIS_DURATION_MS = 11 * 60 * 1000;
 
 type Entry = { roleId: string; startedAt: number };
 

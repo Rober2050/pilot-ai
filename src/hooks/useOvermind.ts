@@ -130,7 +130,7 @@ IMPORTANT: ALWAYS respond in English. Never use Spanish.`;
             displayName,
             description: `Expert ${displayName} for ${manifest.domain} projects`,
             systemPrompt,
-            model: 'gemini-2.0-flash-exp',
+            model: 'claude-haiku-4-5-20251001',
             temperature,
             orderIndex: 999, // Place at end
             isEnabled: true,

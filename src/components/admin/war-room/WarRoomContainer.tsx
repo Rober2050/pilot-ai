@@ -172,7 +172,7 @@ export const WarRoomContainer: React.FC<WarRoomContainerProps> = ({ roles }) => 
                         try {
                             // Import DiscoveryAgent
                             const { DiscoveryAgent } = await import('../../../services/ai/DiscoveryAgent');
-                            const agent = new DiscoveryAgent(import.meta.env.VITE_GEMINI_API_KEY);
+                            const agent = new DiscoveryAgent();
 
                             // Generate emergency manifest from partial history
                             const manifest = await agent.forceFinalAnalysis(

@@ -113,7 +113,7 @@ export function ContentBlockEditor({
         let finalIdea = suggestedIdea;
         if (selectedModules.size > 0) {
             const list = Array.from(selectedModules).join(', ');
-            finalIdea = `${suggestedIdea}\n\nMódulos clave: ${list}.`;
+            finalIdea = `${suggestedIdea}\n\n${t('contentBlock.keyModules', 'Key modules')}: ${list}.`;
         }
         setTextInput(finalIdea);
         const newTextBlock = createContentBlock('text', finalIdea);
@@ -227,7 +227,7 @@ export function ContentBlockEditor({
                             {/* Suggested idea text */}
                             <div className="flex items-start gap-2 p-2.5">
                                 <span className="text-[10px] font-bold text-amber-700 uppercase tracking-wider pt-1 shrink-0">
-                                    ✨ Sugerencia:
+                                    ✨ {t('contentBlock.suggestionLabel', 'Suggestion:')}
                                 </span>
                                 <p className="text-xs text-amber-900 leading-relaxed flex-1">
                                     {suggestedIdea}
@@ -238,14 +238,14 @@ export function ContentBlockEditor({
                             {selectedModulesList.length > 0 && (
                                 <div className="mx-2.5 mb-2 p-2 bg-amber-500 rounded-lg">
                                     <p className="text-[10px] font-bold text-white uppercase tracking-wider mb-1.5">
-                                        ✅ {selectedModulesList.length} módulo{selectedModulesList.length !== 1 ? 's' : ''} seleccionado{selectedModulesList.length !== 1 ? 's' : ''}:
+                                        ✅ {t('contentBlock.selectedModules', { count: selectedModulesList.length })}
                                     </p>
                                     <div className="flex flex-wrap gap-1.5">
                                         {selectedModulesList.map((module, idx) => (
                                             <button
                                                 key={idx}
                                                 onClick={() => toggleModule(module)}
-                                                title="Clic para quitar"
+                                                title={t('contentBlock.removeModule', 'Click to remove')}
                                                 className="inline-flex items-center gap-1 px-2 py-0.5 bg-white text-amber-700 text-[10px] font-semibold rounded-full hover:bg-amber-100 transition-colors"
                                             >
                                                 <Check size={9} />
@@ -264,7 +264,7 @@ export function ContentBlockEditor({
                                     className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white text-[11px] font-bold transition-all shadow-sm"
                                 >
                                     <Zap size={9} aria-hidden="true" />
-                                    ✨ Usar sugerencia
+                                    ✨ {t('contentBlock.useSuggestion', 'Use suggestion')}
                                     {selectedModulesList.length > 0 && (
                                         <span className="ml-1 bg-white/30 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">
                                             +{selectedModulesList.length}
@@ -275,7 +275,7 @@ export function ContentBlockEditor({
                                     onClick={handleDismissSuggestion}
                                     className="px-3 py-1.5 rounded-full bg-white border border-amber-300 hover:bg-amber-50 text-amber-700 text-[11px] font-medium transition-colors"
                                 >
-                                    ✎ Escribir la mía
+                                    ✎ {t('contentBlock.writeMine', 'Write my own')}
                                 </button>
                             </div>
 
@@ -285,7 +285,7 @@ export function ContentBlockEditor({
                                     <div className="flex items-center gap-2">
                                         <div className="h-px flex-1 bg-amber-100" />
                                         <span className="text-[10px] font-bold text-amber-500 uppercase tracking-wider shrink-0">
-                                            📦 Personaliza — agrega módulos a tu idea:
+                                            📦 {t('contentBlock.customizeModules', 'Customize — add modules to your idea:')}
                                         </span>
                                         <div className="h-px flex-1 bg-amber-100" />
                                     </div>
@@ -294,7 +294,7 @@ export function ContentBlockEditor({
                                             <button
                                                 key={idx}
                                                 onClick={() => toggleModule(module)}
-                                                title="Clic para agregar"
+                                                title={t('contentBlock.addModule', 'Click to add')}
                                                 className="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-50 text-amber-700 text-[10px] font-medium rounded-full border border-amber-200 hover:border-amber-400 hover:bg-amber-100 transition-all"
                                             >
                                                 <Plus size={9} aria-hidden="true" />
@@ -308,7 +308,7 @@ export function ContentBlockEditor({
                             {/* All modules selected confirmation */}
                             {suggestedModules && suggestedModules.length > 0 && availableModules.length === 0 && (
                                 <p className="px-2.5 pb-2.5 text-[10px] text-amber-600 font-medium">
-                                    ✅ Todos los módulos seleccionados — hacé clic en "✨ Usar sugerencia" para continuar.
+                                    ✅ {t('contentBlock.allModulesSelected', 'All modules selected — click "Use suggestion" to continue.')}
                                 </p>
                             )}
                         </div>

@@ -1,110 +1,69 @@
-// SERVICIO DE COMUNICACIÓN CON GEMINI
-import { GoogleGenerativeAI, SchemaType, Schema } from "@google/generative-ai";
+// SERVICIO DE IA DEL WAR ROOM
+// Todas las llamadas pasan por el provider factory (proxy anthropic-proxy en Supabase).
+// Nunca hay API keys de proveedores de IA en el navegador.
 import { SYSTEM_PROMPTS } from "./warRoomPrompts";
 import { WarRoomPhase, SimulationResponse } from "../../types/war-room";
-import { StreamingService } from "./StreamingService";
-import { ModelRouter } from "./ModelRouter";
 import { LogEvent } from "../../types/streaming";
 import { RoleConfig } from "../../types/roles";
-import { globalRequestQueue, RequestPriority } from "./RequestQueue";
 import { suggestionsService } from "./suggestionsService";
+import { AIProviderFactory } from "./AIProviderFactory";
 
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || '';
-const genAI = new GoogleGenerativeAI(API_KEY);
-
-// 🛡️ NATIVE STRUCTURED OUTPUTS: Golden Mix Architecture
-// Defines a strict JSON schema that Gemini MUST follow, eliminating parsing errors.
-const simulationResponseSchema = {
-    type: SchemaType.OBJECT,
-    properties: {
-        simulation_thought: { type: SchemaType.STRING },
-        public_message: { type: SchemaType.STRING },
-        chart_update: {
-            type: SchemaType.ARRAY,
-            items: { type: SchemaType.NUMBER }
-        },
-        visual_artifact: { // PREPARACIÓN PARA FUTURO CANVAS
-            type: SchemaType.OBJECT,
-            description: "JSON for rendering rich UI components like diagrams or charts",
-            properties: {
-                type: { type: SchemaType.STRING, description: "'react-flow' or 'recharts'" },
-                data: {
-                    type: SchemaType.OBJECT,
-                    description: "Native JSON object. Must contain 'nodes' and 'edges' arrays for react-flow.",
-                    properties: {
-                        nodes: {
-                            type: SchemaType.ARRAY,
-                            items: {
-                                type: SchemaType.OBJECT,
-                                properties: {
-                                    id: { type: SchemaType.STRING },
-                                    type: { type: SchemaType.STRING, description: "'input', 'output', or 'default'" },
-                                    position: {
-                                        type: SchemaType.OBJECT,
-                                        properties: {
-                                            x: { type: SchemaType.NUMBER },
-                                            y: { type: SchemaType.NUMBER }
-                                        },
-                                        required: ["x", "y"]
-                                    },
-                                    data: {
-                                        type: SchemaType.OBJECT,
-                                        properties: {
-                                            label: { type: SchemaType.STRING },
-                                            details: { type: SchemaType.STRING, description: 'Optional extra information, sub-label or tech stack for the node.' }
-                                        },
-                                        required: ["label"]
-                                    }
-                                },
-                                required: ["id", "type", "position", "data"]
-                            }
-                        },
-                        edges: {
-                            type: SchemaType.ARRAY,
-                            items: {
-                                type: SchemaType.OBJECT,
-                                properties: {
-                                    id: { type: SchemaType.STRING },
-                                    source: { type: SchemaType.STRING },
-                                    target: { type: SchemaType.STRING },
-                                    label: { type: SchemaType.STRING },
-                                    animated: { type: SchemaType.BOOLEAN }
-                                },
-                                required: ["id", "source", "target"]
-                            }
-                        },
-                        chart_category: {
-                            type: SchemaType.STRING,
-                            description: "'bar', 'line', or 'pie'"
-                        },
-                        chart_series: {
-                            type: SchemaType.ARRAY,
-                            items: {
-                                type: SchemaType.OBJECT,
-                                properties: {
-                                    name: { type: SchemaType.STRING },
-                                    value: { type: SchemaType.NUMBER },
-                                    fill: { type: SchemaType.STRING }
-                                },
-                                required: ["name", "value"]
-                            }
-                        }
-                    }
-                }
-            },
-            required: ["type", "data"]
-        }
-    },
-    required: ["simulation_thought", "public_message", "chart_update"]
+/** Resolves the provider (Anthropic proxy) for a model and returns parsed JSON. */
+const generateJSON = async <T = any>(model: string, systemPrompt: string, userPrompt: string): Promise<T> => {
+    const provider = await AIProviderFactory.getInstance().getProviderForModel(model);
+    return provider.generateJSON<T>(model, systemPrompt, userPrompt);
 };
+
+const VALIDATION_MODEL = 'claude-haiku-4-5-20251001';
+const WAR_ROOM_MODEL = 'claude-haiku-4-5-20251001';
+const AI_TIMEOUT_MS = 60000;
+
+// Output contract for every debate turn.
+const SIMULATION_JSON_FORMAT = `
+OUTPUT FORMAT (MANDATORY): a single valid JSON object with this shape:
+{
+  "simulation_thought": "short internal reasoning",
+  "public_message": "your spoken argument — REQUIRED, never empty",
+  "chart_update": [n, n, n, n],
+  "sources": [{ "claim": "...", "source": "...", "year": 2026, "url": "...", "tier": 1 }],
+  "visual_artifact": {
+    "type": "'react-flow' or 'recharts'",
+    "data": {
+      "nodes": [{ "id": "...", "type": "'input' | 'output' | 'default'", "position": { "x": 0, "y": 0 }, "data": { "label": "...", "details": "..." } }],
+      "edges": [{ "id": "...", "source": "...", "target": "...", "label": "...", "animated": false }],
+      "chart_category": "'bar' | 'line' | 'pie'",
+      "chart_series": [{ "name": "...", "value": 0, "fill": "#hex" }]
+    }
+  }
+}
+"chart_update" is an array of 4 numbers (0-100). "sources" and "visual_artifact" are optional.`;
+
+/** Runs a JSON generation through the provider factory with a hard timeout. */
+async function generateWarRoomJSON<T>(systemPrompt: string, userPrompt: string): Promise<T> {
+    const timeout = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error(`AI Generation Timeout (${AI_TIMEOUT_MS / 1000}s)`)), AI_TIMEOUT_MS)
+    );
+    return Promise.race([
+        generateJSON<T>(WAR_ROOM_MODEL, systemPrompt, userPrompt),
+        timeout,
+    ]);
+}
+
+/** Guarantees the fields the War Room UI relies on are present. */
+function normalizeSimulationResponse(response: SimulationResponse, lang: 'es' | 'en'): SimulationResponse {
+    if (!response.chart_update || !Array.isArray(response.chart_update)) {
+        response.chart_update = [50, 50, 50, 50];
+    }
+    if (!response.public_message || response.public_message.trim() === "") {
+        response.public_message = lang === 'es' ? "(Analizando datos...)" : "(Analyzing data...)";
+    }
+    return response;
+}
 
 export const WarRoomService = {
 
     // Simple in-memory cache to avoid repeated Firestore hits
     roleCache: new Map<string, any>(),
-
-    // Streaming service instance
-    streamingService: new StreamingService(API_KEY),
 
     async processTurnWithStreaming(
         roleOrId: string | RoleConfig, // ✅ FIX 1.1: Accept full RoleConfig or legacy string
@@ -178,16 +137,13 @@ export const WarRoomService = {
                 });
             }
 
-            // 2. Determine model complexity
-            const taskComplexity = mode === 'crisis' || phase === 'RESOLUTION' ? 'complex' : 'simple';
-            const decision = ModelRouter.selectModel('debate', taskComplexity);
-
+            // 2. Log model
             onLog?.({
                 timestamp: Date.now(),
                 agentId: roleId,
                 message: lang === 'es'
-                    ? `Debate estándar - modelo ${taskComplexity === 'simple' ? 'rápido' : 'avanzado'} (Flash) (${decision.model})`
-                    : `Standard debate - ${taskComplexity === 'simple' ? 'fast' : 'advanced'} model (Flash) (${decision.model})`,
+                    ? `Debate estándar - modelo ${WAR_ROOM_MODEL}`
+                    : `Standard debate - model ${WAR_ROOM_MODEL}`,
                 type: 'thinking'
             });
 
@@ -215,15 +171,14 @@ export const WarRoomService = {
                 type: 'action'
             });
 
-            // 4. Generate response with streaming
-            const response = await this.streamingService.generateWithStreaming<SimulationResponse>({
-                model: decision.model,
-                systemPrompt: systemPrompt,
-                userPrompt: '',
-                expectJSON: true,
-                responseSchema: simulationResponseSchema,
-                onLog: onLog
-            });
+            // 4. Generate response
+            const response = normalizeSimulationResponse(
+                await generateWarRoomJSON<SimulationResponse>(
+                    systemPrompt,
+                    `Respond with your turn in the debate.\n${SIMULATION_JSON_FORMAT}`
+                ),
+                lang
+            );
 
             onLog?.({
                 timestamp: Date.now(),
@@ -288,7 +243,6 @@ export const WarRoomService = {
 
             if (role) {
                 // SUCCESS: Use Sandwich Method
-                let finalTools: any[] | undefined;
                 try {
                     const { PromptComposer } = await import('./PromptComposer');
 
@@ -327,87 +281,14 @@ export const WarRoomService = {
 
 
 
-                    // FORCE GOOGLE SEARCH FOR STRATEGY ANALYST + UX DESIGNER
-                    const isStrategyAnalyst = roleId === 'strategy-analyst' || roleId === 'strategy-manager';
-                    const isUXDesigner = roleId === 'ux-designer';
-                    finalTools = tools || (role.grounding || isStrategyAnalyst || isUXDesigner ? [{ google_search: {} }] : undefined);
+                    const jsonResponse = await generateWarRoomJSON<SimulationResponse>(
+                        finalPrompt,
+                        `Respond with your turn in the debate.
+${SIMULATION_JSON_FORMAT}`
+                    );
+                    console.log(`[WarRoomService] AI response received for ${roleId}`);
 
-                    // FIX: Strict Native Structured Outputs Config
-                    const generationConfig: any = {
-                        responseMimeType: "application/json",
-                        responseSchema: simulationResponseSchema
-                    };
-
-                    if (finalTools && finalTools.length > 0) {
-                        // Gemini doesn't currently support responseSchema perfectly with Tools in all SDK versions,
-                        // but setting the mimeType helps. If tools are used, it will return a functionCall.
-                        // For War Room, tools are injected sources, we keep json schema to enforce output.
-                        // (We leave it tight to enforce the format if it decides to answer instead of tool-call)
-                    }
-
-                    const model = genAI.getGenerativeModel({
-                        model: role.model || "gemini-2.5-flash",
-                        generationConfig: generationConfig,
-                        tools: finalTools
-                    });
-
-                    // 15-second timeout for AI Generation
-                    const aiTimeout = new Promise((_, reject) => setTimeout(() => reject(new Error("AI Generation Timeout (15s)")), 15000));
-
-                    const result: any = await Promise.race([
-                        model.generateContent(finalPrompt),
-                        aiTimeout
-                    ]);
-
-                    const text = result.response.text();
-                    console.log(`[WarRoomService] Raw AI Response for ${roleId}:`, text);
-
-                    // 100% Guaranteed JSON due to responseSchema
-                    let jsonResponse: SimulationResponse;
-                    try {
-                        jsonResponse = JSON.parse(text) as SimulationResponse;
-                    } catch (parseError) {
-                        console.error("[WarRoomService] Critical: Gemini ignored responseSchema", parseError);
-                        jsonResponse = {
-                            simulation_thought: "Error de formato de IA.",
-                            public_message: lang === 'es' ? "He encontrado un error analizando los datos, denme un momento." : "I encountered a processing error, give me a moment.",
-                            chart_update: [50, 50, 50, 50]
-                        };
-                    }
-
-                    // --- FORCE SOURCE INJECTION FROM GROUNDING METADATA ---
-                    if (result.response.candidates && result.response.candidates[0]?.groundingMetadata) {
-                        const metadata = result.response.candidates[0].groundingMetadata;
-                        console.log(`[WarRoomService] Found Grounding Metadata!`, metadata);
-
-                        if (metadata.groundingChunks) {
-                            const injectedSources = metadata.groundingChunks
-                                .filter((chunk: any) => chunk.web)
-                                .map((chunk: any) => ({
-                                    claim: "Source from Google Search",
-                                    source: chunk.web.title || "Google Search",
-                                    year: new Date().getFullYear(),
-                                    url: chunk.web.uri,
-                                    tier: 1
-                                }));
-
-                            if (injectedSources.length > 0) {
-                                if (!(jsonResponse as any).sources) (jsonResponse as any).sources = [];
-                                (jsonResponse as any).sources = [...(jsonResponse as any).sources, ...injectedSources];
-                            }
-                        }
-                    }
-                    // ------------------------------------------------------
-
-                    // Validation checks (just to be safe, though Schema enforces it)
-                    if (!jsonResponse.chart_update || !Array.isArray(jsonResponse.chart_update)) {
-                        jsonResponse.chart_update = [50, 50, 50, 50];
-                    }
-                    if (!jsonResponse.public_message || jsonResponse.public_message.trim() === "") {
-                        jsonResponse.public_message = lang === 'es' ? "(Analizando datos...)" : "(Analyzing data...)";
-                    }
-
-                    return jsonResponse;
+                    return normalizeSimulationResponse(jsonResponse, lang);
 
                 } catch (aiError) {
                     console.error(`[WarRoomService] AI Generation failed for ${roleId} - Degadation Mode Active`, aiError);
@@ -517,41 +398,9 @@ JSON STRUCTURE:
             IMPORTANT: GENERATE A VALID JSON RESPONSE. "public_message" MUST CONTAIN A SENTENCE.
         `;
 
-        // FIX: API Error "Tool use with a response mime type: 'application/json' is unsupported"
-        const generationConfig: any = {
-            responseMimeType: "application/json",
-            responseSchema: simulationResponseSchema
-        };
-
-        const modelConfig = genAI.getGenerativeModel({
-            model: "gemini-2.5-flash",
-            generationConfig: generationConfig,
-            tools: tools
-        });
-
         try {
-            const result = await modelConfig.generateContent(finalPrompt);
-            const text = result.response.text();
-
-            let jsonResponse: SimulationResponse;
-            try {
-                jsonResponse = JSON.parse(text) as SimulationResponse;
-            } catch (e) {
-                jsonResponse = {
-                    simulation_thought: "Error de formato de IA.",
-                    public_message: lang === 'es' ? "He encontrado un error estructurando los datos." : "I encountered a formatting error.",
-                    chart_update: [50, 50, 50, 50]
-                };
-            }
-
-            if (!jsonResponse.chart_update || !Array.isArray(jsonResponse.chart_update)) {
-                jsonResponse.chart_update = [50, 50, 50, 50];
-            }
-            if (!jsonResponse.public_message) {
-                jsonResponse.public_message = lang === 'es' ? "(Analizando...)" : "(Analyzing...)";
-            }
-
-            return jsonResponse;
+            const jsonResponse = await generateWarRoomJSON<SimulationResponse>(finalPrompt, SIMULATION_JSON_FORMAT);
+            return normalizeSimulationResponse(jsonResponse, lang);
 
         } catch (fallbackLayerError) {
             console.error(`[WarRoomService] Legacy AI Generation also failed`, fallbackLayerError);
@@ -583,26 +432,11 @@ JSON STRUCTURE:
             }
         `;
 
-        const manifestoSchema: Schema = {
-            type: SchemaType.OBJECT,
-            properties: {
-                decision: { type: SchemaType.STRING },
-                summary: { type: SchemaType.STRING },
-                tradeOffs: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } },
-                risks: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } },
-                roadmap: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } }
-            },
-            required: ["decision", "summary"]
-        };
-
-        const modelConfig = genAI.getGenerativeModel({
-            model: "gemini-2.5-flash",
-            generationConfig: { responseMimeType: "application/json", responseSchema: manifestoSchema }
-        });
-
         try {
-            const result = await modelConfig.generateContent(prompt);
-            return JSON.parse(result.response.text());
+            return await generateWarRoomJSON<any>(
+                'You are the War Room secretary. Respond only with the requested JSON object.',
+                prompt
+            );
         } catch (e) {
             console.error("Manifesto Generator Error:", e);
             return { decision: "ERROR", summary: "API Error (Timeout)", tradeOffs: [], risks: [], roadmap: [] };
@@ -623,23 +457,11 @@ JSON STRUCTURE:
             OUTPUT JSON: { "role": "Name of the Role", "text": "The answer in first person." }
         `;
 
-        const debriefSchema: Schema = {
-            type: SchemaType.OBJECT,
-            properties: {
-                role: { type: SchemaType.STRING },
-                text: { type: SchemaType.STRING }
-            },
-            required: ["role", "text"]
-        };
-
-        const modelConfig = genAI.getGenerativeModel({
-            model: "gemini-2.5-flash",
-            generationConfig: { responseMimeType: "application/json", responseSchema: debriefSchema }
-        });
-
         try {
-            const result = await modelConfig.generateContent(prompt);
-            return JSON.parse(result.response.text());
+            return await generateWarRoomJSON<{ role: string; text: string }>(
+                'You are the War Room Q&A engine. Respond only with the requested JSON object.',
+                prompt
+            );
         } catch (error) {
             const e = error as any;
             console.error("[WarRoomService] Error en askDebrief:", e);
@@ -676,28 +498,13 @@ JSON STRUCTURE:
             }
         `;
 
-        const validationSchema: Schema = {
-            type: SchemaType.OBJECT,
-            properties: {
-                valid: { type: SchemaType.BOOLEAN },
-                reason: { type: SchemaType.STRING },
-                incomplete: { type: SchemaType.BOOLEAN },
-                missingComponents: {
-                    type: SchemaType.ARRAY,
-                    items: { type: SchemaType.STRING }
-                }
-            },
-            required: ["valid", "reason", "incomplete"]
-        };
-
-        const modelConfig = genAI.getGenerativeModel({
-            model: "gemini-2.5-flash",
-            generationConfig: { responseMimeType: "application/json", responseSchema: validationSchema }
-        });
-
         try {
-            const result = await modelConfig.generateContent(prompt);
-            const validation = JSON.parse(result.response.text());
+            // Routed through the provider factory (Anthropic proxy).
+            const validation = await generateJSON(
+                VALIDATION_MODEL,
+                'You are a strict input validator. Respond only with the requested JSON object.',
+                prompt
+            );
 
             // For any valid idea, always generate an expanded business model suggestion
             if (validation.valid) {
