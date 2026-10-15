@@ -1,5 +1,4 @@
 import { AIProvider } from "../../types/ai";
-import { GeminiProvider } from "./providers/GeminiProvider";
 import { OpenAIProvider } from "./providers/OpenAIProvider";
 import { AnthropicProvider } from "./providers/AnthropicProvider";
 import { aiModelsService } from "../firebase/aiModelsService";
@@ -10,7 +9,6 @@ export class AIProviderFactory {
 
     private constructor() {
         this.providers = new Map();
-        this.registerProvider(new GeminiProvider());
         this.registerProvider(new OpenAIProvider());
         this.registerProvider(new AnthropicProvider());
     }
@@ -29,7 +27,7 @@ export class AIProviderFactory {
     public getProvider(providerId: string): AIProvider {
         const provider = this.providers.get(providerId);
         if (!provider) {
-            return this.providers.get('anthropic') ?? this.providers.get('google')!;
+            return this.providers.get('anthropic')!;
         }
         return provider;
     }
@@ -48,19 +46,18 @@ export class AIProviderFactory {
             // 2. Heuristic based on model name prefix
             let candidate: AIProvider;
             if (modelName.startsWith('gpt')) candidate = this.getProvider('openai');
-            else if (modelName.startsWith('claude')) candidate = this.getProvider('anthropic');
-            else candidate = this.getProvider('google'); // gemini-*
+            else candidate = this.getProvider('anthropic');
 
             if (await candidate.isAvailable()) return candidate;
 
-            // 3. Availability waterfall: Anthropic → Google → OpenAI
+            // 3. Availability fallback: Anthropic
             const anthropic = this.getProvider('anthropic');
             if (await anthropic.isAvailable()) return anthropic;
 
             return candidate;
         } catch (error) {
             console.error("Error resolving provider for model:", error);
-            return this.getProvider('anthropic') ?? this.getProvider('google');
+            return this.getProvider('anthropic');
         }
     }
 

@@ -1,4 +1,18 @@
 {
+    "uxBrief": {
+        "industry": "Industry",
+        "uiType": "UI type",
+        "brand": "Brand",
+        "confidence": "Confidence",
+        "tone": "Tone",
+        "uiTypes": {
+            "A": "Marketing landing page",
+            "B": "Admin dashboard / backoffice",
+            "C": "Product web app",
+            "D": "E-commerce / catalog",
+            "E": "Mobile app"
+        }
+    },
     "common": {
         "loading": "Loading...",
         "error": "Error",

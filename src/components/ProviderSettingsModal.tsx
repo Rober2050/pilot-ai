@@ -15,8 +15,7 @@ export default function ProviderSettingsModal({ isOpen, onClose }: ProviderSetti
 
     const providers = [
         { id: 'openai', name: 'OpenAI', icon: '🤖' },
-        { id: 'anthropic', name: 'Anthropic', icon: '🧠' },
-        { id: 'google', name: 'Google Gemini', icon: '✨' }
+        { id: 'anthropic', name: 'Anthropic', icon: '🧠' }
     ];
 
     useEffect(() => {

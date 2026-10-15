@@ -5,7 +5,7 @@ import { TourConfig, StageConfig } from '../../../types/academy-schema';
 
 import { rolesService } from '../../../services/firebase/rolesService';
 import { RoleConfig } from '../../../types/roles';
-import { geminiService } from '../../../services/gemini/geminiService';
+import { aiService } from '../../../services/ai/aiService';
 import ImageUploadCropModal from './ImageUploadCropModal';
 import { exportTourToTypeScript, importTourFromTypeScript } from '../../../utils/tourExport';
 import { tourDevService } from '../../../services/dev/tourDevService';
@@ -103,7 +103,7 @@ export default function AcademyCreator() {
         setIsGenerating(true);
         try {
             // 1. Generate Content via AI
-            const generatedStage = await geminiService.generateAcademyStage(config.role, type, generationLanguage);
+            const generatedStage = await aiService.generateAcademyStage(config.role, type, generationLanguage);
 
             // 2. Add IDs and defaults if missing
             const newStage = {

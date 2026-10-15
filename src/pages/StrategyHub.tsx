@@ -44,7 +44,7 @@ import { ContentBlockEditor } from '../components/input/ContentBlockEditor';
 import type { ContentBlock } from '../types/content';
 import { createContentBlock, combineBlocksForAI } from '../types/content';
 
-import { geminiService } from '../services/gemini/geminiService';
+import { aiService } from '../services/ai/aiService';
 import { PromptEngine } from '../ai/promptEngine';
 import { Project, RoleOutput, SynthesisOutput } from '../types/blueprint';
 import { generateSynthesis } from '../services/ai/SynthesisAgent';
@@ -1351,7 +1351,7 @@ OBJECTIVE: Analyze, diagram, and optimize this sub-process as an independent ent
             const options: any = (role.grounding || role.roleId === 'ux-designer') ? { tools: [{ google_search: {} }] } : {};
 
             // 3. Attach Media (Images/Audio) if available and technically supported
-            // Current GeminiProvider supports 'media' in options
+            // Media attachments travel in options.media
             if (attachments.length > 0) {
                 options.media = attachments.map(att => ({
                     mimeType: att.mimeType,
@@ -1359,7 +1359,7 @@ OBJECTIVE: Analyze, diagram, and optimize this sub-process as an independent ent
                 }));
             }
 
-            // 4. Timeout guard — auto-cancel if AI takes too long (network loss, Gemini hang, etc.)
+            // 4. Timeout guard — auto-cancel if AI takes too long (network loss, model hang, etc.)
             const timeoutMs = ROLE_TIMEOUTS_MS[role.roleId] ?? DEFAULT_TIMEOUT_MS;
             const timeoutMinutes = Math.round(timeoutMs / 60000);
             const timeoutPromise = new Promise<never>((_, reject) => {
@@ -1371,7 +1371,7 @@ OBJECTIVE: Analyze, diagram, and optimize this sub-process as an independent ent
             });
 
             const result = await Promise.race([
-                geminiService.generateJSON(role.model, enhancedSystemPrompt, promptContext, options),
+                aiService.generateJSON(role.model, enhancedSystemPrompt, promptContext, options),
                 timeoutPromise,
             ]);
 

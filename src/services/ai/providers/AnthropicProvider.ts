@@ -13,7 +13,7 @@ import { extractJSONFromText, isJsonTruncated, recoverParseableJSON, closeIncomp
 
 const DEFAULT_MODEL = 'claude-haiku-4-5-20251001';
 /**
- * Aligned with GeminiProvider's maxOutputTokens (65536) — Product Manager,
+ * Generous output budget (65536) — Product Manager,
  * Architect and other complex roles routinely produce 30K-50K tokens of
  * structured JSON dashboards. Haiku 4.5 supports up to 64K output tokens.
  *

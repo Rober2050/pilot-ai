@@ -4,7 +4,7 @@ export interface RoleConfig {
     description: string;
     systemPrompt: string;
     model: string;
-    aiModel?: string; // Optional: specific AI model for this role (e.g., 'gemini-2.5-pro' for UX Designer). Falls back to default from AdminConsole.
+    aiModel?: string; // Optional: specific AI model for this role (e.g., 'claude-haiku-4-5-20251001'). Falls back to default from AdminConsole.
     temperature: number;
     orderIndex: number;
     isEnabled: boolean;

@@ -1,4 +1,4 @@
-import { geminiService } from '../gemini/geminiService';
+import { aiService } from './aiService';
 import { aiModelsService } from '../firebase/aiModelsService';
 import { RoleConfig } from '../../types/roles';
 
@@ -93,7 +93,7 @@ Return JSON with expanded idea and list of added modules.`;
 
         try {
             // STEP 1: Resolve which AI model to use
-            let modelToUse: string = 'gemini-2.5-flash'; // default
+            let modelToUse: string = 'claude-haiku-4-5-20251001'; // default
             let modelSource: string = 'default';
 
             // If role context provided and has specific aiModel, use it
@@ -118,7 +118,7 @@ Return JSON with expanded idea and list of added modules.`;
             // STEP 2: Try primary model
             let lastError: any;
             try {
-                const result = await geminiService.generateJSON(
+                const result = await aiService.generateJSON(
                     modelToUse,
                     systemPrompt,
                     userPrompt,
@@ -147,14 +147,14 @@ Return JSON with expanded idea and list of added modules.`;
                 console.warn(`[suggestionsService] Primary model '${modelToUse}' failed (${modelSource}):`, primaryError);
 
                 // STEP 3: Fallback chain - try alternative models
-                const fallbackModels = ['gemini-2.5-pro', 'gemini-2.5-flash'];
+                const fallbackModels = ['claude-haiku-4-5-20251001'];
 
                 for (const fallbackModel of fallbackModels) {
                     if (fallbackModel === modelToUse) continue; // Skip if same as primary
 
                     try {
                         console.warn(`[suggestionsService] Attempting fallback model: ${fallbackModel}`);
-                        const result = await geminiService.generateJSON(
+                        const result = await aiService.generateJSON(
                             fallbackModel,
                             systemPrompt,
                             userPrompt,

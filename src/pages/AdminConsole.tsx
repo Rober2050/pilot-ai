@@ -7,7 +7,7 @@ import { subscriptionService, SubscriptionPlan } from '../services/firebase/subs
 import { aiModelsService, AIModel } from '../services/firebase/aiModelsService';
 import { Settings, Users, CreditCard, FlaskConical, Play, RotateCcw, Cpu, CheckCircle, Network, Layout, ChevronRight, Trash2, Mail, Wand2, BarChart3 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { geminiService } from '../services/gemini/geminiService';
+import { aiService } from '../services/ai/aiService';
 import AIModelsManager from '../components/AIModelsManager';
 import { ArchitectureExplorer } from '../components/admin/architecture/ArchitectureExplorer';
 import { validateOutput } from '../services/ai/outputValidator';
@@ -383,7 +383,7 @@ export default function AdminConsole() {
             }
 
             // Use generateJSON to ensure valid JSON output which is what the renderer expects
-            const result = await geminiService.generateJSON(role.model, systemPromptToUse, testInput);
+            const result = await aiService.generateJSON(role.model, systemPromptToUse, testInput);
 
             // Validate output quality
             const validation = validateOutput(result, role.roleId);
@@ -711,7 +711,7 @@ export default function AdminConsole() {
                                     limits: {
                                         analysesPerMonth: 10,
                                         maxProjects: 1,
-                                        allowedModels: ['gemini-2.5-flash']
+                                        allowedModels: ['claude-haiku-4-5-20251001']
                                     }
                                 })}
                             />

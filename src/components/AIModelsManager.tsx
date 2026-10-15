@@ -85,7 +85,7 @@ export default function AIModelsManager() {
                             id: `new-model-${Date.now()}`,
                             modelName: '',
                             displayName: '',
-                            provider: 'google',
+                            provider: 'anthropic',
                             isActive: true,
                             description: ''
                         })}
@@ -209,8 +209,7 @@ export default function AIModelsManager() {
                                         <option value="gpt-4o">OpenAI GPT-4o</option>
                                         <option value="gpt-4-turbo">OpenAI GPT-4 Turbo</option>
                                         <option value="gpt-3.5-turbo">OpenAI GPT-3.5 Turbo</option>
-                                        <option value="gemini-1.5-pro">Google Gemini 1.5 Pro</option>
-                                        <option value="gemini-1.5-flash">Google Gemini 1.5 Flash</option>
+                                        <option value="claude-haiku-4-5-20251001">Anthropic Claude Haiku 4.5</option>
                                         <option value="claude-3-opus-20240229">Anthropic Claude 3 Opus</option>
                                         <option value="claude-3-sonnet-20240229">Anthropic Claude 3 Sonnet</option>
                                         <option value="claude-3-5-haiku-20241022">Anthropic Claude 3.5 Haiku</option>
@@ -230,7 +229,7 @@ export default function AIModelsManager() {
                                     value={editingModel.displayName}
                                     onChange={(e) => setEditingModel({ ...editingModel, displayName: e.target.value })}
                                     className="input-field"
-                                    placeholder="e.g., Gemini 2.5 Flash (Latest)"
+                                    placeholder="e.g., Claude Haiku 4.5"
                                 />
                             </div>
                             <div>
@@ -240,9 +239,8 @@ export default function AIModelsManager() {
                                     onChange={(e) => setEditingModel({ ...editingModel, provider: e.target.value as any })}
                                     className="input-field"
                                 >
-                                    <option value="google">Google</option>
-                                    <option value="openai">OpenAI</option>
                                     <option value="anthropic">Anthropic</option>
+                                    <option value="openai">OpenAI</option>
                                     <option value="other">Other</option>
                                 </select>
                             </div>

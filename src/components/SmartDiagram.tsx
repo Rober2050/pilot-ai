@@ -966,11 +966,6 @@ ${diEdges}
                         <span className="text-xs text-indigo-700 ml-2">Haz <b>Clic Derecho</b> en cualquier nodo para Expandir Sub-Procesos, Analizar Riesgos o Generar Checklists. Para editar nodos y conexiones, presiona <b>EDITAR</b>.</span>
                     </div>
                 </div>
-                {!isFullScreen && (
-                    <div className="text-[10px] font-bold text-indigo-400 bg-indigo-100/50 px-2 py-0.5 rounded uppercase tracking-wider">
-                        Power by Gemini 1.5
-                    </div>
-                )}
             </div>
 
             {/* Automation Overlay Legend */}

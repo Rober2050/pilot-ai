@@ -40,7 +40,7 @@ const initialNodes: Node[] = [
     },
     {
         id: '5',
-        data: { label: '🎬 GOOGLE GEMINI 2.0 (Logic Microservice)' },
+        data: { label: '🎬 CLAUDE HAIKU 4.5 (anthropic-proxy)' },
         position: { x: 450, y: 300 },
         style: { background: '#1e1b4b', color: '#c084fc', border: '1px solid #c084fc', borderRadius: '8px' },
     },

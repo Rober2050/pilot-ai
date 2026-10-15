@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { loggingService, LogEntry } from '../../services/firebase/loggingService';
-import { configService } from '../../services/firebase/configService';
 import { authService } from '../../services/firebase/authService';
-import { geminiService } from '../../services/gemini/geminiService';
+import { aiService } from '../../services/ai/aiService';
 import { auth } from '../../services/firebase/firebaseClient';
 import { AlertCircle, RefreshCw, Trash2, Download, ChevronDown, CheckCircle, AlertTriangle, XCircle, Wifi, Key, Shield } from 'lucide-react';
 
@@ -47,69 +46,31 @@ export function SystemMonitoring() {
         setDiagnostics([]);
         const newResults: DiagnosticResult[] = [];
 
-        // 1. API Key Check
+        // 1. AI connectivity — every model call goes through the anthropic-proxy Edge Function
         try {
-            const hasGeminiKey = import.meta.env.VITE_GEMINI_API_KEY;
-            const firestoreKey = await configService.getAPIKey('google');
-
-            if (hasGeminiKey || firestoreKey) {
-                newResults.push({
-                    id: 'api-key',
-                    name: 'API Key Configuration',
-                    status: 'success',
-                    message: 'Gemini API Key found',
-                    details: firestoreKey ? 'Loaded from Firestore' : 'Environment Variables'
-                });
-            } else {
-                newResults.push({
-                    id: 'api-key',
-                    name: 'API Key Configuration',
-                    status: 'error',
-                    message: 'Missing Gemini API Key',
-                    details: 'No key found in env or system_config'
-                });
-            }
-        } catch (e: any) {
+            const reply = await aiService.generateText(
+                'claude-haiku-4-5-20251001',
+                'You are a health check. Reply with the single word OK.',
+                'ping'
+            );
             newResults.push({
-                id: 'api-key',
-                name: 'API Key Configuration',
-                status: 'error',
-                message: 'Failed to check configuration',
-                details: e.message
+                id: 'connectivity',
+                name: 'Claude API (anthropic-proxy)',
+                status: 'success',
+                message: 'Proxy reachable and model responding',
+                details: `Reply: ${reply.trim().slice(0, 40)}`
             });
-        }
-
-        // 2. Connectivity Check
-        try {
-            const models = await geminiService.listModels();
-            if (models && models.length > 0) {
-                newResults.push({
-                    id: 'connectivity',
-                    name: 'Gemini API Connectivity',
-                    status: 'success',
-                    message: 'Successfully connected to Google Gemini',
-                    details: `Available models: ${models.length}`
-                });
-            } else {
-                newResults.push({
-                    id: 'connectivity',
-                    name: 'Gemini API Connectivity',
-                    status: 'warning',
-                    message: 'Connected but no models listed',
-                    details: 'Check API Key permissions'
-                });
-            }
         } catch (e: any) {
             newResults.push({
                 id: 'connectivity',
-                name: 'Gemini API Connectivity',
+                name: 'Claude API (anthropic-proxy)',
                 status: 'error',
                 message: 'Connection Failed',
                 details: e.message
             });
         }
 
-        // 3. Auth Status
+        // 2. Auth Status
         try {
             const user = auth.currentUser;
             if (user) {
@@ -170,20 +131,20 @@ export function SystemMonitoring() {
     }, []);
 
     const filteredLogs = logs.filter(log => {
-        if (log.source !== 'GeminiProvider') return false;
+        if (log.source !== 'AnthropicProvider') return false;
         if (selectedModel !== 'all' && log.details?.model !== selectedModel) return false;
         return true;
     });
 
     const models = Array.from(new Set(
         logs
-            .filter(l => l.source === 'GeminiProvider')
+            .filter(l => l.source === 'AnthropicProvider')
             .map(l => l.details?.model || l.details?.primaryModel || 'unknown')
             .filter(Boolean)
     )).sort();
 
     const errorCounts = logs
-        .filter(l => l.source === 'GeminiProvider' && l.level === 'error')
+        .filter(l => l.source === 'AnthropicProvider' && l.level === 'error')
         .reduce((acc: Record<string, number>, log) => {
             const model = log.details?.model || log.details?.primaryModel || 'unknown';
             acc[model] = (acc[model] || 0) + 1;

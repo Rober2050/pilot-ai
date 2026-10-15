@@ -33,7 +33,7 @@ const TECH_STACK_DATA = [
         category: "Intelligence Engine",
         icon: <Cpu className="text-purple-400" />,
         items: [
-            { name: "Google Gemini 2.0", desc: "Primary Reasoning Brain" },
+            { name: "Claude Haiku 4.5", desc: "Primary Reasoning Brain (via anthropic-proxy)" },
             { name: "OpenAI SDK", desc: "Secondary/Fallback Brain" },
             { name: "Vector Search", desc: "Semantic Retrieval (Planned)" }
         ]
@@ -56,7 +56,7 @@ The architecture is decoupled, event-driven, and optimized for real-time collabo
 - **Micro-Integrations**: Logic is injected via stateless AI inputs, not heavy containers.
 
 ## 3. Intelligence Orchestration
-- **Engine**: Gemini 2.0 Flash (Latency < 200ms).
+- **Engine**: Claude Haiku 4.5 via the anthropic-proxy Edge Function.
 - **Validation**: "Gatekeeper Protocols" strictly filter inputs before processing.
 - **Safety**: Client-side semantic validation prevents injection attacks.
 

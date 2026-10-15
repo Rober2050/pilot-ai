@@ -1,4 +1,18 @@
 {
+    "uxBrief": {
+        "industry": "Industria",
+        "uiType": "Tipo de interfaz",
+        "brand": "Marca",
+        "confidence": "Confianza",
+        "tone": "Tono",
+        "uiTypes": {
+            "A": "Landing page de marketing",
+            "B": "Panel de administración / backoffice",
+            "C": "Aplicación web de producto",
+            "D": "E-commerce / catálogo",
+            "E": "App móvil"
+        }
+    },
     "common": {
         "loading": "Cargando...",
         "error": "Error",
@@ -47,7 +61,7 @@
         "starting": "Iniciando diagnósticos del sistema...",
         "checkingFirebase": "Verificando conexión a Firebase... OK",
         "checkingAuth": "Verificando Servicio de Autenticación... OK",
-        "checkingGemini": "Verificando configuración de API Gemini... OK",
+        "checkingGemini": "Verificando configuración de API de IA... OK",
         "verifyingRoles": "Verificando Definiciones de Roles... 5 Roles Cargados",
         "completed": "Diagnósticos completados exitosamente."
     },

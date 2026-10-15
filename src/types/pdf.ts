@@ -25,7 +25,7 @@ export interface PDFProcessorConfig {
     maxSizeMB: number;
     enableOCR: boolean;
     summaryMaxWords: number;
-    ocrProvider: 'gemini-vision';
+    ocrProvider: 'ai-vision';
 }
 
 export interface SmartSummaryOptions {

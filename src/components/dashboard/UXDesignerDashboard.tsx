@@ -104,6 +104,12 @@ const EmptyState = ({ message }: { message: string }) => (
     </div>
 );
 
+/** The protocol returns the UI type as a bare letter (A–E); show its readable name instead. */
+const formatUiType = (uiType: string, t: (key: string) => string): string => {
+    const letter = uiType.trim().match(/^([A-E])/i)?.[1]?.toUpperCase();
+    return letter ? t(`uxBrief.uiTypes.${letter}`) : uiType;
+};
+
 export const UXDesignerDashboard = ({ data, projectId, roleId }: UXDesignerDashboardProps) => {
     const { t } = useTranslation('translation');
     const [activeTab, setActiveTab] = useState<'summary' | 'foundation' | 'components' | 'references' | 'accessibility' | 'prototype'>('summary');
@@ -157,28 +163,28 @@ export const UXDesignerDashboard = ({ data, projectId, roleId }: UXDesignerDashb
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                     {brief.industry && (
                         <div className="bg-white border border-slate-200 rounded-lg p-3">
-                            <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide mb-1">Industry</p>
+                            <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide mb-1">{t('uxBrief.industry')}</p>
                             <p className="text-sm font-bold text-slate-800">{brief.industry}</p>
                         </div>
                     )}
                     {brief.uiType && (
                         <div className="bg-white border border-slate-200 rounded-lg p-3">
-                            <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide mb-1">UI Type</p>
-                            <p className="text-sm font-bold text-slate-800">{brief.uiType}</p>
+                            <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide mb-1">{t('uxBrief.uiType')}</p>
+                            <p className="text-sm font-bold text-slate-800">{formatUiType(brief.uiType, t)}</p>
                         </div>
                     )}
                     {brief.brandDetected && (
                         <div className="bg-white border border-emerald-200 rounded-lg p-3">
-                            <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide mb-1">Brand</p>
+                            <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide mb-1">{t('uxBrief.brand')}</p>
                             <p className="text-sm font-bold text-emerald-700">{brief.brandDetected}</p>
                             {brief.brandConfidence && (
-                                <p className="text-[10px] text-emerald-600 mt-1">Confidence: {brief.brandConfidence}%</p>
+                                <p className="text-[10px] text-emerald-600 mt-1">{t('uxBrief.confidence')}: {brief.brandConfidence}%</p>
                             )}
                         </div>
                     )}
                     {brief.emotionalTone && (
                         <div className="bg-white border border-slate-200 rounded-lg p-3">
-                            <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide mb-1">Tone</p>
+                            <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide mb-1">{t('uxBrief.tone')}</p>
                             <p className="text-sm font-bold text-slate-800">{brief.emotionalTone}</p>
                         </div>
                     )}

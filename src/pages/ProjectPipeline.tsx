@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { projectsService } from '../services/firebase/projectsService';
 import { rolesService } from '../services/firebase/rolesService';
 import { RoleConfig } from '../types/roles';
-import { geminiService } from '../services/gemini/geminiService';
+import { aiService } from '../services/ai/aiService';
 import { docxGenerator } from '../services/export/docxGenerator';
 import { excelGenerator } from '../services/export/excelGenerator';
 import { jsonToYaml } from '../utils/yamlSerializer';
@@ -190,7 +190,7 @@ export default function ProjectPipeline() {
         ${docInstructions}
       `;
 
-            const result = await geminiService.generateJSON(role.model, role.systemPrompt, promptContext);
+            const result = await aiService.generateJSON(role.model, role.systemPrompt, promptContext);
 
             const completedOutput: RoleOutput = {
                 status: 'completed',
@@ -285,7 +285,7 @@ export default function ProjectPipeline() {
                     <div className="flex gap-3">
                         <button className="btn-secondary">
                             <Share2 className="h-4 w-4" />
-                            {t('common.share')}
+                            {t('translation:common.share')}
                         </button>
 
                         <div className="relative">
@@ -294,7 +294,7 @@ export default function ProjectPipeline() {
                                 onClick={() => setShowExportMenu(!showExportMenu)}
                             >
                                 <Download className="h-4 w-4" />
-                                {t('common.export')}
+                                {t('translation:common.export')}
                             </button>
                             {showExportMenu && (
                                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-100 z-10 overflow-hidden animate-in fade-in zoom-in duration-200">

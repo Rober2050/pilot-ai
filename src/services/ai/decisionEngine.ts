@@ -1,5 +1,5 @@
 import { RoleConfig } from '../../types/roles';
-import { geminiService } from '../gemini/geminiService';
+import { aiService } from './aiService';
 
 export interface DecisionScore {
     feasibility: number; // Technical Viability (0-100)
@@ -74,7 +74,7 @@ export const decisionEngine = {
         `;
 
         try {
-            const response = await geminiService.generateContent('gemini-2.5-flash', prompt, "Generate Decision JSON");
+            const response = await aiService.generateContent('claude-haiku-4-5-20251001', prompt, "Generate Decision JSON");
 
             // Clean and parse JSON
             const jsonStr = response.replace(/```json/g, '').replace(/```/g, '').trim();

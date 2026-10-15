@@ -38,7 +38,7 @@ export const RoleList: React.FC<RoleListProps> = ({
             displayName: '',
             description: '',
             systemPrompt: '',
-            model: 'gemini-2.5-flash',
+            model: 'claude-haiku-4-5-20251001',
             temperature: 0.7,
             isEnabled: true,
             orderIndex: roles.length + 1,

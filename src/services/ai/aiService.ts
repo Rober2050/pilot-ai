@@ -1,8 +1,7 @@
-import { AIProviderFactory } from "../ai/AIProviderFactory";
+import { AIProviderFactory } from "./AIProviderFactory";
 
-// Legacy service wrapper to maintain backward compatibility
-// while using the new robust provider architecture
-export const geminiService = {
+// Thin wrapper over the provider architecture; every call is served by Claude via the anthropic-proxy.
+export const aiService = {
     generateText: async (modelName: string, systemPrompt: string, userPrompt: string, options?: any): Promise<string> => {
         const provider = await AIProviderFactory.getInstance().getProviderForModel(modelName);
         return provider.generateText(modelName, systemPrompt, userPrompt, options);
@@ -36,8 +35,8 @@ export const geminiService = {
         
         Include specific folder names and file conventions for these technologies.`;
 
-        const provider = AIProviderFactory.getInstance().getProvider('google');
-        return provider.generateText('gemini-2.5-flash', systemPrompt, userPrompt);
+        const provider = AIProviderFactory.getInstance().getProvider('anthropic');
+        return provider.generateText('claude-haiku-4-5-20251001', systemPrompt, userPrompt);
     },
 
     generateAcademyStage: async (
@@ -45,12 +44,9 @@ export const geminiService = {
         type: 'matrix-2x2' | 'bar-chart' | 'process-flow' | 'text-concept',
         language: 'es' | 'en' = 'es'
     ): Promise<any> => {
-        const provider = await AIProviderFactory.getInstance().getProviderForModel('gemini-2.5-flash');
+        const provider = await AIProviderFactory.getInstance().getProviderForModel('claude-haiku-4-5-20251001');
         const langInstruction = language === 'en' ? 'Reply in English.' : 'Responde en Español.';
 
-        // GROUNDING CHECK: If role is Strategy Analyst, enable Google Search
-        const isStrategyAnalyst = role.toLowerCase().includes('strategy') && role.toLowerCase().includes('analyst');
-        const options = isStrategyAnalyst ? { tools: [{ google_search: {} }] } : undefined;
 
         const systemPrompt = `You are an expert educational content creator for an enterprise AI platform.
         Your goal is to generate a specific "Stage" configuration for a guided tour.
@@ -130,10 +126,10 @@ export const geminiService = {
 
         // We use generateJSON from the provider if available, or text and parse
         try {
-            return await provider.generateJSON('gemini-2.5-flash', systemPrompt, userPrompt, options);
+            return await provider.generateJSON('claude-haiku-4-5-20251001', systemPrompt, userPrompt);
         } catch (e) {
             // Fallback if JSON generation fails or provider doesn't support it directly
-            const text = await provider.generateText('gemini-2.5-flash', systemPrompt, userPrompt, options);
+            const text = await provider.generateText('claude-haiku-4-5-20251001', systemPrompt, userPrompt);
             try {
                 // simple cleanup for potential markdown code blocks
                 const jsonStr = text.replace(/```json/g, '').replace(/```/g, '').trim();
@@ -143,91 +139,5 @@ export const geminiService = {
                 throw new Error("AI generated invalid JSON");
             }
         }
-    },
-
-    listModels: async () => {
-        try {
-            const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
-            const data = await response.json();
-            return data.models || [];
-        } catch (error) {
-            console.error("Error listing models:", error);
-            return [];
-        }
-    },
-
-    generateImage: async (prompt: string): Promise<string> => {
-        const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-        // Using Imagen 3 via Gemini API (REST)
-        // Updated to use the potentially more widely available endpoint or 002
-        // Primary model - confirmed available for this user
-        let modelId = 'imagen-3.0-generate-001';
-        let url = `https://generativelanguage.googleapis.com/v1beta/models/${modelId}:predict?key=${apiKey}`;
-
-        // Fallback model suggests by Gemini
-        const fallbackModelId = 'image-generation-006';
-
-        const payload = {
-            instances: [
-                { prompt: prompt }
-            ],
-            parameters: {
-                sampleCount: 1,
-                aspectRatio: "16:9"
-            }
-        };
-
-        const executeGen = async (currentUrl: string) => {
-            const response = await fetch(currentUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            });
-
-            if (!response.ok) {
-                const errorText = await response.text();
-                // Parse error text if it's JSON to get a cleaner message
-                try {
-                    const errorJson = JSON.parse(errorText);
-                    const message = errorJson.error?.message || errorText;
-                    throw new Error(`Imagen API Error (${response.status}): ${message}`);
-                } catch {
-                    throw new Error(`Imagen API Error (${response.status}): ${errorText}`);
-                }
-            }
-            return response.json();
-        };
-
-        try {
-            let data;
-            try {
-                data = await executeGen(url);
-            } catch (primaryError: any) {
-                console.warn(`Primary Imagen model (${modelId}) failed, trying fallback (${fallbackModelId})...`, primaryError);
-                // Retry with fallback
-                url = `https://generativelanguage.googleapis.com/v1beta/models/${fallbackModelId}:predict?key=${apiKey}`;
-                data = await executeGen(url);
-            }
-
-            // Expected format: { predictions: [ { bytesBase64Encoded: "..." } ] }
-
-            // Expected format: { predictions: [ { bytesBase64Encoded: "..." } ] }
-            if (data.predictions && data.predictions[0] && data.predictions[0].bytesBase64Encoded) {
-                return `data:image/png;base64,${data.predictions[0].bytesBase64Encoded}`;
-            } else if (data.predictions && data.predictions[0] && data.predictions[0].mimeType && data.predictions[0].bytesBase64Encoded) {
-                return `data:${data.predictions[0].mimeType};base64,${data.predictions[0].bytesBase64Encoded}`;
-            } else {
-                console.error("Unexpected Imagen Response:", data);
-                throw new Error("Invalid response format from Imagen API (No Base64 data found)");
-            }
-
-        } catch (error: any) {
-            console.error("Failed to generate image:", error);
-            throw error; // Re-throw to be caught by UI
-        }
     }
 };
-

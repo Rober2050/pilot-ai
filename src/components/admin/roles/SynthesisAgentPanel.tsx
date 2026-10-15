@@ -6,7 +6,7 @@ import { cn } from '../../../lib/utils';
 
 export const SynthesisAgentPanel: React.FC = () => {
     const [config, setConfig] = useState<SynthesisAgentConfig>({
-        model: 'gemini-2.5-pro',
+        model: 'claude-haiku-4-5-20251001',
         temperature: 0.4,
         systemPrompt: ''
     });

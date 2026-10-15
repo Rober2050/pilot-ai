@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User as UserIcon, Loader2, Sparkles, Trash2, CheckCircle2, XCircle } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { geminiService } from '../services/gemini/geminiService';
+import { aiService } from '../services/ai/aiService';
 import { cn } from '../lib/utils';
 
 interface Message {
@@ -470,7 +470,7 @@ function buildReadableContext(contextData: unknown, lang: 'es' | 'en'): string {
         return contextData.length > 60000 ? contextData.slice(0, 60000) + '\n...[truncado]' : contextData;
     }
 
-    // Pass full JSON — Gemini 2.5 has 1M context, no real need to truncate small reports
+    // Pass full JSON — reports are small enough for the model context
     const jsonStr = JSON.stringify(contextData, null, 2);
     const truncated = jsonStr.length > 60000 ? jsonStr.slice(0, 60000) + '\n...[truncado]' : jsonStr;
 
@@ -570,7 +570,7 @@ export default function ChatBox({ roleId, modelName, systemPrompt, contextData, 
                 ? `${contextBlock}\n\n## ${lang === 'es' ? 'CONVERSACIÓN PREVIA' : 'PREVIOUS CONVERSATION'}:\n${historyText}\n\n${lang === 'es' ? 'Usuario' : 'User'}: ${trimmed}`
                 : `${contextBlock}\n\n${lang === 'es' ? 'Usuario' : 'User'}: ${trimmed}`;
 
-            const response = await geminiService.generateContent(modelName || 'gemini-2.5-flash', chatSystemPrompt, userPrompt);
+            const response = await aiService.generateContent(modelName || 'claude-haiku-4-5-20251001', chatSystemPrompt, userPrompt);
 
             const patch = extractJsonPatch(response);
             const aiMessage: Message = { role: 'assistant', content: response, timestamp: new Date(), patch: patch ?? undefined };

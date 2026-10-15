@@ -78,7 +78,7 @@ export class MemoryManager {
 
     /**
      * Cierra un tema y genera su resumen
-     * TODO: Usar Gemini para generar resumen inteligente
+     * TODO: Usar el modelo de IA para generar resumen inteligente
      */
     static async closeTopic(
         history: ChatMessage[],
@@ -90,7 +90,7 @@ export class MemoryManager {
         const title = topicTitle || this.generateTopicTitle(history);
 
         // Generar resumen (por ahora, simple concatenación)
-        // TODO: Usar Gemini para generar resumen inteligente
+        // TODO: Usar el modelo de IA para generar resumen inteligente
         const summary = this.generateSummary(history);
         const conclusion = this.extractConclusion(history);
 
@@ -163,7 +163,7 @@ export class MemoryManager {
      */
     private static generateSummary(history: ChatMessage[]): string {
         // Por ahora, concatenar los últimos 3 mensajes
-        // TODO: Usar Gemini para generar resumen inteligente
+        // TODO: Usar el modelo de IA para generar resumen inteligente
         const lastMessages = history.slice(-3);
         return lastMessages.map(msg =>
             `${msg.roleName}: ${msg.text.substring(0, 200)}`

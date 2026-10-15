@@ -1,4 +1,4 @@
-import { geminiService } from '../gemini/geminiService';
+import { aiService } from '../ai/aiService';
 import { audioCompressionService } from './audioCompressionService';
 
 export interface ProcessedMedia {
@@ -105,13 +105,13 @@ export const mediaProcessorService = {
     },
 
     /**
-     * Transcribe Audio using Gemini Flash (Fast & Cheap)
+     * Transcribe audio via the AI service
      */
     transcribeAudio: async (media: ProcessedMedia): Promise<string> => {
         try {
-            // Using 'gemini-1.5-flash' explicitly for speed/cost if available, otherwise default
+            // Using 'claude-haiku-4-5-20251001' explicitly for speed/cost if available, otherwise default
             // We rely on default behavior or pass model name if configurable. 
-            // Assuming generic 'gemini-1.5-flash' availability or relying on auto-resolve.
+            // Assuming generic 'claude-haiku-4-5-20251001' availability or relying on auto-resolve.
 
             const prompt = `CRITICAL TASK: Transcribe this audio file verbatim. 
             - If there are multiple speakers, identify them as 'Speaker 1:', 'Speaker 2:'.
@@ -127,8 +127,8 @@ export const mediaProcessorService = {
                 }]
             };
 
-            const transcription = await geminiService.generateText(
-                'gemini-1.5-flash', // Request Flash specifically for Audio
+            const transcription = await aiService.generateText(
+                'claude-haiku-4-5-20251001', // Request Flash specifically for Audio
                 'You are a professional transcriber.',
                 prompt,
                 options
@@ -143,7 +143,7 @@ export const mediaProcessorService = {
     },
 
     /**
-     * Generate Smart Summary using Gemini
+     * Generate Smart Summary via the AI service
      */
     generateSmartSummary: async (text: string, language: 'es' | 'en' = 'es'): Promise<string> => {
         try {
@@ -158,8 +158,8 @@ export const mediaProcessorService = {
 
             const userPrompt = `Summarize this text:\n\n${text.substring(0, 15000)}`;
 
-            const summary = await geminiService.generateText(
-                'gemini-1.5-flash',
+            const summary = await aiService.generateText(
+                'claude-haiku-4-5-20251001',
                 systemPrompt,
                 userPrompt
             );

@@ -8,7 +8,7 @@ export function ModelErrorLogs() {
     const [logs, setLogs] = useState<LogEntry[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [selectedModel, setSelectedModel] = useState<string>('all');
-    const [selectedSource, setSelectedSource] = useState<string>('GeminiProvider');
+    const [selectedSource, setSelectedSource] = useState<string>('AnthropicProvider');
 
     const loadLogs = async () => {
         setIsLoading(true);
@@ -138,7 +138,7 @@ export function ModelErrorLogs() {
                         }}
                         className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     >
-                        <option value="GeminiProvider">GeminiProvider (Models)</option>
+                        <option value="AnthropicProvider">AnthropicProvider (Models)</option>
                         <option value="">All Sources</option>
                     </select>
                 </div>

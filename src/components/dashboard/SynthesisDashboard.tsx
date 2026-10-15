@@ -256,7 +256,7 @@ export default function SynthesisDashboard({ synthesis, onRefresh: _ }: Synthesi
 
                 {/* Top Riesgos */}
                 <div className="bg-white rounded-2xl border border-slate-200 p-4">
-                    <div className="text-2xl font-black text-slate-900 mb-1">{synthesis.topRisks.length}</div>
+                    <div className="text-2xl font-black text-slate-900 mb-1">{Math.min(3, synthesis.topRisks.length)}</div>
                     <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
                         {t('synthesis.topRisks')}
                     </h3>

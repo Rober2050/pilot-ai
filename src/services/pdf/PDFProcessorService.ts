@@ -1,7 +1,7 @@
 import * as pdfjsLib from 'pdfjs-dist';
 import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist';
 import type { PDFDocumentProxy } from 'pdfjs-dist';
-import { geminiService } from '../gemini/geminiService';
+import { aiService } from '../ai/aiService';
 import { loggingService } from '../firebase/loggingService';
 import type {
     ValidationResult,
@@ -23,7 +23,7 @@ const DEFAULT_CONFIG: PDFProcessorConfig = {
     maxSizeMB: 5,
     enableOCR: true,
     summaryMaxWords: 200,
-    ocrProvider: 'gemini-vision'
+    ocrProvider: 'ai-vision'
 };
 
 class PDFProcessorService {
@@ -107,7 +107,7 @@ class PDFProcessorService {
     }
 
     /**
-     * Perform OCR using Gemini Vision API (fallback for scanned PDFs)
+     * Perform OCR via the AI vision model (fallback for scanned PDFs)
      */
     private async performOCR(file: File): Promise<string> {
         try {
@@ -131,13 +131,13 @@ class PDFProcessorService {
             // Convert canvas to base64
             const imageData = canvas.toDataURL('image/png');
 
-            // Use Gemini Vision for OCR
+            // Use the AI vision model for OCR
             const prompt = 'Extract all text from this document image. Return only the extracted text, no additional commentary.';
 
-            // Note: This is a simplified version. Full implementation would need Gemini Vision API
+            // Note: This is a simplified version. Full implementation would need a dedicated vision pipeline
             // For now, we'll use the text generation API with a note
-            const ocrText = await geminiService.generateContent(
-                'gemini-1.5-flash',
+            const ocrText = await aiService.generateContent(
+                'claude-haiku-4-5-20251001',
                 'You are an OCR system. Extract text from the provided image.',
                 prompt
             );
@@ -150,7 +150,7 @@ class PDFProcessorService {
     }
 
     /**
-     * Generate smart summary using Gemini AI
+     * Generate smart summary via the AI service
      */
     private async generateSmartSummary(
         text: string,
@@ -184,8 +184,8 @@ class PDFProcessorService {
         const userPrompt = `Summarize this document:\n\n${text.substring(0, 15000)}`; // Limit to ~15k chars to avoid token limits
 
         try {
-            const summary = await geminiService.generateContent(
-                'gemini-1.5-flash',
+            const summary = await aiService.generateContent(
+                'claude-haiku-4-5-20251001',
                 systemPrompt,
                 userPrompt
             );

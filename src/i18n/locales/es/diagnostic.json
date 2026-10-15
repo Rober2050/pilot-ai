@@ -6,7 +6,7 @@
     "starting": "Iniciando diagnósticos del sistema...",
     "checkingFirebase": "Verificando conexión a Firebase... OK",
     "checkingAuth": "Verificando Servicio de Autenticación... OK",
-    "checkingGemini": "Verificando configuración de API Gemini... OK",
+    "checkingGemini": "Verificando configuración de API de IA... OK",
     "verifyingRoles": "Verificando Definiciones de Roles... 5 Roles Cargados",
     "completed": "Diagnósticos completados exitosamente."
 }

@@ -2,9 +2,9 @@ import { describe, test, expect, vi } from 'vitest';
 import { decisionEngine } from './decisionEngine';
 import { RoleConfig } from '../../types/roles';
 
-// Mock Gemini Service
-vi.mock('../gemini/geminiService', () => ({
-    geminiService: {
+// Mock AI service
+vi.mock('./aiService', () => ({
+    aiService: {
         generateContent: vi.fn().mockResolvedValue(`
             \`\`\`json
             {
@@ -22,11 +22,11 @@ vi.mock('../gemini/geminiService', () => ({
 describe('Decision Engine', () => {
     const mockRoles: RoleConfig[] = [
         {
-            roleId: 'pm', displayName: 'Product Manager', description: 'PM', model: 'gemini-pro', systemPrompt: '',
+            roleId: 'pm', displayName: 'Product Manager', description: 'PM', model: 'claude-haiku-4-5-20251001', systemPrompt: '',
             temperature: 0.7, orderIndex: 1, isEnabled: true, docConfig: { text: true, charts: false, excel: false, flowDiagrams: false, swimlanes: false, c4: false, architecture: false, pdf: false, ppt: false, json: false, markdown: false, otherFormats: [] }
         },
         {
-            roleId: 'dev', displayName: 'Developer', description: 'Dev', model: 'gemini-pro', systemPrompt: '',
+            roleId: 'dev', displayName: 'Developer', description: 'Dev', model: 'claude-haiku-4-5-20251001', systemPrompt: '',
             temperature: 0.7, orderIndex: 2, isEnabled: true, docConfig: { text: true, charts: false, excel: false, flowDiagrams: false, swimlanes: false, c4: false, architecture: false, pdf: false, ppt: false, json: false, markdown: false, otherFormats: [] }
         }
     ];
@@ -49,8 +49,8 @@ describe('Decision Engine', () => {
 
     test('analyzeSession handles low scores correctly (NO GO)', async () => {
         // Override mock for this test
-        const { geminiService } = require('../gemini/geminiService');
-        geminiService.generateContent.mockResolvedValueOnce(`
+        const { aiService } = require('./aiService');
+        aiService.generateContent.mockResolvedValueOnce(`
             {
                 "feasibility": 30,
                 "desirability": 40,

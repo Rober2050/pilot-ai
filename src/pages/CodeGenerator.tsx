@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Code, Database, Layout, Server, Download, Loader2, AlertTriangle } from 'lucide-react';
-import { geminiService } from '../services/gemini/geminiService';
+import { aiService } from '../services/ai/aiService';
 
 
 export default function CodeGenerator() {
@@ -16,7 +16,7 @@ export default function CodeGenerator() {
         setGenerating(true);
         setGeneratedCode(null);
         try {
-            const response = await geminiService.generateCodebaseStructure(stack);
+            const response = await aiService.generateCodebaseStructure(stack);
             setGeneratedCode(response);
         } catch (error) {
             console.error("Generation error:", error);

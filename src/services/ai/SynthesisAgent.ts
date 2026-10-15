@@ -1,4 +1,4 @@
-import { geminiService } from '../gemini/geminiService';
+import { aiService } from './aiService';
 import { configService } from '../firebase/configService';
 import type { SynthesisOutput } from '../../types/blueprint';
 // Nine full role outputs exceed the proxy's per-message cap (413), so they are compacted.
@@ -114,12 +114,12 @@ ${buildPreviousRolesContext(input.roleOutputs.map(r => ({ role: `${r.displayName
 
 Generate the unified synthesis JSON now.`;
 
-    // Load model from Firestore (configurable via Admin Console) — fallback to gemini-2.5-pro
+    // Load model from Firestore (configurable via Admin Console) — fallback to Claude Haiku 4.5
     const synthConfig = await configService.getSynthesisConfig();
-    const modelToUse = synthConfig.model || 'gemini-2.5-pro';
+    const modelToUse = synthConfig.model || 'claude-haiku-4-5-20251001';
     const protocolToUse = synthConfig.systemPrompt?.trim() || SYNTHESIS_PROTOCOL;
 
-    const result = await geminiService.generateJSON(
+    const result = await aiService.generateJSON(
         modelToUse,
         protocolToUse,
         userPrompt,

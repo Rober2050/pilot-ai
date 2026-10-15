@@ -24,7 +24,7 @@ export interface SynthesisAgentConfig {
 }
 
 const DEFAULT_SYNTHESIS_CONFIG: SynthesisAgentConfig = {
-    model: 'gemini-2.5-pro',
+    model: 'claude-haiku-4-5-20251001',
     temperature: 0.4,
     systemPrompt: '',
 };

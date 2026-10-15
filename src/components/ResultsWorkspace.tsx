@@ -1,4 +1,4 @@
-import { useState, useRef, lazy, Suspense } from 'react';
+import { useState, useRef, useEffect, lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
     CheckCircle2, Loader2, AlertCircle, Briefcase, Layers,
@@ -332,6 +332,20 @@ export default function ResultsWorkspace({
     );
     const anotherRoleExecuting = !!executingRole;
 
+    // Follow the running role. The panel used to stay on the first role in the
+    // list, so a visitor who picked Product Manager on the landing watched a
+    // "pending" Strategy Analyst panel for minutes and assumed it had hung. The
+    // live elapsed-time timer only lives on the running role's own panel.
+    // Keyed on the processing role itself (independent of selection), so this
+    // fires once when a role starts and the user can still browse freely while
+    // it runs.
+    const processingRoleId = enabledRoles.find(
+        r => outputs[r.roleId]?.status === 'processing'
+    )?.roleId;
+    useEffect(() => {
+        if (processingRoleId) setSelectedRoleId(processingRoleId);
+    }, [processingRoleId]);
+
     // ─── Export handlers (lifted from RolePanel) ─────────────────────────────
     const buildBlueprint = () => {
         if (!selectedRole || !selectedOutput) return null;
@@ -525,7 +539,7 @@ ${message}
         `;
 
         try {
-            const { geminiService } = await import('../services/gemini/geminiService');
+            const { aiService } = await import('../services/ai/aiService');
             const lang = i18n.language === 'es' ? 'es' : 'en';
             const langInstruction = lang === 'es'
                 ? 'Responde en español. Sé conciso (máximo 1-2 párrafos).'
@@ -553,8 +567,8 @@ CRITICAL RULES:
 
 ${langInstruction}`;
 
-            const response = await geminiService.generateText(
-                'gemini-2.5-pro',
+            const response = await aiService.generateText(
+                'claude-haiku-4-5-20251001',
                 systemPrompt,
                 synthContext
             );
