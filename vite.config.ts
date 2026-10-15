@@ -36,8 +36,11 @@ export default defineConfig({
                     'vendor-react':    ['react', 'react-dom', 'react-router-dom'],
                     'vendor-supabase': ['@supabase/supabase-js'],
                     'vendor-ui':       ['framer-motion', 'lucide-react'],
-                    'vendor-charts':   ['recharts'],
-                    'vendor-export':   ['docx', 'xlsx-js-style', 'jspdf', 'html-to-image'],
+                    // recharts and the export libraries (docx, xlsx, jspdf, html-to-image)
+                    // are deliberately NOT forced into named chunks: Rollup would also put
+                    // the small helpers they share with the entry in there, and the landing
+                    // page then preloaded ~2 MB it never uses. Left alone, they stay in the
+                    // lazy dashboard / export chunks that need them.
                     'vendor-i18n':     ['i18next', 'react-i18next', 'i18next-browser-languagedetector'],
                 },
             },

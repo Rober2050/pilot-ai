@@ -9,7 +9,7 @@ import { supabase } from './firebaseClient';
 
 export interface LogEntry {
     id?: string;
-    timestamp: any; // Firestore Timestamp legacy → ISO string ahora
+    timestamp: string; // ISO string (audit_logs.created_at); no longer a Firestore Timestamp
     level: 'info' | 'warning' | 'error';
     source: string;
     message: string;

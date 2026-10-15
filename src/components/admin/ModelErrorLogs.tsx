@@ -65,7 +65,7 @@ export function ModelErrorLogs() {
         const csv = [
             ['Timestamp', 'Source', 'Message', 'Model', 'Details'].join(','),
             ...filteredLogs.map(log => [
-                new Date(log.timestamp.toDate()).toISOString(),
+                new Date(log.timestamp).toISOString(),
                 log.source,
                 `"${log.message}"`,
                 log.details?.model || log.details?.primaryModel || '',
@@ -192,7 +192,7 @@ export function ModelErrorLogs() {
                                 {filteredLogs.map(log => (
                                     <tr key={log.id} className="hover:bg-slate-800/30 transition-colors">
                                         <td className="px-4 py-3 text-slate-400 whitespace-nowrap text-xs">
-                                            {new Date(log.timestamp.toDate()).toLocaleString()}
+                                            {new Date(log.timestamp).toLocaleString()}
                                         </td>
                                         <td className="px-4 py-3 text-slate-300 font-mono text-xs">
                                             {log.details?.model || log.details?.primaryModel || log.details?.fallbackUsed || '—'}

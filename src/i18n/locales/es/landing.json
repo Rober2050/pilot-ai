@@ -1,7 +1,7 @@
 {
     "nav": {
         "features": "Roles AI",
-        "openSource": "Código abierto",
+        "openSource": "Código fuente disponible",
         "contact": "Contacto",
         "login": "Ingresar"
     },
@@ -153,9 +153,10 @@
         "rights": "Todos los derechos reservados."
     },
     "open": {
-        "eyebrow": "Código abierto",
+        "eyebrow": "Código fuente disponible",
         "title": "No es un producto a la venta. Es la herramienta que uso, abierta.",
         "body": "Construí PILOT AI para no volver a armar el mismo análisis en cada proyecto. Empezó con un rol, creció hasta nueve y hoy está abierta: mirá una ejecución real en el video o levantala en tu propia cuenta con tu propia clave.",
+        "license": "Licencia MIT + Commons Clause: podés usarlo, modificarlo e instalarlo en tu cuenta; lo que no se permite es venderlo como servicio.",
         "ctaPrimary": "Ver demo",
         "ctaSecondary": "Ver el código",
         "facts": {

@@ -1,7 +1,7 @@
 {
     "nav": {
         "features": "AI Roles",
-        "openSource": "Open source",
+        "openSource": "Source available",
         "contact": "Contact",
         "login": "Login"
     },
@@ -153,9 +153,10 @@
         "rights": "All rights reserved."
     },
     "open": {
-        "eyebrow": "Open source",
+        "eyebrow": "Source available",
         "title": "Not a product for sale. It's the tool I use, opened up.",
         "body": "I built PILOT AI so I'd stop rebuilding the same analysis on every project. It started with one role, grew to nine and is now open: watch a real run in the video or deploy it on your own account with your own key.",
+        "license": "MIT + Commons Clause license: you can use, modify and self-host it; selling it as a service is not allowed.",
         "ctaPrimary": "Watch demo",
         "ctaSecondary": "View the code",
         "facts": {

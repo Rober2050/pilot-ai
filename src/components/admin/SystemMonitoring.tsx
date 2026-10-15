@@ -173,7 +173,7 @@ export function SystemMonitoring() {
         const csv = [
             ['Timestamp', 'Model', 'Message', 'Details'].join(','),
             ...filteredLogs.map(log => [
-                new Date(log.timestamp.toDate()).toISOString(),
+                new Date(log.timestamp).toISOString(),
                 log.details?.model || log.details?.primaryModel || '',
                 `"${log.message}"`,
                 `"${JSON.stringify(log.details || {}).slice(0, 100)}"`
@@ -341,7 +341,7 @@ export function SystemMonitoring() {
                                     {filteredLogs.map(log => (
                                         <tr key={log.id} className="hover:bg-slate-800/30 transition-colors">
                                             <td className="px-4 py-3 text-slate-400 whitespace-nowrap text-xs">
-                                                {new Date(log.timestamp.toDate()).toLocaleString()}
+                                                {new Date(log.timestamp).toLocaleString()}
                                             </td>
                                             <td className="px-4 py-3 text-slate-300 font-mono text-xs">
                                                 {log.details?.model || log.details?.primaryModel || log.details?.fallbackUsed || '—'}

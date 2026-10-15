@@ -1,0 +1,41 @@
+name: CI
+
+# Checks only. Deploys stay with Cloudflare Pages (merge to main) and the
+# Supabase CLI (Edge Function), so this workflow needs no secrets.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Type check and build
+        run: npm run build
+
+      - name: Unit tests
+        run: npx vitest run
+
+      # Lint errors block the merge. The ~950 warnings left from before the
+      # cleanup are reported without blocking until they are paid down.
+      - name: Lint errors
+        run: npx eslint . --ext ts,tsx --quiet
+
+      - name: Lint warnings (informational)
+        run: npm run lint
+        continue-on-error: true

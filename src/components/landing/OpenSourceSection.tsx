@@ -34,6 +34,9 @@ export function OpenSourceSection() {
                 <p className="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
                     {t('open.body')}
                 </p>
+                <p className="mt-3 text-sm text-slate-500 max-w-2xl mx-auto">
+                    {t('open.license')}
+                </p>
 
                 <div className="mt-9 flex flex-col sm:flex-row gap-3 justify-center">
                     <button
