@@ -40,7 +40,7 @@ export const calculateRecalculatedWeeks = (
 
     const scalingFactor = Math.pow(originalHeadcount / newHeadcount, EFFICIENCY_EXPONENT);
 
-    let newWeeks = originalWeeks * scalingFactor;
+    const newWeeks = originalWeeks * scalingFactor;
 
     // Minimum sensible duration (it's hard to rush a project below a certain point regardless of people)
     // Let's say we can't compress more than 50% of the original timeline no matter what

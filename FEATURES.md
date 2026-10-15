@@ -12,7 +12,7 @@ Generador de planes estratégicos impulsado por IA.
     *   Análisis de Mercado.
     *   Estrategia Operativa y Tecnológica.
     *   KPIs sugeridos.
-*   **IA:** Utiliza Gemini para analizar el contexto y proponer estrategias personalizadas.
+*   **IA:** Utiliza Claude (Haiku 4.5) para analizar el contexto y proponer estrategias personalizadas. No navega por internet: las cifras de mercado se marcan como estimaciones.
 
 ### 📊 Planning Dashboard (Gestión de Proyectos)
 Panel de control para Project Managers.
@@ -40,7 +40,7 @@ Panel de administración del sistema.
 
 ## 2. Capacidades Transversales
 
-### 🤖 Inteligencia Artificial (Gemini Core)
+### 🤖 Inteligencia Artificial (Claude vía anthropic-proxy)
 *   **Análisis Contextual:** La IA "entiende" el proyecto completo para dar respuestas coherentes en todos los módulos.
 *   **Generación de Contenido:** Redacción de textos, listas de tareas, riesgos y código.
 

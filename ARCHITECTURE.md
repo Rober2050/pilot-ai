@@ -13,9 +13,8 @@ Este documento describe la arquitectura técnica, el stack tecnológico y las de
 ### Servicios e Infraestructura
 *   **Backend / Base de Datos:** Supabase (Postgres + Auth + Edge Functions)
 *   **Inteligencia Artificial:**
-    *   Google Gemini Pro (`@google/generative-ai`)
-    *   OpenAI (Integración preparada/opcional)
-    *   Arquitectura de proveedores agnóstica (`AIProvider` pattern)
+    *   Claude Haiku 4.5 (Anthropic), siempre a través de la Edge Function `anthropic-proxy`
+    *   Arquitectura de proveedores (`AIProvider` pattern) con un único proveedor activo: `AnthropicProvider`
 
 ### Librerías Clave
 *   **Navegación:** `react-router-dom`
@@ -42,7 +41,7 @@ src/
 │   ├── StrategyHub.tsx     # Módulo de Estrategia
 │   └── ...
 ├── services/               # Lógica de negocio y comunicación con APIs
-│   ├── ai/                 # Servicios de IA (GeminiProvider, IntelligenceService)
+│   ├── ai/                 # Servicios de IA (AnthropicProvider, aiService, SynthesisAgent)
 │   ├── export/             # Generadores de documentos (PDF, Excel, PPT)
 │   └── firebase/           # Servicios de datos (Supabase Auth + Postgres; nombre heredado)
 ├── types/                  # Definiciones de tipos TypeScript (Interfaces globales)
@@ -56,7 +55,7 @@ Toda la lógica de negocio y llamadas a APIs externas se encapsula en la carpeta
 *   *Ejemplo:* `IntelligenceService.generateStrategy()` maneja la complejidad del prompt y la respuesta, el componente solo recibe los datos.
 
 ### Proveedores de IA (AI Provider Pattern)
-La integración con IA está abstraída. `GeminiProvider` implementa una interfaz común. Esto permite cambiar o combinar modelos (GPT-4, Claude, Gemini) sin reescribir la lógica de los componentes.
+La integración con IA está abstraída detrás de la interfaz `AIProvider`. Hoy la implementa solo `AnthropicProvider`, que nunca llama a Anthropic directamente: envía cada pedido (texto e imágenes/PDF adjuntos) al proxy `anthropic-proxy`, que guarda la API key como secreto y aplica cuotas. Sumar otro proveedor implica sumarlo también del lado del proxy, nunca con una key en el navegador.
 
 ### Componentes de Presentación vs. Contenedores
 *   **Pages:** Actúan como contenedores. Gestionan el estado global de la vista y llaman a los servicios.

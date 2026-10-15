@@ -73,7 +73,7 @@ class EnhancedBrowserTTSProvider {
         const langCode = language === 'es' ? 'es' : 'en';
 
         // Filter by language
-        let candidates = voices.filter(v => v.lang.startsWith(langCode));
+        const candidates = voices.filter(v => v.lang.startsWith(langCode));
 
         if (candidates.length === 0) {
             loggingService.logInfo(
@@ -190,6 +190,8 @@ class EnhancedBrowserTTSProvider {
         roleId: string,
         language: Language
     ): Promise<void> {
+        // The executor body is wrapped in try/catch and every failure path calls reject.
+        // eslint-disable-next-line no-async-promise-executor
         return new Promise(async (resolve, reject) => {
             try {
                 // Validate language

@@ -1,0 +1,8 @@
+# PILOT AI — https://pilot-ai-app.com
+User-agent: *
+Allow: /
+Disallow: /app/
+Disallow: /login
+Disallow: /register
+
+Sitemap: https://pilot-ai-app.com/sitemap.xml

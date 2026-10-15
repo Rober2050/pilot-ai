@@ -134,7 +134,7 @@ export const useVoiceInteraction = ({
 
         return () => {
             if (recognitionRef.current) {
-                try { recognitionRef.current.stop(); } catch (e) { }
+                try { recognitionRef.current.stop(); } catch { /* already stopped */ }
             }
         };
     }, [language, isSupported]); // ✅ FIX: Only re-init on language or support change
@@ -235,7 +235,7 @@ export const useVoiceInteraction = ({
             .replace(/```[\s\S]*?```/g, '') // Remove code blocks
             .replace(/<[^>]*>?/gm, '')      // Remove HTML tags
             .replace(/[*#]/g, '')           // Remove Markdown bold/italic/header markers
-            .replace(/\]\([^\)]+\)/g, ']')  // Remove Markdown URLs but keep the bracket text
+            .replace(/\]\([^)]+\)/g, ']')  // Remove Markdown URLs but keep the bracket text
             .replace(/https?:\/\/[^\s]+/g, ''); // Remove plain URLs
 
         if (!textForTTS.trim()) {

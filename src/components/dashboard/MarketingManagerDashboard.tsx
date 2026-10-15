@@ -147,7 +147,7 @@ const MarketingManagerDashboard: React.FC<MarketingManagerDashboardProps> = ({ d
     const competitiveMap = Array.isArray(compData) ? compData : [];
 
     const calData = data?.gtmCalendar || data?.gtm_calendar || data?.go_to_market_calendar || data?.go_to_market_plan || data?.calendar;
-    let gtmCalendar = Array.isArray(calData) && calData.length > 0 ? calData : [
+    const gtmCalendar = Array.isArray(calData) && calData.length > 0 ? calData : [
         { week: 1, phase: 'Pre-Launch', tasks: ['Setup analytics', 'Configure pixels'], status: 'pending' },
         { week: 2, phase: 'Pre-Launch', tasks: ['Create landing page', 'Build email list'], status: 'pending' },
         { week: 3, phase: 'Pre-Launch', tasks: ['Design creative assets', 'Setup CRM'], status: 'pending' },

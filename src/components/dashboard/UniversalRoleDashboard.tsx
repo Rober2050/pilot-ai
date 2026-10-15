@@ -933,10 +933,12 @@ export const UniversalRoleDashboard: React.FC<UniversalRoleDashboardProps> = ({ 
     const [showDescription, setShowDescription] = useState(false);
 
     // SMART FILTERING
-    const visibleTabs = useMemo(() => data.tabs?.filter(t =>
+    // `data` can be null while a role has no output yet: hooks run before the
+    // early return below, so every read here must be null-safe.
+    const visibleTabs = useMemo(() => data?.tabs?.filter(t =>
         !['slides', 'speakerNotes', 'layout', 'presentation', 'export'].some(forbidden => t.id.toLowerCase().includes(forbidden)) &&
         t.type !== 'hidden'
-    ) || [], [data.tabs]);
+    ) || [], [data?.tabs]);
 
     // 'diagram' = generic process/swimlane flowchart → shown at bottom as large panel
     // 'c4-diagram' = C4 architecture tab → shown inside regularTabs tab strip + content

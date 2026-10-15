@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { SourceCitation } from '../../types/war-room';
 import { ExternalLink, CheckCircle, AlertCircle } from 'lucide-react';
 
@@ -12,13 +13,15 @@ interface SourcesTabProps {
 }
 
 export const SourcesTab: React.FC<SourcesTabProps> = ({ sources }) => {
+    const { t } = useTranslation('translation');
+
     if (!sources || sources.length === 0) {
         return (
             <div className="text-center py-12">
                 <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600 font-medium">No se citaron fuentes en este análisis</p>
+                <p className="text-gray-600 font-medium">{t('sourcesTab.emptyTitle')}</p>
                 <p className="text-gray-500 text-sm mt-2">
-                    Las fuentes aparecerán aquí cuando el análisis incluya datos verificables
+                    {t('sourcesTab.emptyBody')}
                 </p>
             </div>
         );
@@ -36,11 +39,8 @@ export const SourcesTab: React.FC<SourcesTabProps> = ({ sources }) => {
 
     const getTierLabel = (tier: number) => {
         switch (tier) {
-            case 1: return 'Nivel 1 - Máxima Credibilidad';
-            case 2: return 'Nivel 2 - Alta Credibilidad';
-            case 3: return 'Nivel 3 - Credibilidad Media';
-            case 4: return 'Nivel 4 - Baja Credibilidad';
-            default: return 'Sin clasificar';
+            case 1: case 2: case 3: case 4: return t(`sourcesTab.tier${tier}`);
+            default: return t('sourcesTab.unclassified');
         }
     };
 
@@ -52,11 +52,10 @@ export const SourcesTab: React.FC<SourcesTabProps> = ({ sources }) => {
         const currentYear = new Date().getFullYear();
         const age = currentYear - year;
 
-        if (age === 0) return { text: 'Datos actuales', color: 'text-green-600' };
-        if (age === 1) return { text: '1 año', color: 'text-green-600' };
-        if (age <= 2) return { text: `${age} años`, color: 'text-blue-600' };
-        if (age <= 3) return { text: `${age} años`, color: 'text-yellow-600' };
-        return { text: `${age} años (desactualizado)`, color: 'text-red-600' };
+        if (age === 0) return { text: t('sourcesTab.ageCurrent'), color: 'text-green-600' };
+        if (age <= 2) return { text: t('sourcesTab.ageYears', { count: age }), color: age === 1 ? 'text-green-600' : 'text-blue-600' };
+        if (age <= 3) return { text: t('sourcesTab.ageYears', { count: age }), color: 'text-yellow-600' };
+        return { text: t('sourcesTab.ageOutdated', { count: age }), color: 'text-red-600' };
     };
 
     return (
@@ -64,9 +63,9 @@ export const SourcesTab: React.FC<SourcesTabProps> = ({ sources }) => {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h3 className="text-xl font-bold text-gray-900">Fuentes Consultadas</h3>
+                    <h3 className="text-xl font-bold text-gray-900">{t('sourcesTab.title')}</h3>
                     <p className="text-sm text-gray-600 mt-1">
-                        {sources.length} fuente{sources.length !== 1 ? 's' : ''} citada{sources.length !== 1 ? 's' : ''}
+                        {t('sourcesTab.count', { count: sources.length })}
                     </p>
                 </div>
                 <CheckCircle className="w-8 h-8 text-green-600" />
@@ -74,23 +73,23 @@ export const SourcesTab: React.FC<SourcesTabProps> = ({ sources }) => {
 
             {/* Legend */}
             <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                <p className="text-sm font-semibold text-gray-700 mb-2">Jerarquía de Credibilidad:</p>
+                <p className="text-sm font-semibold text-gray-700 mb-2">{t('sourcesTab.legendTitle')}</p>
                 <div className="grid grid-cols-2 gap-2 text-xs">
                     <div className="flex items-center gap-2">
                         <span className="text-green-600">⭐⭐⭐⭐</span>
-                        <span className="text-gray-600">Nivel 1: Reportes de industria, Datos gubernamentales</span>
+                        <span className="text-gray-600">{t('sourcesTab.legend1')}</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <span className="text-blue-600">⭐⭐⭐</span>
-                        <span className="text-gray-600">Nivel 2: Finanzas públicas, Noticias reputadas</span>
+                        <span className="text-gray-600">{t('sourcesTab.legend2')}</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <span className="text-yellow-600">⭐⭐</span>
-                        <span className="text-gray-600">Nivel 3: Blogs de industria, Comunicados</span>
+                        <span className="text-gray-600">{t('sourcesTab.legend3')}</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <span className="text-red-600">⭐</span>
-                        <span className="text-gray-600">Nivel 4: Redes sociales, Blogs no verificados</span>
+                        <span className="text-gray-600">{t('sourcesTab.legend4')}</span>
                     </div>
                 </div>
             </div>
@@ -128,7 +127,7 @@ export const SourcesTab: React.FC<SourcesTabProps> = ({ sources }) => {
                                             className="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors"
                                         >
                                             <ExternalLink className="w-4 h-4" />
-                                            Ver fuente original
+                                            {t('sourcesTab.viewOriginal')}
                                         </a>
                                     )}
                                 </div>
@@ -150,11 +149,8 @@ export const SourcesTab: React.FC<SourcesTabProps> = ({ sources }) => {
 
             {/* Footer Note */}
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-blue-800">
-                <p className="font-medium mb-1">💡 Nota sobre las fuentes:</p>
-                <p>
-                    Las fuentes se generan automáticamente cuando Google Grounding está activo.
-                    Prioriza fuentes de Nivel 1-2 para decisiones críticas.
-                </p>
+                <p className="font-medium mb-1">💡 {t('sourcesTab.noteTitle')}</p>
+                <p>{t('sourcesTab.noteBody')}</p>
             </div>
         </div>
     );

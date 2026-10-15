@@ -34,12 +34,9 @@ import { RoleConfig } from '../types/roles';
 import type { ProcessedPDFContent } from '../types/pdf';
 import { FileUploadButton } from '../components/input/FileUploadButton';
 import { ImageUploadButton } from '../components/input/ImageUploadButton';
-import { AudioUploadButton } from '../components/input/AudioUploadButton';
 import { MicrophoneButton } from '../components/input/MicrophoneButton';
 import { ProcessedMedia, mediaProcessorService } from '../services/media/mediaProcessorService';
 import { SmartPreviewModal } from '../components/modals/SmartPreviewModal';
-import { AudioPreviewModal } from '../components/modals/AudioPreviewModal';
-import type { ProcessedAudioContent } from '../types/audio';
 import { ContentBlockEditor } from '../components/input/ContentBlockEditor';
 import type { ContentBlock } from '../types/content';
 import { createContentBlock, combineBlocksForAI } from '../types/content';
@@ -49,6 +46,9 @@ import { PromptEngine } from '../ai/promptEngine';
 import { Project, RoleOutput, SynthesisOutput } from '../types/blueprint';
 import { generateSynthesis } from '../services/ai/SynthesisAgent';
 import { cn } from '../lib/utils';
+import { RoleCatalogCard, type RoleCardStatus } from '../components/strategy-hub/RoleCatalogCard';
+import { RemainingAnalysesBanner } from '../components/strategy-hub/RemainingAnalysesBanner';
+import { getDeliverable, getRoleColor, getRoleSubtitle } from '../components/strategy-hub/roleCatalog';
 import ResultsWorkspace from '../components/ResultsWorkspace';
 import { useAuth } from '../contexts/AuthContext';
 import { useWorkflow } from '../contexts/WorkflowContext';
@@ -65,45 +65,9 @@ import { usersService } from '../services/firebase/usersService';
 import { usageService } from '../services/firebase/usageService';
 import { WarRoomService } from '../services/ai/WarRoomService';
 import { buildPreviousRolesContext } from '../utils/compactRoleContext';
+import { ROLE_TIMEOUTS_MS, DEFAULT_TIMEOUT_MS, applyDeepPatch } from '../utils/roleExecution';
 
 type AutoStartPayload = { idea: string; methodology: 'agile' | 'pmo' | 'hybrid'; selectedRoles?: string[] };
-
-// Per-role analysis timeout (ms). Heavy roles may need a stream continuation after the
-// proxy's 150s Edge Function cut (see AnthropicProvider), so they get extra room.
-const ROLE_TIMEOUTS_MS: Record<string, number> = {
-    'ux-designer': 10 * 60 * 1000,  // 10 min — full HTML prototype
-    'architect': 8 * 60 * 1000,     // 8 min — largest JSON output
-};
-const DEFAULT_TIMEOUT_MS = 6 * 60 * 1000; // 6 min for all other roles
-
-// Deep patch: finds each key anywhere in the content tree (not just top level) and updates it.
-// Falls back to adding the key at top level if not found. Enables AI patches like { "mvpInScope": [...] }
-// to reach deeply nested fields like content.dashboard.productDetails.mvpInScope.
-function hasFieldDeep(obj: unknown, key: string): boolean {
-    if (typeof obj !== 'object' || obj === null || Array.isArray(obj)) return false;
-    if (key in (obj as Record<string, unknown>)) return true;
-    return Object.values(obj as Record<string, unknown>).some(v => hasFieldDeep(v, key));
-}
-
-function setFieldDeep(obj: Record<string, unknown>, key: string, value: unknown): Record<string, unknown> {
-    if (key in obj) return { ...obj, [key]: value };
-    for (const k of Object.keys(obj)) {
-        const child = obj[k];
-        if (typeof child === 'object' && child !== null && !Array.isArray(child) &&
-            hasFieldDeep(child, key)) {
-            return { ...obj, [k]: setFieldDeep(child as Record<string, unknown>, key, value) };
-        }
-    }
-    return { ...obj, [key]: value }; // not found anywhere — add at top level
-}
-
-function applyDeepPatch(content: Record<string, unknown>, patch: Record<string, unknown>): Record<string, unknown> {
-    let result = { ...content };
-    for (const [key, value] of Object.entries(patch)) {
-        result = setFieldDeep(result, key, value);
-    }
-    return result;
-}
 
 export default function StrategyHub() {
     const { t, i18n } = useTranslation(['translation', 'common']);
@@ -509,8 +473,6 @@ export default function StrategyHub() {
     const [fullContext, setFullContext] = useState<string | null>(null);
 
     // Audio Preview Modal State
-    const [audioPreviewContent, setAudioPreviewContent] = useState<ProcessedAudioContent | null>(null);
-    const [isAudioPreviewOpen, setIsAudioPreviewOpen] = useState(false);
 
     const loadData = async () => {
         // --- TRANSITION GUARD ---
@@ -761,37 +723,8 @@ export default function StrategyHub() {
         });
     };
 
-    const handleAudioTranscribed = (content: ProcessedAudioContent) => {
-        setAudioPreviewContent(content);
-        setIsAudioPreviewOpen(true);
-    };
-
     const handleRemoveAttachment = (index: number) => {
         setAttachments(prev => prev.filter((_, i) => i !== index));
-    };
-
-    const handleAudioPreviewConfirm = (transcription: string) => {
-        // Create audio block
-        const audioBlock = createContentBlock(
-            'audio',
-            transcription,
-            {
-                fileName: audioPreviewContent?.metadata.fileName,
-                duration: audioPreviewContent?.metadata.duration,
-                size: audioPreviewContent?.metadata.sizeBytes,
-                format: audioPreviewContent?.metadata.format,
-                processingTime: audioPreviewContent?.processingTime
-            }
-        );
-
-        setContentBlocks(prev => [...prev, audioBlock]);
-        setIsAudioPreviewOpen(false);
-
-        loggingService.logInfo('audio-upload', 'transcription_confirmed', {
-            fileName: audioPreviewContent?.metadata.fileName,
-            duration: audioPreviewContent?.metadata.duration,
-            transcriptionLength: transcription.length
-        });
     };
 
     const handlePDFPreviewConfirm = (summary: string) => {
@@ -1209,6 +1142,12 @@ OBJECTIVE: Analyze, diagram, and optimize this sub-process as an independent ent
                     userProfile?.uid || '',
                     userProfile?.subscriptionPlan || 'free'
                 );
+                if (!usageStatus.allowed && usageStatus.checkFailed) {
+                    processingRef.current = false;
+                    if (activeProjectId) trackRoleEnd(activeProjectId, role.roleId);
+                    setNotificationState({ show: true, type: 'error', message: t('dashboard.usageCheckFailed') });
+                    return;
+                }
                 if (!usageStatus.allowed) {
                     processingRef.current = false;
                     if (activeProjectId) trackRoleEnd(activeProjectId, role.roleId);
@@ -1347,8 +1286,9 @@ OBJECTIVE: Analyze, diagram, and optimize this sub-process as an independent ent
         Return the result as a valid JSON object matching the requested schema.
       `;
 
-            // 2. Enable Google Search if Role needs grounding
-            const options: any = (role.grounding || role.roleId === 'ux-designer') ? { tools: [{ google_search: {} }] } : {};
+            // 2. No web search: Claude runs without web tools here, and the protocols
+            // tell each role so — an analysis must never claim a search that did not happen.
+            const options: any = {};
 
             // 3. Attach Media (Images/Audio) if available and technically supported
             // Media attachments travel in options.media
@@ -1701,51 +1641,6 @@ OBJECTIVE: Analyze, diagram, and optimize this sub-process as an independent ent
         return icons[index % icons.length];
     };
 
-    // Role color palette — one unique color per slot
-    const ROLE_COLORS = [
-        { border: 'border-amber-400',   bg: 'bg-amber-50',   icon: 'text-amber-500',   dot: 'bg-amber-400',   avatar: 'bg-amber-400'   },
-        { border: 'border-purple-400',  bg: 'bg-purple-50',  icon: 'text-purple-500',  dot: 'bg-purple-400',  avatar: 'bg-purple-400'  },
-        { border: 'border-cyan-500',    bg: 'bg-cyan-50',    icon: 'text-cyan-600',    dot: 'bg-cyan-500',    avatar: 'bg-cyan-500'    },
-        { border: 'border-teal-400',    bg: 'bg-teal-50',    icon: 'text-teal-600',    dot: 'bg-teal-400',    avatar: 'bg-teal-400'    },
-        { border: 'border-rose-400',    bg: 'bg-rose-50',    icon: 'text-rose-500',    dot: 'bg-rose-400',    avatar: 'bg-rose-400'    },
-        { border: 'border-blue-500',    bg: 'bg-blue-50',    icon: 'text-blue-600',    dot: 'bg-blue-500',    avatar: 'bg-blue-500'    },
-        { border: 'border-indigo-400',  bg: 'bg-indigo-50',  icon: 'text-indigo-500',  dot: 'bg-indigo-400',  avatar: 'bg-indigo-400'  },
-        { border: 'border-emerald-500', bg: 'bg-emerald-50', icon: 'text-emerald-600', dot: 'bg-emerald-500', avatar: 'bg-emerald-500' },
-        { border: 'border-orange-400',  bg: 'bg-orange-50',  icon: 'text-orange-500',  dot: 'bg-orange-400',  avatar: 'bg-orange-400'  },
-        { border: 'border-pink-400',    bg: 'bg-pink-50',    icon: 'text-pink-500',    dot: 'bg-pink-400',    avatar: 'bg-pink-400'    },
-    ];
-
-    // Derive deliverable label from docConfig flags
-    const getDeliverable = (role: any): string => {
-        const cfg = role.docConfig || {};
-        const parts: string[] = [];
-        if (cfg.pdf || cfg.text) parts.push('DOC');
-        if (cfg.ppt) parts.push('PPT');
-        if (cfg.excel) parts.push('Excel');
-        if (cfg.c4 || cfg.architecture || cfg.flowDiagrams) parts.push('Diagram');
-        if (cfg.userStories) parts.push('Stories');
-        if (cfg.marketing) parts.push('Plan Mkt');
-        return parts.slice(0, 2).join(' / ') || 'Reporte';
-    };
-
-    // Short subtitle per role
-    const getRoleSubtitle = (roleId: string): string => {
-        const map: Record<string, string> = {
-            'strategy-analyst': 'Strategy Lead',
-            'product-manager':  'Product Manager',
-            'business-analyst': 'Business Analyst',
-            'project-manager':  'Project Lead',
-            'marketing-manager':'CMO',
-            'ux-designer':      'UX Designer',
-            'frontend-dev':     'Frontend Dev',
-            'backend-dev':      'Backend Dev',
-            'qa-engineer':      'QA Lead',
-            'devops':           'DevOps',
-            'architect':        'CTO',
-        };
-        return map[roleId] || roleId;
-    };
-
     // Timeline Logic - DYNAMIC
     const steps = roles.map((role, index) => ({
         ...role,
@@ -1986,12 +1881,6 @@ OBJECTIVE: Analyze, diagram, and optimize this sub-process as an independent ent
                                     disabled={isCreating || (!!project && !!activeProjectId)}
                                     variant="light"
                                 />
-                                <AudioUploadButton
-                                    onAudioTranscribed={handleAudioTranscribed}
-                                    onError={handleMultimediaError}
-                                    disabled={isCreating || (!!project && !!activeProjectId)}
-                                    variant="light"
-                                />
                                 <FileUploadButton
                                     onFileProcessed={handlePDFProcessed}
                                     onError={handlePDFError}
@@ -2013,7 +1902,7 @@ OBJECTIVE: Analyze, diagram, and optimize this sub-process as an independent ent
                                             {activeRoles.slice(0, 6).map((roleId, idx) => {
                                                 const step = steps.find(s => s.roleId === roleId);
                                                 if (!step) return null;
-                                                const c = ROLE_COLORS[step.colorIdx % ROLE_COLORS.length];
+                                                const c = getRoleColor(step.colorIdx);
                                                 return (
                                                     <div
                                                         key={roleId}
@@ -2090,7 +1979,7 @@ OBJECTIVE: Analyze, diagram, and optimize this sub-process as an independent ent
                         <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">
                             {(!isAdmin && !trialCompleted)
                                 ? t('dashboard.rewardGate.squadTitle')
-                                : 'Arma tu Equipo de Trabajo'}
+                                : t('strategyHub.buildTeam')}
                         </span>
                         {activeRoles.length > 0 && (
                             <span className={cn(
@@ -2102,7 +1991,7 @@ OBJECTIVE: Analyze, diagram, and optimize this sub-process as an independent ent
                                     : 'bg-indigo-100 text-indigo-600'
                             )}>
                                 {isAdmin
-                                    ? `${activeRoles.length} seleccionados`
+                                    ? t('dashboard.selectedCount', { count: activeRoles.length })
                                     : `${activeRoles.length}/${maxSelectableRoles}`
                                 }
                             </span>
@@ -2127,58 +2016,14 @@ OBJECTIVE: Analyze, diagram, and optimize this sub-process as an independent ent
                 </div>
 
                 {/* Remaining analyses counter */}
-                {!isAdmin && project && (() => {
-                    const proj = project as Project;
-                    const projectRoles = proj.blueprint?.roles ?? {};
-                    const executedInProject = Object.values(projectRoles)
-                        .filter((r: any) => r?.status === 'completed' || r?.status === 'processing').length;
-
-                    if (!trialCompleted) {
-                        // TRIAL MODE: show remaining free role executions in this project
-                        const remaining = Math.max(0, maxSelectableRoles - executedInProject);
-                        return (
-                            <div className={cn(
-                                "flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium border-b",
-                                remaining > 0
-                                    ? "bg-indigo-50 text-indigo-700 border-indigo-100"
-                                    : "bg-amber-50 text-amber-700 border-amber-100"
-                            )}>
-                                <Zap size={14} className={remaining > 0 ? "text-indigo-500" : "text-amber-500"} />
-                                {remaining > 0
-                                    ? t('dashboard.remainingAnalyses', {
-                                        count: remaining,
-                                        defaultValue: `Te quedan {{count}} análisis gratuitos`
-                                    })
-                                    : t('dashboard.noRemainingAnalyses', {
-                                        defaultValue: 'Has alcanzado el límite de análisis gratuitos. ¡Califica para ganar 1 más!'
-                                    })
-                                }
-                            </div>
-                        );
-                    } else if (remainingAnalyses !== null && remainingAnalyses !== 'unlimited') {
-                        // POST-TRIAL: show monthly usage limit
-                        return (
-                            <div className={cn(
-                                "flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium border-b",
-                                (remainingAnalyses as number) > 0
-                                    ? "bg-indigo-50 text-indigo-700 border-indigo-100"
-                                    : "bg-amber-50 text-amber-700 border-amber-100"
-                            )}>
-                                <Zap size={14} className={(remainingAnalyses as number) > 0 ? "text-indigo-500" : "text-amber-500"} />
-                                {(remainingAnalyses as number) > 0
-                                    ? t('dashboard.remainingAnalyses', {
-                                        count: remainingAnalyses,
-                                        defaultValue: `Te quedan {{count}} análisis este mes`
-                                    })
-                                    : t('dashboard.noRemainingAnalyses', {
-                                        defaultValue: 'Has alcanzado el límite de análisis de tu plan este mes.'
-                                    })
-                                }
-                            </div>
-                        );
-                    }
-                    return null;
-                })()}
+                {!isAdmin && project && (
+                    <RemainingAnalysesBanner
+                        project={project as Project}
+                        trialCompleted={trialCompleted}
+                        maxSelectableRoles={maxSelectableRoles}
+                        remainingAnalyses={remainingAnalyses as number | 'unlimited' | null}
+                    />
+                )}
 
                 {/* Progress bar — only when project is running */}
                 {project && (
@@ -2193,141 +2038,25 @@ OBJECTIVE: Analyze, diagram, and optimize this sub-process as an independent ent
                 {/* Large catalog cards */}
                 <div className="p-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
                     {steps.map((step) => {
-                        const isActive   = activeRoles.includes(step.roleId);
-                        // Quantity-based model: no individual roles are locked
-                        // Limit is enforced in toggleRole by maxSelectableRoles
-                        const isLocked   = false;
-                        const status     = getStepStatus(step.roleId, step.enabled);
-                        const isProcessing = status === 'processing';
-                        const isCompleted  = status === 'completed';
-                        const isError      = status === 'error';
-                        const c = ROLE_COLORS[step.colorIdx % ROLE_COLORS.length];
-
+                        const isActive = activeRoles.includes(step.roleId);
                         return (
-                            <div
+                            <RoleCatalogCard
                                 key={step.roleId}
-                                onClick={() => {
-                                    if (isLocked) {
-                                        loggingService.logInfo('subscription', 'role_locked_click', {
-                                            roleId: step.roleId,
-                                            requiredPlan: (step as any).requiredPlan,
-                                            userPlan: userProfile?.subscriptionPlan || 'unknown'
-                                        });
-                                        setUpgradeRequiredPlan((step as any).requiredPlan);
-                                        setIsUpgradeModalOpen(true);
-                                        return;
-                                    }
+                                title={step.title}
+                                subtitle={getRoleSubtitle(step.roleId)}
+                                deliverable={getDeliverable(step)}
+                                icon={step.icon as React.ReactElement}
+                                color={getRoleColor(step.colorIdx)}
+                                status={getStepStatus(step.roleId, step.enabled) as RoleCardStatus}
+                                isActive={isActive}
+                                canRun={!!project}
+                                autoFlow={autoFlow}
+                                onSelect={() => {
                                     toggleRole(step.roleId);
                                     if (project) setViewedRoleId(step.roleId);
                                 }}
-                                className={cn(
-                                    "group relative flex flex-col items-center text-center gap-2.5 p-4 rounded-2xl border-2 transition-all duration-200 select-none",
-                                    isLocked
-                                        ? 'border-slate-100 bg-slate-50 cursor-default opacity-60'
-                                        : isActive
-                                            ? `${c.border} ${c.bg} shadow-md cursor-pointer`
-                                            : 'border-slate-100 bg-white hover:border-slate-300 hover:shadow-sm cursor-pointer'
-                                )}
-                            >
-                                {/* Active dot */}
-                                {isActive && !isLocked && (
-                                    <span className={cn("absolute top-2.5 right-2.5 w-2 h-2 rounded-full", c.dot)} />
-                                )}
-
-                                {/* Processing spinner */}
-                                {isProcessing && (
-                                    <span className="absolute top-2.5 left-2.5">
-                                        <Loader2 size={11} className="text-blue-500 animate-spin" />
-                                    </span>
-                                )}
-
-                                {/* Completed check + re-run on hover */}
-                                {isCompleted && !isProcessing && (
-                                    <>
-                                        <span className="absolute top-2.5 left-2.5 w-4 h-4 rounded-full bg-emerald-100 flex items-center justify-center group-hover:opacity-0 transition-opacity">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                                        </span>
-                                        {!isLocked && project && (
-                                            <button
-                                                onClick={(e) => { e.stopPropagation(); runRoleAnalysis(step); }}
-                                                title="Re-run"
-                                                className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-all duration-150 w-5 h-5 rounded-full bg-slate-700 hover:bg-indigo-600 flex items-center justify-center shadow-md"
-                                            >
-                                                <RotateCcw size={9} className="text-white" />
-                                            </button>
-                                        )}
-                                    </>
-                                )}
-
-                                {/* Error indicator */}
-                                {isError && (
-                                    <span className="absolute top-2.5 left-2.5 w-4 h-4 rounded-full bg-red-100 flex items-center justify-center">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
-                                    </span>
-                                )}
-
-                                {/* Lock badge */}
-                                {isLocked && (
-                                    <div className="absolute top-2 right-2 bg-gradient-to-br from-indigo-500 to-purple-600 text-white text-[7px] font-bold px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
-                                        <Lock size={6} />
-                                        <span>{(step as any).requiredPlan?.toUpperCase()?.substring(0, 3)}</span>
-                                    </div>
-                                )}
-
-                                {/* Icon */}
-                                <div className={cn(
-                                    "w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-200",
-                                    isActive && !isLocked
-                                        ? `${c.bg} ${c.icon}`
-                                        : 'bg-slate-100 text-slate-400'
-                                )}>
-                                    {React.cloneElement(step.icon as React.ReactElement, { size: 22 })}
-                                </div>
-
-                                {/* Name + subtitle */}
-                                <div>
-                                    <p className={cn(
-                                        "text-[12px] font-bold leading-tight",
-                                        isActive && !isLocked ? 'text-slate-800' : 'text-slate-500'
-                                    )}>
-                                        {step.title}
-                                    </p>
-                                    <p className={cn(
-                                        "text-[9px] font-semibold uppercase tracking-wider mt-0.5",
-                                        isActive && !isLocked ? c.icon : 'text-slate-300'
-                                    )}>
-                                        {getRoleSubtitle(step.roleId)}
-                                    </p>
-                                </div>
-
-                                {/* Deliverable */}
-                                <p className="text-[9px] text-slate-400 leading-tight">
-                                    Entregable: {getDeliverable(step)}
-                                </p>
-
-                                {/* Run button — manual mode, active, project loaded */}
-                                {!autoFlow && isActive && !isLocked && project && (
-                                    <button
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            if (!isProcessing) runRoleAnalysis(step);
-                                        }}
-                                        disabled={isProcessing}
-                                        title={isProcessing ? `${step.title} ya se está ejecutando...` : undefined}
-                                        className={cn(
-                                            "w-full flex items-center justify-center gap-1 py-1 rounded-lg text-[10px] font-semibold transition-all",
-                                            isProcessing
-                                                ? 'bg-slate-100 text-slate-400 cursor-not-allowed opacity-50'
-                                                : 'bg-white/60 hover:bg-white text-slate-600 border border-slate-200'
-                                        )}
-                                    >
-                                        {isProcessing
-                                            ? <><Loader2 size={9} className="animate-spin" /> Ejecutando...</>
-                                            : <><Play size={9} fill="currentColor" /> Ejecutar</>
-                                        }
-                                    </button>
-                                )}
-                            </div>
+                                onRun={() => runRoleAnalysis(step)}
+                            />
                         );
                     })}
                 </div>
@@ -2363,15 +2092,6 @@ OBJECTIVE: Analyze, diagram, and optimize this sub-process as an independent ent
                     content={pdfPreviewContent}
                     onConfirm={handlePDFPreviewConfirm}
                     onCancel={() => setIsPdfPreviewOpen(false)}
-                />
-            )}
-
-            {audioPreviewContent && (
-                <AudioPreviewModal
-                    isOpen={isAudioPreviewOpen}
-                    content={audioPreviewContent}
-                    onConfirm={handleAudioPreviewConfirm}
-                    onCancel={() => setIsAudioPreviewOpen(false)}
                 />
             )}
 

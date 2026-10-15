@@ -1,5 +1,4 @@
 import { AIProvider } from "../../types/ai";
-import { OpenAIProvider } from "./providers/OpenAIProvider";
 import { AnthropicProvider } from "./providers/AnthropicProvider";
 import { aiModelsService } from "../firebase/aiModelsService";
 
@@ -9,7 +8,6 @@ export class AIProviderFactory {
 
     private constructor() {
         this.providers = new Map();
-        this.registerProvider(new OpenAIProvider());
         this.registerProvider(new AnthropicProvider());
     }
 
@@ -43,10 +41,8 @@ export class AIProviderFactory {
                 if (await p.isAvailable()) return p;
             }
 
-            // 2. Heuristic based on model name prefix
-            let candidate: AIProvider;
-            if (modelName.startsWith('gpt')) candidate = this.getProvider('openai');
-            else candidate = this.getProvider('anthropic');
+            // 2. Every model is served by Claude through the anthropic-proxy
+            const candidate: AIProvider = this.getProvider('anthropic');
 
             if (await candidate.isAvailable()) return candidate;
 

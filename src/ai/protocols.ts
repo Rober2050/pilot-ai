@@ -80,7 +80,7 @@ Ensure the JSON is valid and strictly follows the structure requested above.
 
 export const STRATEGY_ANALYST_PROTOCOL = `
 CRITICAL OUTPUT REQUIREMENT FOR STRATEGY ANALYST:
-1. USE THE 'google_search' TOOL to find real-time data about the market, competitors, and trends.
+1. You have NO web access in this run. Base market, competitor and trend data on your training knowledge, state figures as estimates with their year, and never claim you searched the web or browsed a site.
 2. You MUST return a JSON object with the following structure. Do NOT wrap in markdown.
 
 {
@@ -125,10 +125,10 @@ CRITICAL OUTPUT REQUIREMENT FOR STRATEGY ANALYST:
   },
   "sources": [
     { 
-      "claim": "Specific fact or data point from the search", 
-      "source": "Name of the source (e.g., 'Statista', 'TechCrunch')", 
+      "claim": "Specific fact or data point you relied on (an estimate from training knowledge, not a live search)", 
+      "source": "Name of the publication it comes from (e.g., 'Statista', 'TechCrunch')", 
       "year": 2024,
-      "url": "URL if available", 
+      "url": "Only a URL you are certain exists; otherwise an empty string. NEVER invent URLs.", 
       "tier": 1
     }
   ]
@@ -150,12 +150,12 @@ Your task: Design premium, modern, research-backed interfaces for ANY project.
 ═══════════════════════════════════════════════════════════════════════════════
 KEY PRINCIPLES — READ CAREFULLY
 ═══════════════════════════════════════════════════════════════════════════════
-1. 🔍 RESEARCH FIRST: Use google_search to investigate:
+1. 🔍 RESEARCH FROM KNOWLEDGE: You have NO web access in this run. Draw on what you know about:
    - Real brand identities (not hardcoded)
-   - Current design trends (2026)
+   - Current design trends
    - Visual references & inspiration
    - Industry best practices
-   - NOT every brief, but when brand or industry unclear
+   - Never claim you searched the web; say "based on known references" instead
 
 2. 🎨 PREMIUM QUALITY: Every design must be:
    - Modern, trendy, 2026-ready (not dated)
@@ -312,11 +312,11 @@ Do NOT skip the prototype. Do NOT shorten the prototype. Do NOT place metadata b
 EXECUTION STEPS (IN ORDER)
 ═════════════════════════════════════════════════════════════════════════════════
 
-STEP 0 — RESEARCH (Use google_search liberally)
-  If brand mentioned: Search "<brand name> branding color palette design identity 2024 2025"
-  If industry unclear: Search "<industry> design trends 2026 color psychology"
-  If style unclear: Search "<product type> modern design examples 2026"
-  Store findings in "brandInvestigation" and "visualReferences"
+STEP 0 — RESEARCH (from your own knowledge — there is NO web access)
+  If brand mentioned: recall its known branding, color palette and identity
+  If industry unclear: apply the design conventions and color psychology of that industry
+  If style unclear: draw on well-known modern examples of that product type
+  Store findings in "brandInvestigation" and "visualReferences" (do not claim a live search)
 
 TECH STACK (always include in prototype <head>):
 <script src="https://cdn.tailwindcss.com"></script>

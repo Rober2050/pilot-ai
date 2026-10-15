@@ -147,14 +147,22 @@
             "squadTitle": "Elige 2 expertos para empezar",
             "squadBadge": "{{count}}/2 seleccionados",
             "squadMax": "Máximo 2 roles en el análisis de prueba"
-        }
+        },
+        "usageCheckFailed": "No pudimos verificar tu cuota de uso. Probá de nuevo en unos minutos.",
+        "remainingAnalysesTrial": "Te quedan {{count}} análisis gratuitos",
+        "noRemainingAnalysesTrial": "Alcanzaste el límite de análisis gratuitos.",
+        "selectedCount": "{{count}} seleccionados"
     },
     "input": {
         "uploadPDF": "Subir PDF",
         "uploadAudio": "Subir Audio",
         "uploadImage": "Subir Imagen",
         "recordVoice": "Grabar Voz",
-        "processingPDF": "Procesando PDF..."
+        "processingPDF": "Procesando PDF...",
+        "voiceNote": "Dictado por voz",
+        "stopRecording": "Detener dictado",
+        "micUnavailable": "El micrófono no está disponible o se denegó el permiso.",
+        "noSpeech": "No se detectó voz. Probá hablar más cerca del micrófono."
     },
     "errors": {
         "pdfProcessingFailed": "Error al procesar PDF.",
@@ -572,6 +580,41 @@
         },
         "footer": {
             "rights": "© 2025 PILOTAI. Diseñado para visionarios."
+        }
+    },
+    "sourcesTab": {
+        "title": "Fuentes citadas",
+        "count_one": "{{count}} fuente citada",
+        "count_other": "{{count}} fuentes citadas",
+        "emptyTitle": "No se citaron fuentes en este análisis",
+        "emptyBody": "Las fuentes aparecerán aquí cuando el análisis cite publicaciones de referencia",
+        "legendTitle": "Jerarquía de credibilidad:",
+        "legend1": "Nivel 1: Reportes de industria, datos gubernamentales",
+        "legend2": "Nivel 2: Finanzas públicas, noticias reputadas",
+        "legend3": "Nivel 3: Blogs de industria, comunicados",
+        "legend4": "Nivel 4: Redes sociales, blogs no verificados",
+        "tier1": "Nivel 1 - Máxima credibilidad",
+        "tier2": "Nivel 2 - Alta credibilidad",
+        "tier3": "Nivel 3 - Credibilidad media",
+        "tier4": "Nivel 4 - Baja credibilidad",
+        "unclassified": "Sin clasificar",
+        "ageCurrent": "Datos actuales",
+        "ageYears_one": "{{count}} año",
+        "ageYears_other": "{{count}} años",
+        "ageOutdated_one": "{{count}} año (desactualizado)",
+        "ageOutdated_other": "{{count}} años (desactualizado)",
+        "viewOriginal": "Ver fuente original",
+        "noteTitle": "Nota sobre las fuentes:",
+        "noteBody": "El análisis no navega por internet: estas son publicaciones que el modelo conoce, citadas como referencia. Verificá cada dato antes de usarlo en decisiones críticas y priorizá las de Nivel 1-2."
+    },
+    "strategyHub": {
+        "buildTeam": "Arma tu equipo de trabajo",
+        "card": {
+            "deliverable": "Entregable: {{deliverable}}",
+            "run": "Ejecutar",
+            "running": "Ejecutando...",
+            "alreadyRunning": "{{role}} ya se está ejecutando...",
+            "rerun": "Volver a ejecutar"
         }
     }
 }

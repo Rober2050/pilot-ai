@@ -5,8 +5,9 @@
  *  - Provider config (ProviderConfig) → tabla `system_config` con id `provider_<id>`
  *  - Synthesis Agent config → tabla `system_config` con id `synthesis_agent`
  *
- * IMPORTANTE: por seguridad, las API keys NO se guardan más en la BD.
- * Siempre vienen de variables de entorno (VITE_*_API_KEY).
+ * IMPORTANTE: las API keys de proveedores NO viven en la BD ni en variables
+ * VITE_* (ambas terminan visibles en el navegador). La única key, de Anthropic,
+ * es un secreto de la Edge Function anthropic-proxy.
  */
 
 import { supabase } from './firebaseClient';
@@ -99,17 +100,5 @@ export const configService = {
             { onConflict: 'id' },
         );
         if (error) throw error;
-    },
-
-    /**
-     * Resuelve la API key de un provider:
-     *  1. Variables de entorno (VITE_<PROVIDER>_API_KEY)
-     *  2. NUNCA desde la BD (por seguridad — incidente de robo de keys 2026-04)
-     */
-    getAPIKey: async (providerId: string): Promise<string | null> => {
-        if (providerId === 'google') return import.meta.env.VITE_GEMINI_API_KEY || null;
-        if (providerId === 'openai') return import.meta.env.VITE_OPENAI_API_KEY || null;
-        if (providerId === 'anthropic') return import.meta.env.VITE_ANTHROPIC_API_KEY || null;
-        return null;
     },
 };

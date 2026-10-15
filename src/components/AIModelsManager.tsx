@@ -240,8 +240,6 @@ export default function AIModelsManager() {
                                     className="input-field"
                                 >
                                     <option value="anthropic">Anthropic</option>
-                                    <option value="openai">OpenAI</option>
-                                    <option value="other">Other</option>
                                 </select>
                             </div>
                             <div>

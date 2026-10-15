@@ -1,5 +1,4 @@
 import { SkillRegistry } from './SkillRegistry';
-import { WebSearchSkill } from './definitions/WebSearchSkill';
 import { CalculatorSkill } from './definitions/CalculatorSkill';
 
 /**
@@ -10,9 +9,10 @@ export function initializeSkills(): void {
     console.log('[Skills] Initializing skills system...');
 
     // Registrar skills básicas
-    SkillRegistry.register(WebSearchSkill);
     SkillRegistry.register(CalculatorSkill);
 
+    // No web search skill: there is no search backend, and a mock that returns
+    // invented results would let agents cite searches that never happened.
     // TODO: Agregar más skills según se implementen
     // SkillRegistry.register(DomainLoaderSkill);
     // SkillRegistry.register(MarketAnalysisSkill);
@@ -27,5 +27,4 @@ export function initializeSkills(): void {
 // Re-export para facilitar imports
 export { SkillRegistry } from './SkillRegistry';
 export { SkillExecutor } from './SkillExecutor';
-export * from './definitions/WebSearchSkill';
 export * from './definitions/CalculatorSkill';

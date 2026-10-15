@@ -2,41 +2,6 @@ import { serve } from 'https://deno.land/std@0.208.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 /**
- * Anthropic Proxy — Streaming Edge Function (HARDENED)
- *
- * WHY STREAMING (architecture decision):
- * Anthropic responses for complex roles (Product Manager, Architect, etc.) take
- * 60-90 seconds to generate. Without streaming the Edge Function awaits the full
- * response and the Supabase API gateway times out at 30s (FREE) / 150s (Pro),
- * returning HTTP 546/504.
- *
- * With streaming, the function pipes Anthropic's SSE response directly to the
- * client. The function itself returns in <1 second — only the response BODY
- * keeps flowing. The gateway sees a healthy connection with data continuously
- * arriving and never times out, regardless of total duration.
- *
- * SECURITY MODEL (why each guard exists):
- * The previous version authenticated the caller and then forwarded the client's
- * JSON body to Anthropic verbatim. Since public signup is open, that made the
- * endpoint a free unmetered Claude API for anyone willing to register: pick any
- * model, any max_tokens, unlimited requests, all billed to us.
- *
- * The guards below close that. In order:
- *   1. CORS allowlist    — only our own origins may call from a browser.
- *   2. Confirmed user    — an unverified mailbox is not an identity.
- *   3. Daily quota       — hard per-user ceiling, enforced server-side.
- *   4. Rebuilt body      — we never forward client JSON; we construct our own
- *                          from an explicit allowlist of fields.
- *   5. Model allowlist   — the client cannot select an expensive model.
- *   6. max_tokens cap    — bounds the cost of any single request.
- *
- * Guards 3-6 together give a provable worst-case spend per user per day:
- *   DAILY_TOKEN_LIMIT tokens, whatever the client sends.
- */
-
-// --- Policy knobs -----------------------------------------------------------
-
-/**
  * Browser origins allowed to call this function. Local dev is always allowed.
  * Add your production domain(s) with:
  *   supabase secrets set ALLOWED_ORIGINS=https://your-app.vercel.app,https://your-domain.com
@@ -106,6 +71,21 @@ const MAX_TOTAL_INPUT_CHARS = 400_000;
 /** Rough chars-per-token ratio, used only to charge input against the quota. */
 const CHARS_PER_TOKEN = 4;
 
+/**
+ * Attachments (images and PDFs) travel as base64 content blocks. They are
+ * bounded separately from text because base64 length says little about tokens:
+ * an image costs ~1.6k tokens whatever its size, a PDF ~2-3k per page.
+ * We charge a conservative flat estimate so attachments cannot bypass the quota.
+ */
+const ALLOWED_IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/gif', 'image/webp']);
+const ALLOWED_DOCUMENT_TYPES = new Set(['application/pdf']);
+const MAX_MEDIA_BLOCKS = 5;
+const MAX_MEDIA_BASE64_CHARS = 8_000_000; // ~6 MB of binary across all attachments
+const IMAGE_CHARGE_TOKENS = 2_000;
+/** PDFs: ~3k tokens per estimated page, assuming ~100 KB of binary per page. */
+const PDF_CHARGE_TOKENS_PER_PAGE = 3_000;
+const PDF_BYTES_PER_PAGE = 100_000;
+
 // --- CORS -------------------------------------------------------------------
 
 function corsHeaders(origin: string | null): Record<string, string> {
@@ -167,6 +147,16 @@ serve(async (req: Request) => {
             return json({ error: 'Invalid JSON body' }, 400, CORS);
         }
 
+        // Health check: proves the caller is authenticated and the function is up,
+        // without reaching Anthropic — so it never costs tokens.
+        if (body?.healthcheck === true) {
+            return json({
+                ok: true,
+                models: [...ALLOWED_MODELS],
+                anthropicKeyConfigured: Boolean(Deno.env.get('ANTHROPIC_API_KEY')),
+            }, 200, CORS);
+        }
+
         const model = String(body?.model ?? '');
         if (!ALLOWED_MODELS.has(model)) {
             return json({ error: `Model not allowed: ${model || '(none)'}` }, 400, CORS);
@@ -190,20 +180,62 @@ serve(async (req: Request) => {
             return json({ error: 'Too many messages' }, 413, CORS);
         }
 
-        const messages = [];
+        // Content is either a string, or (user turns only) an array of text /
+        // image / document blocks. Every block is rebuilt from validated fields.
+        const messages: Array<{ role: string; content: string | Record<string, unknown>[] }> = [];
+        let textChars = 0;
+        let mediaBlocks = 0;
+        let mediaBase64Chars = 0;
+        let mediaChargeTokens = 0;
         for (const m of body.messages) {
             const role = m?.role;
             const content = m?.content;
             if (role !== 'user' && role !== 'assistant') {
                 return json({ error: `Invalid message role: ${role}` }, 400, CORS);
             }
-            if (typeof content !== 'string') {
-                return json({ error: 'Message content must be a string' }, 400, CORS);
+            if (typeof content === 'string') {
+                if (content.length > MAX_MESSAGE_CHARS) {
+                    return json({ error: 'Message too large' }, 413, CORS);
+                }
+                textChars += content.length;
+                messages.push({ role, content });
+                continue;
             }
-            if (content.length > MAX_MESSAGE_CHARS) {
-                return json({ error: 'Message too large' }, 413, CORS);
+            if (role !== 'user' || !Array.isArray(content) || content.length === 0) {
+                return json({ error: 'Message content must be a string (or blocks on a user turn)' }, 400, CORS);
             }
-            messages.push({ role, content });
+            const blocks: Record<string, unknown>[] = [];
+            for (const b of content) {
+                if (b?.type === 'text' && typeof b.text === 'string') {
+                    if (b.text.length > MAX_MESSAGE_CHARS) {
+                        return json({ error: 'Message too large' }, 413, CORS);
+                    }
+                    textChars += b.text.length;
+                    blocks.push({ type: 'text', text: b.text });
+                } else if ((b?.type === 'image' || b?.type === 'document') && b?.source?.type === 'base64') {
+                    const mediaType = String(b.source.media_type ?? '');
+                    const data = b.source.data;
+                    const allowed = b.type === 'image' ? ALLOWED_IMAGE_TYPES : ALLOWED_DOCUMENT_TYPES;
+                    if (!allowed.has(mediaType) || typeof data !== 'string' || data.length === 0) {
+                        return json({ error: `Unsupported attachment: ${b.type} ${mediaType || '(none)'}` }, 400, CORS);
+                    }
+                    mediaBlocks++;
+                    mediaBase64Chars += data.length;
+                    if (mediaBlocks > MAX_MEDIA_BLOCKS || mediaBase64Chars > MAX_MEDIA_BASE64_CHARS) {
+                        return json({ error: 'Attachments too large' }, 413, CORS);
+                    }
+                    if (b.type === 'image') {
+                        mediaChargeTokens += IMAGE_CHARGE_TOKENS;
+                    } else {
+                        const pages = Math.max(1, Math.ceil((data.length * 0.75) / PDF_BYTES_PER_PAGE));
+                        mediaChargeTokens += pages * PDF_CHARGE_TOKENS_PER_PAGE;
+                    }
+                    blocks.push({ type: b.type, source: { type: 'base64', media_type: mediaType, data } });
+                } else {
+                    return json({ error: `Invalid content block: ${b?.type ?? '(none)'}` }, 400, CORS);
+                }
+            }
+            messages.push({ role, content: blocks });
         }
 
         const useStream = body?.stream === true;
@@ -233,7 +265,7 @@ serve(async (req: Request) => {
         // Total input size decides what we charge for the prompt side.
         const totalInputChars =
             system.length +
-            messages.reduce((sum, m) => sum + m.content.length, 0) +
+            textChars +
             (upstreamBody.tools ? JSON.stringify(upstreamBody.tools).length : 0);
 
         if (totalInputChars > MAX_TOTAL_INPUT_CHARS) {
@@ -241,7 +273,7 @@ serve(async (req: Request) => {
         }
 
         const estimatedInputTokens = Math.ceil(totalInputChars / CHARS_PER_TOKEN);
-        const chargedTokens = maxTokens + estimatedInputTokens;
+        const chargedTokens = maxTokens + estimatedInputTokens + mediaChargeTokens;
 
         // --- 3. Enforce quotas (daily safety cap + monthly plan budget) -----
         // Uses the service_role key so the ledger stays unreadable and

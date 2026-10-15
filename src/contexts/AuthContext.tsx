@@ -141,7 +141,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                             squad_roles: (profile as any).squad_roles,
                         }),
                     );
-                } catch {}
+                } catch { /* best-effort cache write; the profile still loads from Supabase */ }
             } else {
                 // Race condition: retry once after 2.5s
                 setTimeout(() => {
@@ -162,7 +162,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                                             squad_roles: (p as any).squad_roles,
                                         }),
                                     );
-                                } catch {}
+                                } catch { /* best-effort cache write; the profile still loads from Supabase */ }
                             } else {
                                 setUserProfile(null);
                             }

@@ -46,9 +46,9 @@ export class SkillRegistry {
     static getForRole(roleId: string): SkillDefinition[] {
         // Mapeo de roles a skills
         const roleSkillMap: Record<string, string[]> = {
-            'strategy-analyst': ['web-search', 'domain-loader', 'market-analysis'],
+            'strategy-analyst': ['domain-loader', 'market-analysis'],
             'product-manager': ['calculator', 'cost-estimator', 'roadmap-generator'],
-            'cto': ['web-search', 'tech-stack-analyzer', 'architecture-validator'],
+            'cto': ['tech-stack-analyzer', 'architecture-validator'],
             'financial-analyst': ['calculator', 'financial-projections', 'risk-calculator']
         };
 

@@ -33,7 +33,7 @@ Instead, email us directly at: **abadiarober@gmail.com**
 - Production deploys require merge to `main` (protected branch)
 
 ### For users
-- PILOT AI stores projects and analysis in Google Cloud Firestore
+- PILOT AI stores projects and analysis in Supabase (Postgres), protected by Row Level Security
 - All communication with Supabase uses TLS encryption
 - User passwords are never stored — authentication is handled by Supabase Auth
 - Data deletion is immediate upon account termination
@@ -42,8 +42,11 @@ Instead, email us directly at: **abadiarober@gmail.com**
 
 ## Known security considerations
 
-- The project stores user-generated content (analysis results) in Firestore. Firestore rules restrict data access to the authenticated user who created it.
-- Voice features use Google Cloud Text-to-Speech API — audio is processed in Google's secure infrastructure.
+- Projects and analysis results live in Postgres. Row Level Security policies (`supabase/migrations/`) restrict each row to the authenticated user who created it.
+- Every AI call goes through the `anthropic-proxy` Edge Function, which checks the session and email confirmation, rebuilds the request from an allowlist (model, size, attachments), and enforces daily and monthly token quotas before calling Claude. The browser never sees a provider key.
+- Image and PDF attachments are sent to Claude through the same proxy, capped in count and size and charged against the quota.
+- Share links (`/pitch/:id`) are public by design: anyone with the link can read that snapshot. Only signed-in users can create one, and only as themselves.
+- Voice dictation uses the browser's built-in speech recognition (Web Speech API). Depending on the browser, the audio may be processed by the browser vendor's speech service (Google in Chrome, Apple in Safari). PILOT AI never uploads or stores audio.
 
 ---
 

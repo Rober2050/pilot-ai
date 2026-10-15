@@ -105,8 +105,8 @@ const EmptyState = ({ message }: { message: string }) => (
 );
 
 /** The protocol returns the UI type as a bare letter (A–E); show its readable name instead. */
-const formatUiType = (uiType: string, t: (key: string) => string): string => {
-    const letter = uiType.trim().match(/^([A-E])/i)?.[1]?.toUpperCase();
+export const formatUiType = (uiType: string, t: (key: string) => string): string => {
+    const letter = uiType.trim().match(/^([A-E])\b/i)?.[1]?.toUpperCase();
     return letter ? t(`uxBrief.uiTypes.${letter}`) : uiType;
 };
 

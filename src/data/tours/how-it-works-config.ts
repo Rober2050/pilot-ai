@@ -57,25 +57,25 @@ export const HOW_IT_WORKS_CONFIG: TourConfig = {
       ]
     },
 
-    // ─── STEP 3: PROCESS FLOW (Google Grounding) ──────────────────────────
+    // ─── STEP 3: PROCESS FLOW (anti-hallucination guard) ──────────────────
     {
       id: 'stage-3-grounding',
       type: 'process-flow',
-      title: 'Fase 3: Grounding en Tiempo Real',
-      subtitle: 'Búsqueda de Datos Reales en Internet',
-      description: 'Para evitar alucinaciones, el Motor de Inferencia se conecta vía API a Google Search. Aquí, nuestros agentes realizan consultas en tiempo real (grounding) para verificar tendencias de mercado, tecnologías existentes y datos financieros. El resultado es un payload JSON enriquecido con métricas verídicas.',
+      title: 'Fase 3: Control Anti-Alucinación',
+      subtitle: 'Estimaciones marcadas, sin búsquedas inventadas',
+      description: 'Los agentes trabajan con el conocimiento del modelo, sin acceso a internet. Por eso cada cifra de mercado se marca como estimación con su año de referencia, las fuentes se citan solo si son conocidas y nunca se inventan URLs. El resultado es un payload JSON que distingue datos de supuestos.',
       duration: 7,
       nodes: [
         { id: 'agents', label: 'Agentes IA', sublabel: 'Motor de Inferencia', icon: 'BrainCircuit', type: 'circle', x: 200, y: 200, color: '#8b5cf6' },
         { id: 'api', label: 'API Gateway', sublabel: 'REST endpoints', icon: 'Network', type: 'rect', x: 500, y: 200, color: '#06b6d4' },
-        { id: 'google', label: 'Google Search', sublabel: 'Real-time Data', icon: 'Globe', type: 'diamond', x: 800, y: 100, color: '#eab308' },
+        { id: 'google', label: 'Guardia Anti-Alucinación', sublabel: 'Estimaciones marcadas', icon: 'Globe', type: 'diamond', x: 800, y: 100, color: '#eab308' },
         { id: 'data', label: 'Respuesta', sublabel: 'JSON Payload', icon: 'FileJson', type: 'document', x: 1100, y: 200, color: '#10b981' }
       ],
       connections: [
         { from: 'agents', to: 'api', style: 'solid', color: '#8b5cf6' },
-        { from: 'api', to: 'google', label: 'Queries Web', style: 'dashed', color: '#06b6d4' },
+        { from: 'api', to: 'google', label: 'Valida supuestos', style: 'dashed', color: '#06b6d4' },
         { from: 'google', to: 'data', style: 'solid', color: '#eab308' },
-        { from: 'data', to: 'agents', label: 'Inyecta Veracidad', style: 'solid', color: '#10b981' }
+        { from: 'data', to: 'agents', label: 'Marca estimaciones', style: 'solid', color: '#10b981' }
       ]
     },
 

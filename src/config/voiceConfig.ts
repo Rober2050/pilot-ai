@@ -1,4 +1,4 @@
-import { RoleVoiceMapping, VoiceServiceConfig, CacheConfig } from '../types/voice';
+import { RoleVoiceMapping, CacheConfig } from '../types/voice';
 
 // Voice mappings per role and language
 // Voice mappings per role and language (Web Speech API)
@@ -99,15 +99,6 @@ export const DEFAULT_VOICE: RoleVoiceMapping = {
         gender: 'MALE',
         description: 'Default voice'
     }
-};
-
-// Google Cloud TTS Service Configuration
-export const TTS_CONFIG: VoiceServiceConfig = {
-    apiKey: import.meta.env.VITE_GOOGLE_CLOUD_TTS_API_KEY || '',
-    audioEncoding: 'MP3',
-    sampleRateHertz: 24000,
-    pitch: 0,
-    speakingRate: 1.0
 };
 
 // Audio Cache Configuration

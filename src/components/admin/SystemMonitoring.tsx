@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { loggingService, LogEntry } from '../../services/firebase/loggingService';
 import { authService } from '../../services/firebase/authService';
-import { aiService } from '../../services/ai/aiService';
-import { auth } from '../../services/firebase/firebaseClient';
+import { auth, supabase, SUPABASE_URL } from '../../services/firebase/firebaseClient';
 import { AlertCircle, RefreshCw, Trash2, Download, ChevronDown, CheckCircle, AlertTriangle, XCircle, Wifi, Key, Shield } from 'lucide-react';
 
 interface DiagnosticResult {
@@ -46,19 +45,24 @@ export function SystemMonitoring() {
         setDiagnostics([]);
         const newResults: DiagnosticResult[] = [];
 
-        // 1. AI connectivity — every model call goes through the anthropic-proxy Edge Function
+        // 1. AI connectivity — every model call goes through the anthropic-proxy Edge Function.
+        // The proxy answers `healthcheck` itself (auth + config), so this never spends tokens.
         try {
-            const reply = await aiService.generateText(
-                'claude-haiku-4-5-20251001',
-                'You are a health check. Reply with the single word OK.',
-                'ping'
-            );
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) throw new Error('No active session');
+            const res = await fetch(`${SUPABASE_URL}/functions/v1/anthropic-proxy`, {
+                method: 'POST',
+                headers: { 'content-type': 'application/json', Authorization: `Bearer ${session.access_token}` },
+                body: JSON.stringify({ healthcheck: true }),
+            });
+            const body = await res.json().catch(() => ({}));
+            if (!res.ok || !body?.ok) throw new Error(body?.error || `HTTP ${res.status}`);
             newResults.push({
                 id: 'connectivity',
                 name: 'Claude API (anthropic-proxy)',
-                status: 'success',
-                message: 'Proxy reachable and model responding',
-                details: `Reply: ${reply.trim().slice(0, 40)}`
+                status: body.anthropicKeyConfigured ? 'success' : 'warning',
+                message: body.anthropicKeyConfigured ? 'Proxy reachable and configured' : 'Proxy reachable, ANTHROPIC_API_KEY missing',
+                details: `Models: ${(body.models || []).join(', ')}`
             });
         } catch (e: any) {
             newResults.push({

@@ -160,7 +160,7 @@ export const productManagerPPT = {
       const items = roadmap.slice(0, 4);
       const stepW = 2.2;
       const stepGap = 0.15;
-      let startX = (10 - (items.length * (stepW + stepGap))) / 2;
+      const startX = (10 - (items.length * (stepW + stepGap))) / 2;
 
       items.forEach((item, i) => {
         const curX = startX + (i * (stepW + stepGap));

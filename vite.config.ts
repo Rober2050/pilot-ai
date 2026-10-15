@@ -1,6 +1,31 @@
-import { defineConfig } from 'vite'
+import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
+
+/**
+ * Opens the Supabase connection (auth + API) before the JS bundle asks for it.
+ * Injected only when VITE_SUPABASE_URL is set: a literal %VITE_...% placeholder
+ * in index.html breaks the build wherever the variable is missing (CI, a fresh
+ * clone). The value is trimmed because the deploy panel once stored it with a
+ * trailing space.
+ */
+function supabasePreconnect(): Plugin {
+    let origin = ''
+    return {
+        name: 'supabase-preconnect',
+        configResolved(config) {
+            const raw = String(config.env.VITE_SUPABASE_URL ?? '').trim().replace(/\/+$/, '')
+            try { origin = raw ? new URL(raw).origin : '' } catch { origin = '' }
+        },
+        transformIndexHtml() {
+            if (!origin) return []
+            return [
+                { tag: 'link', attrs: { rel: 'preconnect', href: origin, crossorigin: '' }, injectTo: 'head' },
+                { tag: 'link', attrs: { rel: 'dns-prefetch', href: origin }, injectTo: 'head' },
+            ]
+        },
+    }
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -20,6 +45,7 @@ export default defineConfig({
     },
     plugins: [
         react(),
+        supabasePreconnect(),
         {
             name: 'tour-saver-middleware',
             configureServer(server) {

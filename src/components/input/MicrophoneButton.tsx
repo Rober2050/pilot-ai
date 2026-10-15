@@ -1,7 +1,6 @@
-import React, { useState, useRef } from 'react';
-import { Mic, Square, Loader2 } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Mic, Square } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { mediaProcessorService, ProcessedMedia } from '../../services/media/mediaProcessorService';
 
 interface MicrophoneButtonProps {
     onTranscription: (text: string) => void;
@@ -10,77 +9,94 @@ interface MicrophoneButtonProps {
     variant?: 'dark' | 'light';
 }
 
+/**
+ * Voice dictation with the browser's own speech recognition (Web Speech API).
+ *
+ * Why not the AI: Claude does not accept audio input. Sending a recording and
+ * asking it to "transcribe" makes it invent text, so dictation stays in the
+ * browser (Chrome, Edge, Safari). Where the API is missing, the button hides.
+ */
+type SpeechRecognitionLike = {
+    lang: string;
+    continuous: boolean;
+    interimResults: boolean;
+    onresult: ((event: any) => void) | null;
+    onerror: ((event: any) => void) | null;
+    onend: (() => void) | null;
+    start: () => void;
+    stop: () => void;
+};
+
+const getSpeechRecognition = (): (new () => SpeechRecognitionLike) | null => {
+    if (typeof window === 'undefined') return null;
+    const w = window as any;
+    return w.SpeechRecognition || w.webkitSpeechRecognition || null;
+};
+
 export function MicrophoneButton({
     onTranscription,
     onError,
     disabled = false,
     variant = 'dark'
 }: MicrophoneButtonProps) {
-    const { t } = useTranslation('translation');
+    const { t, i18n } = useTranslation('translation');
     const [isRecording, setIsRecording] = useState(false);
-    const [isProcessing, setIsProcessing] = useState(false);
+    const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
+    const transcriptRef = useRef('');
 
-    const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-    const chunksRef = useRef<Blob[]>([]);
+    const Recognition = getSpeechRecognition();
 
-    const startRecording = async () => {
+    useEffect(() => () => recognitionRef.current?.stop(), []);
+
+    if (!Recognition) return null;
+
+    const startRecording = () => {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            const mediaRecorder = new MediaRecorder(stream);
-            mediaRecorderRef.current = mediaRecorder;
-            chunksRef.current = [];
+            const recognition = new Recognition();
+            recognition.lang = i18n.language?.startsWith('en') ? 'en-US' : 'es-AR';
+            recognition.continuous = true;
+            recognition.interimResults = false;
+            transcriptRef.current = '';
 
-            mediaRecorder.ondataavailable = (e) => {
-                if (e.data.size > 0) {
-                    chunksRef.current.push(e.data);
-                }
-            };
-
-            mediaRecorder.onstop = async () => {
-                // Stop all tracks to release mic
-                stream.getTracks().forEach(track => track.stop());
-
-                setIsProcessing(true);
-                try {
-                    const blob = new Blob(chunksRef.current, { type: 'audio/webm' });
-                    // Using .webm extension to ensure proper MIME detection
-                    const file = new File([blob], "voice_note.webm", { type: 'audio/webm' });
-
-                    // Process & Transcribe
-                    const processed = await mediaProcessorService.processAudio(file);
-                    const text = await mediaProcessorService.transcribeAudio(processed);
-
-                    if (!text || text.trim().length === 0) {
-                        throw new Error("No speech detected. Please try speaking closer to the microphone.");
+            recognition.onresult = (event: any) => {
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    if (event.results[i].isFinal) {
+                        transcriptRef.current += `${event.results[i][0].transcript} `;
                     }
-
+                }
+            };
+            recognition.onerror = (event: any) => {
+                console.error('[MicrophoneButton] Speech recognition error:', event?.error);
+                if (event?.error !== 'no-speech' && event?.error !== 'aborted') {
+                    onError(new Error(t('input.micUnavailable', 'Microphone access denied or not available.')));
+                }
+            };
+            recognition.onend = () => {
+                setIsRecording(false);
+                recognitionRef.current = null;
+                const text = transcriptRef.current.trim();
+                if (text) {
                     onTranscription(text);
-                } catch (err: any) {
-                    console.error("Transcription error:", err);
-                    onError(err);
-                } finally {
-                    setIsProcessing(false);
+                } else {
+                    onError(new Error(t('input.noSpeech', 'No speech detected. Please try speaking closer to the microphone.')));
                 }
             };
 
-            mediaRecorder.start();
+            recognitionRef.current = recognition;
+            recognition.start();
             setIsRecording(true);
-
         } catch (err: any) {
-            console.error("Mic permission error:", err);
-            onError(new Error("Microphone access denied or not available."));
+            console.error('[MicrophoneButton] Could not start dictation:', err);
+            onError(new Error(t('input.micUnavailable', 'Microphone access denied or not available.')));
         }
     };
 
     const stopRecording = () => {
-        if (mediaRecorderRef.current && isRecording) {
-            mediaRecorderRef.current.stop();
-            setIsRecording(false);
-        }
+        recognitionRef.current?.stop();
     };
 
     const handleClick = () => {
-        if (disabled || isProcessing) return;
+        if (disabled) return;
         if (isRecording) {
             stopRecording();
         } else {
@@ -88,21 +104,22 @@ export function MicrophoneButton({
         }
     };
 
+    const label = isRecording ? t('input.stopRecording', 'Stop recording') : t('input.voiceNote', 'Voice Note');
+
     return (
         <button
             onClick={handleClick}
-            disabled={disabled || isProcessing}
+            disabled={disabled}
+            aria-label={label}
             className={`group relative p-3 rounded-full transition-all duration-200 border active:scale-95 ${isRecording
                 ? 'bg-red-500/20 text-red-400 border-red-500/50 animate-pulse'
                 : variant === 'light'
                     ? 'bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-500 hover:text-slate-700'
                     : 'bg-white/10 hover:bg-white/20 border-white/20 text-white'
-                } ${disabled || isProcessing ? 'opacity-50 cursor-not-allowed' : ''}`}
-            title={isRecording ? 'Stop Recording' : t('input.voiceNote', 'Voice Note')}
+                } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+            title={label}
         >
-            {isProcessing ? (
-                <Loader2 size={20} className="animate-spin" />
-            ) : isRecording ? (
+            {isRecording ? (
                 <Square size={20} fill="currentColor" />
             ) : (
                 <Mic size={20} className="group-hover:scale-110 transition-transform" />
@@ -110,7 +127,7 @@ export function MicrophoneButton({
 
             {/* Tooltip */}
             <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-slate-900 text-white text-xs font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
-                {isProcessing ? 'Transcribing...' : isRecording ? 'Stop Recording' : t('input.voiceNote', 'Voice Note')}
+                {label}
                 <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-slate-900"></div>
             </div>
         </button>

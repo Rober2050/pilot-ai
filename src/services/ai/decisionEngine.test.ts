@@ -1,5 +1,6 @@
 import { describe, test, expect, vi } from 'vitest';
 import { decisionEngine } from './decisionEngine';
+import { aiService } from './aiService';
 import { RoleConfig } from '../../types/roles';
 
 // Mock AI service
@@ -49,8 +50,7 @@ describe('Decision Engine', () => {
 
     test('analyzeSession handles low scores correctly (NO GO)', async () => {
         // Override mock for this test
-        const { aiService } = require('./aiService');
-        aiService.generateContent.mockResolvedValueOnce(`
+        vi.mocked(aiService.generateContent).mockResolvedValueOnce(`
             {
                 "feasibility": 30,
                 "desirability": 40,

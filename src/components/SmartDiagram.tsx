@@ -345,7 +345,7 @@ const SmartDiagramContent: React.FC<SmartDiagramProps> = ({ data, title, descrip
 
             if (typeof data === 'string') {
                 // Attempt 1: Direct parse (after basic cleaning)
-                let cleanJson = data.replace(/```json|```/g, '').trim();
+                const cleanJson = data.replace(/```json|```/g, '').trim();
 
                 try {
                     parsedData = JSON.parse(cleanJson);

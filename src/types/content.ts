@@ -92,20 +92,23 @@ export function combineBlocksForAI(blocks: ContentBlock[]): string {
                 prompt += `${separator}[USER INPUT]\n${block.content}`;
                 break;
 
-            case 'audio':
+            case 'audio': {
                 const audioLabel = block.metadata?.fileName || 'Audio Transcription';
                 prompt += `${separator}[AUDIO TRANSCRIPTION - ${audioLabel}]\n${block.content}`;
                 break;
+            }
 
-            case 'pdf':
+            case 'pdf': {
                 const pdfLabel = block.metadata?.fileName || 'PDF Document';
                 prompt += `${separator}[PDF SUMMARY - ${pdfLabel}]\n${block.content}`;
                 break;
+            }
 
-            case 'image':
+            case 'image': {
                 const imageLabel = block.metadata?.fileName || 'Image';
                 prompt += `${separator}[IMAGE DESCRIPTION - ${imageLabel}]\n${block.content}`;
                 break;
+            }
         }
     });
 

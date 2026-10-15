@@ -276,7 +276,6 @@ export default function AdminConsole() {
         if (!window.confirm('Are you sure you want to delete this role? This action cannot be undone.')) return;
 
         try {
-            // @ts-ignore
             await rolesService.deleteRole(roleId);
             setRoles(roles.filter(r => r.roleId !== roleId));
         } catch (error) {

@@ -60,6 +60,39 @@ interface CallProxyOptions {
     prefillJSON?: boolean;
     /** Partial assistant output to continue from (overrides prefillJSON). */
     assistantPrefill?: string;
+    /** Image/PDF attachments sent alongside the user prompt. */
+    media?: GenerationOptions['media'];
+}
+
+/** Media types Claude accepts as input. Audio is NOT one of them. */
+const IMAGE_MEDIA_TYPES = new Set(['image/jpeg', 'image/png', 'image/gif', 'image/webp']);
+const DOCUMENT_MEDIA_TYPES = new Set(['application/pdf']);
+
+/**
+ * Builds the user turn. Without attachments it stays a plain string; with them it
+ * becomes content blocks (images/PDFs first, then the text, as Anthropic recommends).
+ * Unsupported types — audio in particular — are dropped loudly: the model must never
+ * be asked to "read" a file it cannot see, or it will make the content up.
+ */
+function buildUserContent(userPrompt: string, media?: GenerationOptions['media']): string | any[] {
+    if (!media?.length) return userPrompt;
+
+    const blocks: any[] = [];
+    for (const item of media) {
+        const mediaType = (item.mimeType || '').toLowerCase();
+        const data = (item.data || '').replace(/^data:[^;]+;base64,/, '');
+        if (!data) continue;
+        if (IMAGE_MEDIA_TYPES.has(mediaType)) {
+            blocks.push({ type: 'image', source: { type: 'base64', media_type: mediaType, data } });
+        } else if (DOCUMENT_MEDIA_TYPES.has(mediaType)) {
+            blocks.push({ type: 'document', source: { type: 'base64', media_type: mediaType, data } });
+        } else {
+            console.warn('[AnthropicProvider] Attachment type not supported by Claude — skipped', { mediaType });
+        }
+    }
+    if (blocks.length === 0) return userPrompt;
+    blocks.push({ type: 'text', text: userPrompt });
+    return blocks;
 }
 
 /**
@@ -112,11 +145,11 @@ export class AnthropicProvider extends BaseAIProvider {
         modelName: string,
         systemPrompt: string,
         userPrompt: string,
-        _options?: GenerationOptions,
+        options?: GenerationOptions,
     ): Promise<string> {
         const model = resolveModel(modelName);
         return this.retryOperation(async () => {
-            const response = await this.callProxy(model, systemPrompt, userPrompt, MAX_TOKENS);
+            const response = await this.callProxy(model, systemPrompt, userPrompt, MAX_TOKENS, { media: options?.media });
             const text = response.content?.[0]?.text ?? '';
             this.recordSuccess();
             return text;
@@ -127,8 +160,9 @@ export class AnthropicProvider extends BaseAIProvider {
         modelName: string,
         systemPrompt: string,
         userPrompt: string,
-        _options?: GenerationOptions,
+        options?: GenerationOptions,
     ): Promise<T> {
+        const media = options?.media;
         const model = resolveModel(modelName);
         // JSON forcing strategy after exhaustive testing with Claude Haiku 4.5:
         //
@@ -149,7 +183,7 @@ export class AnthropicProvider extends BaseAIProvider {
 
         return this.retryOperation(async () => {
             let response = await this.callProxy(
-                model, systemPrompt, jsonEnforcedUserPrompt, MAX_TOKENS, { prefillJSON: true },
+                model, systemPrompt, jsonEnforcedUserPrompt, MAX_TOKENS, { prefillJSON: true, media },
             );
             let raw = response.content?.find(c => c.type === 'text')?.text ?? '';
 
@@ -162,7 +196,7 @@ export class AnthropicProvider extends BaseAIProvider {
                 });
                 try {
                     response = await this.callProxy(
-                        model, systemPrompt, jsonEnforcedUserPrompt, MAX_TOKENS, { assistantPrefill: prefill },
+                        model, systemPrompt, jsonEnforcedUserPrompt, MAX_TOKENS, { assistantPrefill: prefill, media },
                     );
                 } catch (continuationError) {
                     // Keep what we have; the repair tiers below try to salvage it.
@@ -288,8 +322,8 @@ export class AnthropicProvider extends BaseAIProvider {
 
         // Build messages. If prefillJSON is set, inject an assistant turn starting
         // with '{' so the model's first generated token must continue valid JSON.
-        const messages: Array<{ role: string; content: string }> = [
-            { role: 'user', content: userPrompt },
+        const messages: Array<{ role: string; content: string | any[] }> = [
+            { role: 'user', content: buildUserContent(userPrompt, options?.media) },
         ];
         if (options?.assistantPrefill) {
             messages.push({ role: 'assistant', content: options.assistantPrefill });
@@ -415,7 +449,7 @@ export class AnthropicProvider extends BaseAIProvider {
         };
 
         try {
-            while (true) {
+            for (;;) {
                 const { done, value } = await reader.read();
                 if (done) break;
 

@@ -19,7 +19,7 @@ export const usageService = {
     checkAnalysisLimit: async (
         userId: string,
         planId: string,
-    ): Promise<{ allowed: boolean; currentUsage: number; limit: number | 'unlimited' }> => {
+    ): Promise<{ allowed: boolean; currentUsage: number; limit: number | 'unlimited'; checkFailed?: boolean }> => {
         try {
             const plan = await subscriptionService.getPlanById(planId);
             const limit = plan?.limits?.analysesPerMonth;
@@ -39,15 +39,16 @@ export const usageService = {
                 .gte('created_at', startOfMonth);
 
             if (error) {
-                console.error('Error checking usage limits:', error);
-                return { allowed: true, currentUsage: 0, limit: 100 };
+                // Fail CLOSED: an unverifiable quota must not grant free usage.
+                console.error('[usageService] Usage check failed — blocking until it can be verified:', error);
+                return { allowed: false, currentUsage: 0, limit: 0, checkFailed: true };
             }
 
             const currentUsage = count || 0;
             return { allowed: currentUsage < limit, currentUsage, limit };
         } catch (error) {
-            console.error('Error checking usage limits:', error);
-            return { allowed: true, currentUsage: 0, limit: 100 };
+            console.error('[usageService] Usage check failed — blocking until it can be verified:', error);
+            return { allowed: false, currentUsage: 0, limit: 0, checkFailed: true };
         }
     },
 

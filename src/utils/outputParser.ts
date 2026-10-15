@@ -46,6 +46,8 @@ export function repairJSON(jsonString: string): string {
     repaired = repaired.replace(/\\\\"/g, '\\"');
 
     // 7. Remove any stray control characters
+    // Control characters are exactly what this step removes.
+    // eslint-disable-next-line no-control-regex
     repaired = repaired.replace(/[\x00-\x1f\x7f]/g, ' ');
 
     return repaired;

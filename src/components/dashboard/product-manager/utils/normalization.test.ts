@@ -1,5 +1,6 @@
-import { normalizeProductData } from '../normalization';
-import { ProductData } from '../types';
+import { describe, it, expect } from 'vitest';
+import { normalizeProductData } from './normalization';
+import { ProductData } from './types';
 
 describe('ProductManager Normalization', () => {
     describe('normalizeProductData', () => {

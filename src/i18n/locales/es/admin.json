@@ -11,5 +11,14 @@
     "displayName": "Nombre para Mostrar",
     "systemPrompt": "Prompt del Sistema",
     "model": "Modelo",
-    "temperature": "Temperatura"
+    "temperature": "Temperatura",
+    "providerSettings": {
+        "title": "Proveedor de IA",
+        "subtitle": "Dónde vive la credencial de Anthropic",
+        "proxyTitle": "Todo pasa por anthropic-proxy",
+        "proxyBody": "Cada llamado de IA (roles, síntesis, chat) sale del navegador hacia la Edge Function anthropic-proxy de Supabase, que valida la sesión, aplica cuotas y recién ahí llama a Claude.",
+        "keyTitle": "La API key no se carga acá",
+        "keyBody": "La única key es ANTHROPIC_API_KEY y se guarda como secreto de Supabase. Nunca va en variables VITE_* ni en la base de datos, porque todo eso termina visible en el navegador.",
+        "close": "Cerrar"
+    }
 }

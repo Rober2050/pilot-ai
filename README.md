@@ -203,8 +203,10 @@ npm run test    # Vitest
 - Outputs are written by an LLM: treat numbers (market size, unit economics, costs) as a first draft to validate, not as facts.
 - Few automated tests; exporters and role protocols were mostly validated by hand.
 - The `services/firebase/` folder name predates the move to Supabase.
-- War Room and voice features are experimental.
-- Only Anthropic is wired through the secure proxy; the Gemini and OpenAI providers would need the same treatment before use.
+- War Room is experimental and on hold.
+- Every AI call goes through the `anthropic-proxy` Edge Function with Claude Haiku 4.5; there are no other providers in the code.
+- The analysis has no web access: market figures are model estimates and are labelled as such.
+- Voice input is browser dictation (Web Speech API); audio files are not supported because Claude does not read audio.
 
 ## 📄 License
 

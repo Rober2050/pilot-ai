@@ -42,7 +42,7 @@ export const CalculatorSkill: SkillDefinition = {
             let explanation: string;
 
             switch (operation.toLowerCase()) {
-                case 'roi':
+                case 'roi': {
                     // ROI = ((Profit - Investment) / Investment) * 100
                     const [investment, profit] = values;
                     if (!investment || !profit) {
@@ -51,8 +51,9 @@ export const CalculatorSkill: SkillDefinition = {
                     result = ((profit - investment) / investment) * 100;
                     explanation = `ROI: ${result.toFixed(2)}% (Investment: $${investment}, Profit: $${profit})`;
                     break;
+                }
 
-                case 'payback':
+                case 'payback': {
                     // Payback Period = Initial Investment / Monthly Revenue
                     const [initialInvestment, monthlyRevenue] = values;
                     if (!initialInvestment || !monthlyRevenue) {
@@ -61,6 +62,7 @@ export const CalculatorSkill: SkillDefinition = {
                     result = initialInvestment / monthlyRevenue;
                     explanation = `Payback Period: ${result.toFixed(1)} months (Investment: $${initialInvestment}, Monthly Revenue: $${monthlyRevenue})`;
                     break;
+                }
 
                 case 'npv':
                     // TODO: Implement NPV calculation

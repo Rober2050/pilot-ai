@@ -150,15 +150,15 @@ export const RiskMatrix: React.FC<RiskMatrixProps> = ({ projectPhases }) => {
                             const sev = getSeverity(risk.score);
                             // Map prob/impact 1-3 to x/y positions (%)
                             // Base position (12% to 84% range to avoid overflow with dot size)
-                            let xBase = 12 + ((risk.prob - 1) / 2) * 72;
-                            let yBase = 12 + ((risk.impact - 1) / 2) * 72;
+                            const xBase = 12 + ((risk.prob - 1) / 2) * 72;
+                            const yBase = 12 + ((risk.impact - 1) / 2) * 72;
 
                             // Add jitter to separate overlapping risks, but keep within bounds
                             const jitterX = ((idx * 3.1) % 9) - 4;
                             const jitterY = ((idx * 2.7) % 9) - 4;
 
-                            let xPct = Math.max(8, Math.min(92, xBase + jitterX));
-                            let yPct = Math.max(8, Math.min(92, yBase + jitterY));
+                            const xPct = Math.max(8, Math.min(92, xBase + jitterX));
+                            const yPct = Math.max(8, Math.min(92, yBase + jitterY));
 
                             return (
                                 <div
