@@ -130,6 +130,14 @@ VITE_ENABLE_PUBLIC_SIGNUP=true
 
 `VITE_ENABLE_PUBLIC_SIGNUP=true` lets you create your own account. (The hosted showcase keeps it off and works by invitation.)
 
+The register button is only UI. To really close sign-ups, turn on the database gate from migration `007_invite_only_signup.sql`; after that, only emails in `public.invitations` (created from the admin console) can register:
+
+```sql
+UPDATE public.system_config SET is_enabled = true WHERE id = 'invite_only_signup';
+```
+
+Do not use Supabase's "Allow new users to sign up" switch for this: invited users register through that same endpoint and would be locked out.
+
 ### 5. Run your first analysis
 
 ```bash
