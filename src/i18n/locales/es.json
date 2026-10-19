@@ -616,5 +616,15 @@
             "alreadyRunning": "{{role}} ya se está ejecutando...",
             "rerun": "Volver a ejecutar"
         }
+    },
+    "pitch": {
+        "loading": "Cargando proyecto...",
+        "notFoundTitle": "Proyecto no encontrado",
+        "notFoundBody": "El link no es válido o el proyecto ya no es público.",
+        "goHome": "Ir a PILOT AI",
+        "defaultTitle": "Proyecto compartido",
+        "cta": "Conocé PILOT AI",
+        "empty": "Este proyecto todavía no tiene resultados.",
+        "generatedBy": "Generado con PILOT AI"
     }
 }

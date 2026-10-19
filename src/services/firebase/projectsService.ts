@@ -327,6 +327,13 @@ export const projectsService = {
             .maybeSingle();
         if (error || !data) return null;
         if (!data.blueprint?.isPublic) return null;
-        return { id: data.id, ...data.blueprint };
+        // Shape expected by PublicPitch (inherited from the Firestore version):
+        // the project blueprint nested under `blueprint`, metadata alongside.
+        return {
+            id: data.id,
+            originalProjectId: data.blueprint.originalProjectId,
+            createdAt: data.created_at,
+            blueprint: data.blueprint,
+        };
     },
 };
