@@ -16,7 +16,7 @@ Done once, from the repo root:
 ```bash
 npx supabase login
 npx supabase link --project-ref <project-ref>
-npx supabase db push                                   # migrations 001–004
+npx supabase db push                                   # migrations 001–009
 npx supabase secrets set ANTHROPIC_API_KEY=sk-ant-...
 npx supabase functions deploy anthropic-proxy
 ```
@@ -31,6 +31,11 @@ Or the equivalent one-liner: `./scripts/setup-supabase.sh <project-ref> <sk-ant-
 | `002_proxy_usage.sql` | Per-user token ledger used by the proxy quota |
 | `003_seed_config.sql` | The 9 roles (system prompts), models, plans, war room styles, provider config. Idempotent. |
 | `004_security_hardening.sql` | Users cannot change their own role/plan; `promote_to_admin()` helper |
+| `005_share_and_audit_policies.sql` | Share links (`/pitch/:id`) and audit log policies; `is_admin()` helper |
+| `006_prompts_and_plans_alignment.sql` | One JSON schema per role prompt; plans use Claude Haiku 4.5 and the 9 roles |
+| `007_invite_only_signup.sql` | Optional invitation-only sign-up (off by default): `UPDATE system_config SET is_enabled = true WHERE id = 'invite_only_signup'` |
+| `008_legacy_data_cleanup.sql` | Removes legacy provider rows; free plan = 1 analysis/month |
+| `009_explicit_table_grants.sql` | Explicit Data API grants. Required: since 2026-10-30 Supabase no longer grants access to new tables automatically |
 
 ### Auth settings worth checking
 
